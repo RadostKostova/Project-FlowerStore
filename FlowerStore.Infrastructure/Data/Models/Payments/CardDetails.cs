@@ -1,19 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 
-namespace FlowerStore.Infrastructure.Data.Models
+namespace FlowerStore.Infrastructure.Data.Models.Payment
 {
     /// <summary>
-    /// This entity represents the details of customer's card. When the customer is placing an order and selects "Pay with Card", a 
+    /// This entity represents the details of user's card. When the user is placing an order and selects "Pay with Card", a 
     /// card form should appear and should be filled. This data should be sent to DB.
     /// </summary>
-    
+
     public class CardDetails
-    {       
-        [Required]
+    {
+        [Key]
         [Comment("Card identifier")]
         public int Id { get; set; }
+
+        [Required]
+        [Comment("User identifier")]
+        public string UserId { get; set; }
 
         [Required]
         [MaxLength(CardNumberExactlyLength)]
@@ -21,7 +27,7 @@ namespace FlowerStore.Infrastructure.Data.Models
         public string CardNumber { get; set; } = string.Empty;
 
         [Required]
-        [DisplayFormat(DataFormatString = CardExpirationDateFormat, 
+        [DisplayFormat(DataFormatString = CardExpirationDateFormat,
             ApplyFormatInEditMode = true)]
         [Comment("Card's expiration date")]
         public DateTime ExpirationDate { get; set; } //Format MM/yy
@@ -35,5 +41,8 @@ namespace FlowerStore.Infrastructure.Data.Models
         [MaxLength(CardHolderMaxLength)]
         [Comment("First and last name of holder")]
         public string CardHolderName { get; set; } = string.Empty;
+
+        [ForeignKey(nameof(UserId))]
+        public IdentityUser? User { get; set; }
     }
 }

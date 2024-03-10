@@ -1,15 +1,15 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Enums;
+﻿using FlowerStore.Infrastructure.Data.Models.Payment;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 
-namespace FlowerStore.Infrastructure.Data.Models
+namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 {
     /// <summary>
-    /// An order represents a customer's purchase of one or more flowers.
+    /// An order represents a user's purchase of one or more flowers.
     /// </summary>
-
     public class Order
     {
         [Key]
@@ -17,11 +17,8 @@ namespace FlowerStore.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [Comment("Customer identifier")]
-        public int CustomerId { get; set; }
-
-        [ForeignKey(nameof(CustomerId))]
-        public Customer Customer { get; set; } = null!;
+        [Comment("User identifier")]
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
         [DisplayFormat(DataFormatString = DateFormatNeeded,
@@ -35,20 +32,25 @@ namespace FlowerStore.Infrastructure.Data.Models
         public decimal TotalPrice { get; set; }
 
         [Required]
-        [EnumDataType(typeof(PaymentType))]
         [Comment("Chosen payment identifier")]
         public int PaymentMethodId { get; set; }
 
-        [ForeignKey(nameof(PaymentMethod))]
-        public PaymentMethod PaymentMethod { get; set; } = null!;
-
         [Required]
         [MaxLength(ShippingDetailsMaxLength)]
-        [Comment("Order details")]
+        [Comment("More details of the order")]
         public string ShippingDetails { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(OrderStatus))]
-        public OrderStatus OrderStatus { get; set; }   //pending, shipped, delivered
+        [Comment("Status of the order")]
+        public OrderStatus? OrderStatus { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public IdentityUser User { get; set; } = null!;
+
+        [ForeignKey(nameof(PaymentMethodId))]
+        public PaymentMethod? PaymentMethod { get; set; }
+
+        public virtual ICollection<ProductOrder> OrdersProducts { get; set; } = new List<ProductOrder>();
     }
 }

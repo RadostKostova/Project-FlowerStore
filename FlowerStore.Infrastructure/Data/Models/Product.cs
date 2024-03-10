@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using FlowerStore.Infrastructure.Data.Models.Carts;
+using FlowerStore.Infrastructure.Data.Models.Categories;
+using FlowerStore.Infrastructure.Data.Models.Orders.Order;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 
 namespace FlowerStore.Infrastructure.Data.Models
@@ -8,33 +11,31 @@ namespace FlowerStore.Infrastructure.Data.Models
     /// <summary>
     /// Represents information about each flower in the online store. 
     /// </summary>
-    public class Flower
+
+    public class Product
     {
         [Key]
-        [Comment("Flower identifier")]
+        [Comment("Product identifier")]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(FlowerNameMaxLength)]
-        [Comment("Flower name")]
+        [Comment("Product name")]
         public string Name { get; set; } = string.Empty;
 
         [Required]
         [Comment("Category identifier")]
         public int CategoryId { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; } = null!;
-
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         //[Range(typeof(decimal), DataMinLength, DataMaxLength, ConvertValueInInvariantCulture = true)]
-        [Comment("Flower price")]
+        [Comment("Price of product")]
         public decimal Price { get; set; }
 
-        [Required]                            //will be modified (Azure?)
-        [Comment("Flower image")]
-        public string Image { get; set; } = string.Empty;
+        [Required]                      
+        [Comment("Product image")]          //will be modified (Azure?)
+        public string ImageUrl { get; set; } = string.Empty;
 
         [Required]
         [Comment("Indicator for in stock/out of stock")]
@@ -42,16 +43,16 @@ namespace FlowerStore.Infrastructure.Data.Models
 
         [Required]
         [MaxLength(FlowerDescriptionMaxLength)]
-        [Comment("Flower description")]
+        [Comment("Product description")]
         public string FullDescription { get; set; } = string.Empty;
 
-        [Comment("Order identifier")]
-        public int? OrderId { get; set; }
-
-        [ForeignKey(nameof(OrderId))]
-        public Order Order { get; set; } = null!;
-
+        [Required]
+        [Comment("Counter of product in stock")]
         [MaxLength(FlowerCountMaxLength)]
         public int? FlowersCount { get; set; } = null!;
+
+        public virtual ICollection<ProductCategory> ProductsCategories { get; set; } = new List<ProductCategory>();
+        public virtual ICollection<ProductOrder>? OrdersProducts { get; set; }
+        public virtual ICollection<ProductShoppingCart>? UsersShoppingCarts { get; set; }
     }
 }

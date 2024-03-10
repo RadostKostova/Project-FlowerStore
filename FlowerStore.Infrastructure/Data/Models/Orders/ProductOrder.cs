@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FlowerStore.Infrastructure.Constants.DataConstants;
 
 namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 {
@@ -23,10 +24,12 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         public int ProductId { get; set; }
 
         [Required]
-        [Comment("Quantity of products in order")]
+        [MaxLength(ProductOrderMaxQuantity)]
+        [Comment("Unit's quantity of product")]
         public int Quantity { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         [Comment("Unit's price of product")]
         public decimal UnitPrice { get; set; }
 

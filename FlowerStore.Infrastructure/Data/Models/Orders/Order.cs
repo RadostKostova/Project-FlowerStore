@@ -36,14 +36,15 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         public int PaymentMethodId { get; set; }
 
         [Required]
-        [MaxLength(ShippingDetailsMaxLength)]
+        [MaxLength(OrderDetailsMaxLength)]
         [Comment("More details of the order")]
-        public string ShippingDetails { get; set; } = string.Empty;
+        public string OrderDetails { get; set; } = string.Empty;
 
         [Required]
         [EnumDataType(typeof(OrderStatus))]
         [Comment("Status of the order")]
         public OrderStatus? OrderStatus { get; set; }
+
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; } = null!;

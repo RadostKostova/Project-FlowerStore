@@ -19,7 +19,7 @@ namespace FlowerStore.Infrastructure.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(FlowerNameMaxLength)]
+        [MaxLength(ProductNameMaxLength)]
         [Comment("Product name")]
         public string Name { get; set; } = string.Empty;
 
@@ -42,13 +42,13 @@ namespace FlowerStore.Infrastructure.Data.Models
         public bool Availability { get; set; }
 
         [Required]
-        [MaxLength(FlowerDescriptionMaxLength)]
+        [MaxLength(ProductDescriptionMaxLength)]
         [Comment("Product description")]
         public string FullDescription { get; set; } = string.Empty;
 
         [Required]
         [Comment("Counter of product in stock")]
-        [MaxLength(FlowerCountMaxLength)]
+        [MaxLength(ProductCountMaxLength)]
         public int? FlowersCount { get; set; } = null!;
 
         public virtual ICollection<ProductCategory> ProductsCategories { get; set; } = new List<ProductCategory>();

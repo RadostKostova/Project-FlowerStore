@@ -19,7 +19,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Payment
 
         [Required]
         [Comment("User identifier")]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(CardNumberExactlyLength)]

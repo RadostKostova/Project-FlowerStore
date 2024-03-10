@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FlowerStore.Infrastructure.Constants.DataConstants;
 
 namespace FlowerStore.Infrastructure.Data.Models.Cart
 {
@@ -17,6 +18,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Cart
         public int Id { get; set; }
 
         [Required]
+        [MaxLength(ProductsInCartQuantityMaxLength)]
         [Comment("Product quantity in cart")]
         public int Quantity { get; set; }
 

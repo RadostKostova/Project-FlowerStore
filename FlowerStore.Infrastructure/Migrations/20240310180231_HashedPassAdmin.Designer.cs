@@ -4,6 +4,7 @@ using FlowerStore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerStore.Infrastructure.Migrations
 {
     [DbContext(typeof(FlowerStoreDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240310180231_HashedPassAdmin")]
+    partial class HashedPassAdmin
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,6 @@ namespace FlowerStore.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("Quantity")
-                        .HasMaxLength(15)
                         .HasColumnType("int")
                         .HasComment("Product quantity in cart");
 
@@ -195,18 +196,18 @@ namespace FlowerStore.Infrastructure.Migrations
                         .HasColumnType("datetime2")
                         .HasComment("Order date");
 
-                    b.Property<string>("OrderDetails")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasComment("More details of the order");
-
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int")
                         .HasComment("Chosen payment identifier");
+
+                    b.Property<string>("ShippingDetails")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("More details of the order");
 
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
@@ -281,9 +282,8 @@ namespace FlowerStore.Infrastructure.Migrations
                         .HasComment("Order line identifier");
 
                     b.Property<int>("Quantity")
-                        .HasMaxLength(20)
                         .HasColumnType("int")
-                        .HasComment("Unit's quantity of product");
+                        .HasComment("Quantity of products in order");
 
                     b.Property<decimal>("UnitPrice")
                         .HasPrecision(18, 2)
@@ -555,15 +555,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "testId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0219fcf6-f0f4-4d05-80d7-018a15d0f712",
+                            ConcurrencyStamp = "46e21393-e054-4be8-8391-f85afcd1bf6a",
                             Email = "test@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "test@abv.bg",
                             NormalizedUserName = "test",
-                            PasswordHash = "AQAAAAEAACcQAAAAEHbFSOsCYb1/f1TgEK4mGU8xHs6iCy6lW15NlyegAL4m5z/F1dgHq74oA/LDEzMuMw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEA4ZmQk79OtqOv58j20rAnwRop3CD1MRA3+2P4Xez6fFWn/BocKunIkRaj0LjO2LQA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0afe01a2-5cf3-431a-b5f3-d2383eb9b6f2",
+                            SecurityStamp = "df7b6b1f-ec28-4633-a789-6b44c34518cd",
                             TwoFactorEnabled = false,
                             UserName = "Test"
                         },
@@ -571,15 +571,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "adminId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "26b6655e-725c-44a7-bbf3-cbb72f839936",
+                            ConcurrencyStamp = "c8bbd0db-10ab-46ba-babd-a6948550b798",
                             Email = "admin@admin.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@admin.bg",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEE/k+hg/fcDpJIJKwvbXXLuLtCrc0F19+S2vymmiVlax7a40+R12jT05PVvZb8lYXA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGK0iXBeHMeNRma/e2b35UNbZy6W+mEdqmyrPSh+TRu/0BSxm3a9eL2s3XEMCMP1bA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ca79b136-1e2a-4f0e-92aa-6395ccf95197",
+                            SecurityStamp = "48bbbea7-ed41-4f61-a01c-290082ea8a0d",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });

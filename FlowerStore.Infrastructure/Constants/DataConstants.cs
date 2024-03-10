@@ -19,35 +19,28 @@
         public const int CategoryNameMinLength = 3;
         public const int CategoryNameMaxLength = 40;
 
-        //Customer entity
-        public const int CustomersFirstNameMinLength = 2;
-        public const int CustomersFirstNameMaxLength = 20;
-
-        public const int CustomersLastNameMinLength = 4;
-        public const int CustomersLastNameMaxLength = 20;
-
-        public const int CustomersAddressMinLength = 10;
-        public const int CustomersAddressMaxLength = 50;
-
-        public const int CustomersSpecificsAddressMaxLength = 100;
-
         //Order entity
-        public const decimal OrderMaxTotalPrice = 2000m;
-        public const int ShippingDetailsMaxLength = 100;
+        public const int ProductOrderMaxQuantity = 20;
+        public const int OrderDetailsMaxLength = 100;
 
-        //Flower entity
-        public const int FlowerNameMinLength = 5;
-        public const int FlowerNameMaxLength = 30;
+        //Product entity
+        public const int ProductNameMinLength = 5;
+        public const int ProductNameMaxLength = 30;
 
-        public const decimal FlowerPriceMinLength = 1m;
-        public const decimal FlowerPriceMaxLength = 200m;
+        public const decimal ProductPriceMinLength = 1m;
+        public const decimal ProductPriceMaxLength = 200m;
 
-        public const int FlowerDescriptionMinLength = 20;
-        public const int FlowerDescriptionMaxLength = 1000;
+        public const int ProductDescriptionMinLength = 20;
+        public const int ProductDescriptionMaxLength = 1000;
 
-        public const int FlowerCountMaxLength = 10;
+        public const int ProductCountMaxLength = 10;
+
+        //OrderStatus entity
+        public const int OrderStatusMinLength = 3;
+        public const int OrderStatusMaxLength = 15;
 
         //ShoppingCart entity
-        public const int ProductsQuantityMaxLength = 1000;
+        public const int ProductsInCartQuantityMaxLength = 15;
+       
     }
 }

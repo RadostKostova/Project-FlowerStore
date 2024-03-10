@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/FlowerStore.Infrastructure/Data/ApplicationDbContext.cs
+/FlowerStore.Infrastructure/Data/ApplicationDbContext.cs
+/.gitignore

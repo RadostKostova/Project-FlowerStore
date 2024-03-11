@@ -4,6 +4,10 @@
     using Microsoft.EntityFrameworkCore;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// Repository will be used for database context.
+    /// </summary>
+    
     public class Repository : IRepository
     {
         private readonly DbContext dbContext;

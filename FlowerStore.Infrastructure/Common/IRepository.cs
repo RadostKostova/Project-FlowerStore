@@ -1,5 +1,9 @@
 ﻿namespace FlowerStore.Infrastructure.Common
 {
+    /// <summary>
+    /// Interface for Repository. Repository will be used as database cobntext.
+    /// </summary>
+   
     public interface IRepository
     {
         IQueryable<T> All<T>() where T : class;

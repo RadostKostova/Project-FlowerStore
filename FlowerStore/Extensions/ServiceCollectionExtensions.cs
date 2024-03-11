@@ -1,17 +1,22 @@
-﻿using FlowerStore.Infrastructure.Data;
+﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.Services;
+using FlowerStore.Infrastructure.Common;
+using FlowerStore.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// These extension methods are used to clean up the Program.cs class. Extensions for appServices, Db context and Identity
+    /// These extension methods are used to clean up the Program.cs class and also to register the services used. 
+    /// Extensions for appServices, Db context and Identity
     /// </summary>
 
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IProductService, ProductService>();
             return services;
         }
 
@@ -22,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDbContext<FlowerStoreDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
+            services.AddScoped<IRepository, Repository>();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             return services;
@@ -32,6 +38,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
 
             })
                 .AddEntityFrameworkStores<FlowerStoreDbContext>();

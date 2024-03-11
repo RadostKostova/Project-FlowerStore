@@ -49,7 +49,7 @@ namespace FlowerStore.Infrastructure.Data.Models
         [Required]
         [Comment("Counter of product in stock")]
         [MaxLength(ProductCountMaxLength)]
-        public int? FlowersCount { get; set; } = null!;
+        public int FlowersCount { get; set; } 
 
         public virtual ICollection<ProductCategory> ProductsCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductOrder>? OrdersProducts { get; set; }

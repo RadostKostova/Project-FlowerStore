@@ -30,7 +30,7 @@ namespace FlowerStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int productId) // <- TODO
+        public async Task<IActionResult> Details(int productId) 
         {
             var productFound = await productService.ProductByIdExistAsync(productId);
 

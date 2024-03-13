@@ -11,8 +11,7 @@ namespace FlowerStore.Core.Contracts
     {
         Task<IEnumerable<ProductAllViewModel>> ShowAllProductsAsync();
         Task<Product> ProductByIdExistAsync(int productId);
-        Task<int> GetProductCountAsync(int productId);
-        Task<bool> GetAvailabilityAsync(int productId);
+        Task<int> AddProductAsync(ProductAddViewModel model);
         Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId);
         Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string input);
     }

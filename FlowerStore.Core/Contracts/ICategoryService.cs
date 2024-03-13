@@ -9,5 +9,6 @@ namespace FlowerStore.Core.Contracts
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync(int productId);
+        Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
     }
 }

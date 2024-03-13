@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FlowerStore.Components;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
@@ -30,6 +31,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
+        [DecimalRange(ProductOrderUnitPriceMinLength, ProductOrderUnitPriceMaxLength)]
         [Comment("Unit's price of product")]
         public decimal UnitPrice { get; set; }
 

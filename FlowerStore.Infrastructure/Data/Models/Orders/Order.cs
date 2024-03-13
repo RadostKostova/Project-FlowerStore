@@ -1,4 +1,5 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Payment;
+﻿using FlowerStore.Components;
+using FlowerStore.Infrastructure.Data.Models.Payment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
+        [DecimalRange(OrderTotalPriceMinLength, OrderTotalPriceMaxLength)]
         [Comment("Payment amount")]
         public decimal TotalPrice { get; set; }
 

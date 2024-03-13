@@ -1,4 +1,5 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Carts;
+﻿using FlowerStore.Components;
+using FlowerStore.Infrastructure.Data.Models.Carts;
 using FlowerStore.Infrastructure.Data.Models.Categories;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using static FlowerStore.Infrastructure.Constants.DataConstants;
 namespace FlowerStore.Infrastructure.Data.Models
 {
     /// <summary>
-    /// Represents information about each flower in the online store. 
+    /// Represents information about each flower in the online store. Availability by default is false.
     /// </summary>
 
     public class Product
@@ -29,7 +30,7 @@ namespace FlowerStore.Infrastructure.Data.Models
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
-        //[Range(typeof(decimal), DataMinLength, DataMaxLength, ConvertValueInInvariantCulture = true)]
+        [DecimalRange(ProductPriceMinLength, ProductPriceMaxLength)]
         [Comment("Price of product")]
         public decimal Price { get; set; }
 
@@ -39,7 +40,7 @@ namespace FlowerStore.Infrastructure.Data.Models
 
         [Required]
         [Comment("Indicator for in stock/out of stock")]
-        public bool Availability { get; set; }
+        public bool Availability { get; set; } = false;
 
         [Required]
         [MaxLength(ProductDescriptionMaxLength)]

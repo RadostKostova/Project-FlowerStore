@@ -20,10 +20,33 @@ namespace FlowerStore.Core.Services
             repository = _repository;
         }
 
+        //Get categories of a product by id
         public async Task<IEnumerable<CategoryViewModel>> GetCategoriesAsync(int productId)
         {
             var product = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p => p.Id == productId);
+            
+            var categoriesIds = await repository
+                .AllAsReadOnly<ProductCategory>()
+                .Where(pc => pc.ProductId == productId)
+                .Select(pc => pc.CategoryId)
+                .ToListAsync();
 
+            var categories = await repository
+                .AllAsReadOnly<Category>()
+                .Where(c => categoriesIds.Contains(c.Id))
+                .Select(c => new CategoryViewModel
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
+
+            return categories;
+        }
+
+        //Get all categories from database
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
+        {
             return await repository.AllAsReadOnly<Category>()
                 .Select(c => new CategoryViewModel()
                 {

@@ -9,7 +9,7 @@ namespace FlowerStore.Core.Services
     /// <summary>
     /// Product services implemented for more code reusability.
     /// </summary>
-    
+
     public class ProductService : IProductService
     {
         private readonly IRepository repository;
@@ -20,6 +20,7 @@ namespace FlowerStore.Core.Services
         }
 
 
+        //Show all products (catalog)
         public async Task<IEnumerable<ProductAllViewModel>> ShowAllProductsAsync()
         {
             return await repository
@@ -34,6 +35,7 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
         }
 
+        //Check if Product exist by id and return it as Product
         public async Task<Product> ProductByIdExistAsync(int productId)
         {
             var productFound = await repository
@@ -43,26 +45,12 @@ namespace FlowerStore.Core.Services
             return productFound;
         }
 
-        public async Task<int> GetProductCountAsync(int productId)
-        {
-            var product = await repository
-                .AllAsReadOnly<Product>()
-                .FirstOrDefaultAsync(p => p.Id == productId);
-
-            return product.FlowersCount;
-        }
-
-        public async Task<bool> GetAvailabilityAsync(int productId)
-        {
-            var product = await repository.AllAsReadOnly<Product>()
-                                    .FirstOrDefaultAsync(p => p.Id == productId);
-
-            return product.Availability;
-        }
-
+        //Get details of product (return viewModel)
         public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
         {
-            var productFound = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p => p.Id == productId);
+            var productFound = await repository
+                .AllAsReadOnly<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             var product = new ProductDetailsViewModel()
             {
@@ -78,6 +66,28 @@ namespace FlowerStore.Core.Services
             return product;
         }
 
+        public async Task<int> AddProductAsync(ProductAddViewModel model)
+        {
+            //should have condition if == "Admin" (later)
+
+            var product = new Product()
+            {
+                Name = model.Name,
+                Price = model.Price,
+                ImageUrl = model.ImageUrl,
+                FullDescription = model.FullDescription,
+                FlowersCount = model.FlowersCount,
+                Availability = model.Availability, 
+                CategoryId = model.CategoryId
+            };
+
+            await repository.AddAsync(product);
+            await repository.SaveChangesAsync();
+
+            return product.Id;
+        }
+
+        //Search for product
         public Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string input)
         {
             throw new NotImplementedException();

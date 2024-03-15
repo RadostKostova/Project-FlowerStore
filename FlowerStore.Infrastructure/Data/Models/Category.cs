@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 
-namespace FlowerStore.Infrastructure.Data.Models.Categories
+namespace FlowerStore.Infrastructure.Data.Models
 {
     /// <summary>
     /// Categories help organize flowers into logical groups for easier navigation and search.
@@ -19,6 +19,6 @@ namespace FlowerStore.Infrastructure.Data.Models.Categories
         [Comment("Name of category")]
         public string Name { get; set; } = string.Empty;
 
-        public virtual ICollection<ProductCategory>? ProductsCategories { get; set; }
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

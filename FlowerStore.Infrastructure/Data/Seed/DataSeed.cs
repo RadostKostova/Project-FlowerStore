@@ -1,6 +1,5 @@
 ﻿using BookingSystem.Infrastructure.Data.Models.Roles;
 using FlowerStore.Infrastructure.Data.Models;
-using FlowerStore.Infrastructure.Data.Models.Categories;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Payment;
 using Microsoft.AspNetCore.Identity;
@@ -195,6 +194,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 Name = "Rose",
                 CategoryId = 6,
                 Price = 4.00m,
+                DateAdded = DateTime.UtcNow,
                 ImageUrl = "https://plantparadise.in/cdn/shop/products/ROSE1_4a1f52f8-ebe7-4dab-93ed-f7af98cb11e7.jpg?v=1691200467",
                 Availability = true,
                 FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.",

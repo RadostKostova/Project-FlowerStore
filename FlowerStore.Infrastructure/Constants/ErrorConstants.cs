@@ -13,10 +13,10 @@
 
         public const string ExactNumberErrorMessage = "The {0} field should be exactly {1} numbers.";
 
+        public const string ImageUrlErrorMessage = "The {0} should be valid URL. Only images with extension .jpg and .png are allowed.";
+
         //Card entity error messages
         public const string CardExpirationDateErrorMessage = "The {0} field should be in MM/yy format.";
         public const string CardCVVErrorMessage = "The {0} code should be exactly {1} numbers.";
-
-
     }
 }

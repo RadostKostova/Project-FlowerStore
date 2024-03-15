@@ -1,4 +1,4 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Categories;
+﻿using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

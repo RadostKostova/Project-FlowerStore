@@ -4,6 +4,7 @@ using FlowerStore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerStore.Infrastructure.Migrations
 {
     [DbContext(typeof(FlowerStoreDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314124916_DateAddAdded")]
+    partial class DateAddAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,7 +95,7 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.ToTable("ProductShoppingCarts");
                 });
 
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Category", b =>
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Categories.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -163,6 +165,23 @@ namespace FlowerStore.Infrastructure.Migrations
                             Id = 10,
                             Name = "Other"
                         });
+                });
+
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Categories.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasComment("Product identifier");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasComment("Category identifier");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", b =>
@@ -404,8 +423,6 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
 
                     b.HasData(
@@ -414,7 +431,7 @@ namespace FlowerStore.Infrastructure.Migrations
                             Id = 1,
                             Availability = true,
                             CategoryId = 6,
-                            DateAdded = new DateTime(2024, 3, 15, 15, 47, 58, 161, DateTimeKind.Utc).AddTicks(4564),
+                            DateAdded = new DateTime(2024, 3, 14, 12, 49, 16, 669, DateTimeKind.Utc).AddTicks(1149),
                             FlowersCount = 5,
                             FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.",
                             ImageUrl = "https://plantparadise.in/cdn/shop/products/ROSE1_4a1f52f8-ebe7-4dab-93ed-f7af98cb11e7.jpg?v=1691200467",
@@ -544,15 +561,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "testId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "347bdbb6-2e5f-4e9f-bb84-b9fe8acc2bfc",
+                            ConcurrencyStamp = "f9919174-19bc-4590-a880-67346b5c2a29",
                             Email = "test@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "test@abv.bg",
                             NormalizedUserName = "test",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEOPZYmkJcggkaxgwFRMt0ebHYLf52LldUKBaaAJx+dCrNsoe+CADW/dBy27xrj4lA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFptF09bWuWHYlfyG4k3joNo34Hk/g/Zy1DJWJj0HxKXJX+eWFWx8GW85zoqGeJ2tg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "35713c42-f147-4b7a-a346-03c03ae1544d",
+                            SecurityStamp = "10784ac0-86ad-49d2-aae5-3282a854b0ea",
                             TwoFactorEnabled = false,
                             UserName = "Test"
                         },
@@ -560,15 +577,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "adminId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ca43a7b-4890-487c-b0d0-7359e8d556c6",
+                            ConcurrencyStamp = "5923bb51-54ef-4e75-8dbf-a0aecb690c06",
                             Email = "admin@admin.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@admin.bg",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOfftu0PVWuCJUfdDnKAJiHcfgpMHI+qvXu/3rprngpWLtQTCDzPxMpZpdJFSIs/kA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEG3RDJ5ru/89Ra51fMjd1kiQLwB1JjN3Zv6yqFfa6HruFr1Y1ldjCpaGivJmxm0+tg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "40870f56-66de-4681-b911-da0a12dd0750",
+                            SecurityStamp = "3fa52fac-d979-4a09-abf5-42a947d64cd2",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -700,6 +717,25 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.Navigation("ShoppingCart");
                 });
 
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Categories.ProductCategory", b =>
+                {
+                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Categories.Category", "Category")
+                        .WithMany("ProductsCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Product", "Product")
+                        .WithMany("ProductsCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", b =>
                 {
                     b.HasOne("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderStatus", "OrderStatus")
@@ -755,17 +791,6 @@ namespace FlowerStore.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Product", b =>
-                {
-                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -824,9 +849,9 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.Navigation("ProductsShoppingCart");
                 });
 
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Category", b =>
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Categories.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("ProductsCategories");
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", b =>
@@ -837,6 +862,8 @@ namespace FlowerStore.Infrastructure.Migrations
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Product", b =>
                 {
                     b.Navigation("OrdersProducts");
+
+                    b.Navigation("ProductsCategories");
 
                     b.Navigation("UsersShoppingCarts");
                 });

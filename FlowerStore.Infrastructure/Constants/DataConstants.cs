@@ -39,9 +39,9 @@
         public const double ProductPriceMinLength = 1;
         public const double ProductPriceMaxLength = 500;
         public const int ProductDescriptionMinLength = 20;
-        public const int ProductDescriptionMaxLength = 1000;
+        public const int ProductDescriptionMaxLength = 3000;
         public const int ProductCountMinLength = 0;
-        public const int ProductCountMaxLength = 10;
+        public const int ProductCountMaxLength = 20;
 
         //OrderStatus entity
         public const int OrderStatusMinLength = 3;

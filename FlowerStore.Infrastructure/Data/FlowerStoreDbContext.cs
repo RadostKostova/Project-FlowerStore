@@ -2,7 +2,6 @@
 using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 using FlowerStore.Infrastructure.Data.Models.Carts;
-using FlowerStore.Infrastructure.Data.Models.Categories;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Payment;
 using FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration;
@@ -28,7 +27,6 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ProductShoppingCart> ProductShoppingCarts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<ProductCategory> ProductCategories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ProductOrder> ProductOrders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
@@ -50,9 +48,6 @@ namespace FlowerStore.Infrastructure.Data
                 .HasPrecision(18, 2);
 
             //Mapping entities (tables)
-            builder.Entity<ProductCategory>()
-                .HasKey(pc => new { pc.ProductId, pc.CategoryId });
-
             builder.Entity<ProductShoppingCart>()
                 .HasKey(psc => new { psc.ProductId, psc.ShoppingCartId });
 

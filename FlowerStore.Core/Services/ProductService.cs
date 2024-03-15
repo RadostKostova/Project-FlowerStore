@@ -1,4 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.ViewModels.Category;
 using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
@@ -30,7 +31,8 @@ namespace FlowerStore.Core.Services
                     Id = p.Id,
                     Name = p.Name,
                     Price = p.Price,
-                    ImageUrl = p.ImageUrl
+                    ImageUrl = p.ImageUrl,
+                    Category = p.Category.Name
                 })
                 .ToListAsync();
         }
@@ -45,27 +47,7 @@ namespace FlowerStore.Core.Services
             return productFound;
         }
 
-        //Get details of product (return viewModel)
-        public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
-        {
-            var productFound = await repository
-                .AllAsReadOnly<Product>()
-                .FirstOrDefaultAsync(p => p.Id == productId);
-
-            var product = new ProductDetailsViewModel()
-            {
-                Id = productFound.Id,
-                Name = productFound.Name,
-                Price = productFound.Price,
-                ImageUrl = productFound.ImageUrl,
-                Availability = productFound.Availability,
-                FullDescription = productFound.FullDescription,
-                FlowersCount = productFound.FlowersCount
-            };
-
-            return product;
-        }
-
+        //Add product to store
         public async Task<int> AddProductAsync(ProductAddViewModel model)
         {
             //should have condition if == "Admin" (later)
@@ -76,21 +58,120 @@ namespace FlowerStore.Core.Services
                 Price = model.Price,
                 ImageUrl = model.ImageUrl,
                 FullDescription = model.FullDescription,
+                DateAdded = DateTime.UtcNow,
                 FlowersCount = model.FlowersCount,
-                Availability = model.Availability, 
+                Availability = model.Availability,
                 CategoryId = model.CategoryId
             };
 
             await repository.AddAsync(product);
             await repository.SaveChangesAsync();
-
             return product.Id;
         }
 
-        //Search for product
-        public Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string input)
+        //Get details of product (return viewModel)
+        public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
         {
-            throw new NotImplementedException();
+            var productFound = await repository
+                .AllAsReadOnly<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            var categoryFound = await repository
+                .AllAsReadOnly<Category>()
+                .FirstOrDefaultAsync(c => c.Id == productFound.CategoryId);
+
+            var product = new ProductDetailsViewModel()
+            {
+                Id = productFound.Id,
+                Name = productFound.Name,
+                Price = productFound.Price,
+                ImageUrl = productFound.ImageUrl,
+                Availability = productFound.Availability,
+                FullDescription = productFound.FullDescription,
+                DateAdded = productFound.DateAdded,
+                FlowersCount = productFound.FlowersCount,
+                Category = categoryFound.Name
+            };
+
+            return product;
+        }
+
+        //Get edit form of product
+        public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
+        {
+            var product = await repository.All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+          
+
+            var model = new ProductEditViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                FullDescription = product.FullDescription,
+                DateAdded = product.DateAdded,
+                FlowersCount = product.FlowersCount,
+                Availability = product.Availability,
+                CategoryId = product.CategoryId
+            };
+
+            model.Categories = await GetAllCategoriesAsync();
+            return model;
+        }
+
+        //Post edit form of product
+        public async Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model)
+        {
+            var product = await repository.All<Product>()
+                .Where(p => p.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            product.Name = model.Name;
+            product.Price = model.Price;
+            product.ImageUrl = model.ImageUrl;
+            product.FullDescription = model.FullDescription;
+            product.DateAdded = model.DateAdded;
+            product.FlowersCount = model.FlowersCount;
+            product.Availability = model.Availability;
+            product.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+            return model;
+        }
+
+        //Search for product
+        public async Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString)
+        {
+            var searchToLower = searchString.ToLower();
+
+            var products = await repository.AllAsReadOnly<Product>()
+                   .Where(p => p.Name.ToLower().Contains(searchToLower) ||
+                               p.Category.Name.ToLower().Contains(searchToLower))
+                   .Select(p => new ProductAllViewModel()
+                   {
+                       Id = p.Id,
+                       Name = p.Name,
+                       Price = p.Price,
+                       ImageUrl = p.ImageUrl,
+                       Category = p.Category.Name
+                   })
+                   .ToListAsync();
+
+            return products;
+        }
+
+        //Get all categories from database
+        public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
+        {
+            return await repository.AllAsReadOnly<Category>()
+                .Select(c => new CategoryViewModel()
+                {
+                    Id = c.Id,
+                    Name = c.Name
+                })
+                .ToListAsync();
         }
     }
 }

@@ -1,22 +1,19 @@
 ﻿using FlowerStore.Components;
 using FlowerStore.Core.ViewModels.Category;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 
 namespace FlowerStore.Core.ViewModels.Product
 {
-    /// <summary>
-    /// This ViewModel represents Product entity, that will be added to database via form. Only the Admin should be able to access this.
-    /// Availability is by default false, it will be calculated by FlowersCount.
-    /// </summary>
-    public class ProductAddViewModel
+    public class ProductEditViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(ProductNameMaxLength,
-            MinimumLength = ProductNameMinLength,
-            ErrorMessage = StringLengthErrorMessage)]
+    MinimumLength = ProductNameMinLength,
+    ErrorMessage = StringLengthErrorMessage)]
         public string Name { get; set; } = string.Empty;
 
 
@@ -29,7 +26,7 @@ namespace FlowerStore.Core.ViewModels.Product
 
         [Required]
         [Display(Name = "Image Url")]
-        [RegularExpression(@"(https:\/\/)([^\s([""<,>/]*)(\/)[^\s["",><]*(.png|.jpg)(\?[^\s["",><]*)?", 
+        [RegularExpression(@"(https:\/\/)([^\s([""<,>/]*)(\/)[^\s["",><]*(.png|.jpg)(\?[^\s["",><]*)?",
             ErrorMessage = ImageUrlErrorMessage)]
         public string ImageUrl { get; set; } = string.Empty;
 
@@ -45,7 +42,7 @@ namespace FlowerStore.Core.ViewModels.Product
         [Required]
         [DisplayFormat(DataFormatString = DateFormatNeeded, ApplyFormatInEditMode = true)]
         [Display(Name = "Date of the add")]
-        public DateTime DateAdded { get; set; }
+        public DateTime DateAdded { get; set; } = DateTime.UtcNow;
 
 
         [Required]

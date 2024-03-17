@@ -173,5 +173,34 @@ namespace FlowerStore.Core.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<ProductDeleteViewModel> DeleteProductAsync(int productId)
+        {
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .Where(p => p.Id == productId)
+                .FirstOrDefaultAsync();
+
+            var model = new ProductDeleteViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name
+            };
+
+            return model;
+        }
+
+        public async Task<int> ConfirmDeleteAsync(int productId)
+        {
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .Where (p => p.Id == productId)
+                .FirstOrDefaultAsync();
+
+            //should remove from each entity
+            await repository.RemoveAsync(product);
+            await repository.SaveChangesAsync();
+            return product.Id;
+        }
     }
 }

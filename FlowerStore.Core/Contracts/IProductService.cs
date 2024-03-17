@@ -16,6 +16,8 @@ namespace FlowerStore.Core.Contracts
         Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model);
         Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId);
         Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString);
+        Task<ProductDeleteViewModel> DeleteProductAsync(int productId);
+        Task<int> ConfirmDeleteAsync(int productId);
         Task<Product> ProductByIdExistAsync(int productId);
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
     }

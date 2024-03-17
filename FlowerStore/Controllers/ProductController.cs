@@ -2,6 +2,7 @@
 using FlowerStore.Core.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 using static FlowerStore.Infrastructure.Constants.ErrorConstants;
@@ -32,7 +33,7 @@ namespace FlowerStore.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Details(int id) 
+        public async Task<IActionResult> Details(int id)
         {
             var productFound = await productService.ProductByIdExistAsync(id);
 
@@ -46,7 +47,7 @@ namespace FlowerStore.Controllers
             return View(model);
         }
 
-        
+
         [HttpGet]
         //[ShouldBeAdmin]
         public async Task<IActionResult> Add()
@@ -56,7 +57,7 @@ namespace FlowerStore.Controllers
             {
                 Categories = await productService.GetAllCategoriesAsync(),
             };
-            
+
             return View(model);
         }
 
@@ -91,7 +92,7 @@ namespace FlowerStore.Controllers
                 model.Categories = categories;
                 return View(model);
             }
-            
+
             int modelId = await productService.AddProductAsync(model);
             return RedirectToAction(nameof(Catalog));
         }
@@ -140,7 +141,7 @@ namespace FlowerStore.Controllers
         {
             if (string.IsNullOrWhiteSpace(searchString))
             {
-                return RedirectToAction("Index", "Home"); 
+                return RedirectToAction("Index", "Home");
             }
 
             var products = await productService.SearchProductAsync(searchString);
@@ -151,6 +152,37 @@ namespace FlowerStore.Controllers
             }
 
             return View(products);
+        }
+
+        [HttpGet]
+        //[ShouldBeAdmin]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var productId = await productService.ProductByIdExistAsync(id);
+
+            if (productId == null)
+            {
+                return BadRequest();
+            }
+
+            var productFound = await productService.DeleteProductAsync(id);
+
+            return View(productFound);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(ProductDeleteViewModel model)
+        {
+            var product = await productService.ProductByIdExistAsync(model.Id);
+
+            if (product == null)
+            {
+                return BadRequest();
+            }
+
+            await productService.ConfirmDeleteAsync(product.Id);
+            return RedirectToAction("Catalog", "Product");
         }
 
         //Private methods (helpers)

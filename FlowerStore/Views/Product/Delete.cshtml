@@ -1,0 +1,27 @@
+﻿@using FlowerStore.Core.ViewModels.Product
+@model ProductDeleteViewModel
+
+@{
+    ViewBag.Title = "Delete Product";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title text-center"<strong>@Model.Name with Id @Model.Id</strong></h3>
+                <p class="text-danger mt-3 text-center">"Are you sure you want to delete this product?"</p>
+            </div>
+            <div class="card-footer">
+                <form asp-action="DeleteConfirmed" asp-controller="Product" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    <a asp-action="Catalog" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,11 +21,11 @@
         public const int CategoryNameMinLength = 3;
         public const int CategoryNameMaxLength = 40;
 
-        //ProductOrder entity
-        public const int ProductOrderMinQuantity = 1;
-        public const int ProductOrderMaxQuantity = 20;
-        public const double ProductOrderUnitPriceMinLength = 1;
-        public const double ProductOrderUnitPriceMaxLength = 500;
+        //OrderProduct entity
+        public const int OrderProductMinQuantity = 1;
+        public const int OrderProductMaxQuantity = 20;
+        public const double OrderProductUnitPriceMinLength = 1;
+        public const double OrderProductUnitPriceMaxLength = 500;
 
         //Order entity
         public const int OrderDetailsMinLength = 0;

@@ -25,22 +25,25 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<CardDetails> CardDetails { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<ProductShoppingCart> ProductShoppingCarts { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<ProductOrder> ProductOrders { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {
-            //Specify precision for price properties and delete behaviour.
+        {            
             builder.Entity<Order>()
                 .Property(o => o.TotalPrice)
-                .HasPrecision(18, 2);       ////HasColumnType("decimal(18, 2)")
+                .HasPrecision(18, 2);       //HasColumnType("decimal(18, 2)")
 
-            builder.Entity<ProductOrder>()
+            builder.Entity<OrderProduct>()
                 .Property(op => op.UnitPrice)
+                .HasPrecision(18, 2);
+
+            builder.Entity<ShoppingCartProduct>()
+                .Property(shp => shp.Price)
                 .HasPrecision(18, 2);
 
             builder.Entity<Product>()
@@ -48,10 +51,10 @@ namespace FlowerStore.Infrastructure.Data
                 .HasPrecision(18, 2);
 
             //Mapping entities (tables)
-            builder.Entity<ProductShoppingCart>()
+            builder.Entity<ShoppingCartProduct>()
                 .HasKey(psc => new { psc.ProductId, psc.ShoppingCartId });
 
-            builder.Entity<ProductOrder>()
+            builder.Entity<OrderProduct>()
                 .HasKey(op => new { op.ProductId, op.OrderId });
 
             builder.ApplyConfiguration(new UserConfiguration());

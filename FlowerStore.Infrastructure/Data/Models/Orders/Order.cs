@@ -45,15 +45,15 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         [Required]
         [EnumDataType(typeof(OrderStatus))]
         [Comment("Status of the order")]
-        public OrderStatus? OrderStatus { get; set; }
+        public OrderStatus OrderStatus { get; set; } = null!;
 
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; } = null!;
 
         [ForeignKey(nameof(PaymentMethodId))]
-        public PaymentMethod? PaymentMethod { get; set; }
+        public PaymentMethod PaymentMethod { get; set; } = null!;
 
-        public virtual ICollection<ProductOrder> OrdersProducts { get; set; } = new List<ProductOrder>();
+        public virtual ICollection<OrderProduct> OrdersProducts { get; set; } = new List<OrderProduct>();
     }
 }

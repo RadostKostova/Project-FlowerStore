@@ -1,0 +1,24 @@
+﻿.quantity-btn {
+    display: flex;
+    align-items: center;
+}
+
+#decrement, #increment {
+    background-color: #007bff; /* Blue color */
+    color: #fff; /* White text color */
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+#productQuantity {
+    width: 50px; 
+    height: 34px; 
+    text-align: center; 
+    border: 1px solid #ccc; /* Gray border */
+}
+
+#decrement:hover, #increment:hover {
+    background-color: #0056b3; /* Darker blue color on hover */
+}
+   

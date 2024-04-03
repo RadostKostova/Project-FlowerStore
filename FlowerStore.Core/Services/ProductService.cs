@@ -96,6 +96,13 @@ namespace FlowerStore.Core.Services
             return product;
         }
 
+        public async Task<decimal?> GetProductPriceAsync(int productId)
+        {
+            var product = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p=>p.Id == productId); 
+
+            return product?.Price;
+        }
+
         //Get edit form of product
         public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
         {

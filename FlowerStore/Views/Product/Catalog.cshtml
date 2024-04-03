@@ -22,7 +22,10 @@
 
                         @if (User?.Identity?.Name != null)
                         {
-                            <a asp-controller="Product" asp-action="AddToCart" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</a>
+                            <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.Id">
+                                <input type="hidden" name="productId" value="@product.Id" />
+                                <button type="submit" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</button>
+                            </form>
                         }
                     </div>
                     <div class="card-footer">

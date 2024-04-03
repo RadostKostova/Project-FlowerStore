@@ -1,4 +1,5 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Carts;
+﻿using FlowerStore.Components;
+using FlowerStore.Infrastructure.Data.Models.Carts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -20,7 +21,14 @@ namespace FlowerStore.Infrastructure.Data.Models.Cart
         [Required]
         [MaxLength(ProductsInCartQuantityMaxLength)]
         [Comment("Count of products in cart")]
-        public int ProductsCounter { get; set; } 
+        public int ProductsCounter { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [DecimalRange(ProductCountMinLength * ProductPriceMinLength, 
+            ProductCountMaxLength * ProductPriceMaxLength)]
+        [Comment("Cart total price")]
+        public decimal TotalPrice { get; set; }
 
         [Required]
         [Comment("User's Identifier")]

@@ -4,6 +4,7 @@ using FlowerStore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerStore.Infrastructure.Migrations
 {
     [DbContext(typeof(FlowerStoreDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319152238_TotalPriceAddedToShoppingCart")]
+    partial class TotalPriceAddedToShoppingCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,11 +64,11 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.Property<int>("ProductsCounter")
                         .HasMaxLength(15)
                         .HasColumnType("int")
-                        .HasComment("Count of products in cart");
+                        .HasComment("Count of products");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)")
-                        .HasComment("Cart total price");
+                        .HasComment("Total price of all products");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -431,7 +433,7 @@ namespace FlowerStore.Infrastructure.Migrations
                             Id = 1,
                             Availability = true,
                             CategoryId = 6,
-                            DateAdded = new DateTime(2024, 4, 2, 14, 1, 19, 646, DateTimeKind.Utc).AddTicks(2732),
+                            DateAdded = new DateTime(2024, 3, 19, 15, 22, 38, 548, DateTimeKind.Utc).AddTicks(5487),
                             FlowersCount = 5,
                             FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.",
                             ImageUrl = "https://plantparadise.in/cdn/shop/products/ROSE1_4a1f52f8-ebe7-4dab-93ed-f7af98cb11e7.jpg?v=1691200467",
@@ -561,33 +563,33 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "testId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d6b99aed-6136-4d14-83a4-faa2b887ae98",
-                            Email = "test@test.com",
+                            ConcurrencyStamp = "2fe7cd2c-ea07-472a-8b16-7453e52d3193",
+                            Email = "test@abv.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "TEST@TEST.COM",
-                            NormalizedUserName = "TEST@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI7JxuLq/5dVUXMO50b9VtgfXNHvJeSS80qKIvMWQkyJ7XYm0ZSByNREZ1dDSmGP9A==",
+                            NormalizedEmail = "test@abv.bg",
+                            NormalizedUserName = "test",
+                            PasswordHash = "AQAAAAEAACcQAAAAELq7rziClde6oFl8JwAXDyVWh/53fYyhg5Vkl5nqPc32Z6gH0+RQDvaTcD0nJVGOIA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cad4551a-38d8-4b8f-b058-7bf77e3e08fb",
+                            SecurityStamp = "4ffc3a6b-442e-4bc8-bc3f-e2b29dfd41a3",
                             TwoFactorEnabled = false,
-                            UserName = "test@test.com"
+                            UserName = "Test"
                         },
                         new
                         {
                             Id = "adminId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "251bd742-fb00-4deb-bf7d-3696e0d82829",
-                            Email = "admin@mail.com",
+                            ConcurrencyStamp = "6f7584e4-9530-42cb-bc37-167178efe57e",
+                            Email = "admin@admin.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@MAIL.COM",
-                            NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMrqvwrHQRPLlvk0xTA6d1kQOGGRXHII2ft7zd3Rb/gQIKyca7EDPMAGgtFiioUnXA==",
+                            NormalizedEmail = "admin@admin.bg",
+                            NormalizedUserName = "admin",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMNaAMhKXsr31YkgdmDi32HaEb4HeIE7+MJtgLvi5CXPUICN5mxYccwfgNQmtnxxFQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0c620519-e713-45a5-b7fc-45bdfd17536b",
+                            SecurityStamp = "8e5e4e27-ba98-457e-a415-c50bfb052e7a",
                             TwoFactorEnabled = false,
-                            UserName = "admin@mail.com"
+                            UserName = "Admin"
                         });
                 });
 
@@ -701,7 +703,7 @@ namespace FlowerStore.Infrastructure.Migrations
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Carts.ShoppingCartProduct", b =>
                 {
                     b.HasOne("FlowerStore.Infrastructure.Data.Models.Product", "Product")
-                        .WithMany("UsersShoppingCarts")
+                        .WithMany("ShoppingCartsProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -855,7 +857,7 @@ namespace FlowerStore.Infrastructure.Migrations
                 {
                     b.Navigation("OrdersProducts");
 
-                    b.Navigation("UsersShoppingCarts");
+                    b.Navigation("ShoppingCartsProducts");
                 });
 #pragma warning restore 612, 618
         }

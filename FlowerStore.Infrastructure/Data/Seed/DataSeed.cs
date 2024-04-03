@@ -58,10 +58,10 @@ namespace FlowerStore.Infrastructure.Data.Seed
             GuestUser = new IdentityUser()
             {
                 Id = "testId",
-                UserName = "Test",
-                NormalizedUserName = "test",
-                Email = "test@abv.bg",
-                NormalizedEmail = "test@abv.bg"
+                UserName = "test@test.com",
+                NormalizedUserName = "TEST@TEST.COM",
+                Email = "test@test.com",
+                NormalizedEmail = "TEST@TEST.COM"
             };
 
             GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "test");
@@ -69,10 +69,10 @@ namespace FlowerStore.Infrastructure.Data.Seed
             AdministratorUser = new IdentityUser()
             {
                 Id = "adminId",
-                UserName = "Admin",
-                NormalizedUserName = "admin",
-                Email = "admin@admin.bg",
-                NormalizedEmail = "admin@admin.bg"
+                UserName = "admin@mail.com",
+                NormalizedUserName = "ADMIN@MAIL.COM",
+                Email = "admin@mail.com",
+                NormalizedEmail = "ADMIN@MAIL.COM"
             };
 
             AdministratorUser.PasswordHash = hasher.HashPassword(AdministratorUser, "admin123");

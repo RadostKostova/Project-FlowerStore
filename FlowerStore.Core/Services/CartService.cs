@@ -51,7 +51,7 @@ namespace FlowerStore.Core.Services
         //    return newCart;
         //}
 
-       
+
         //Get or create a cart, depending on whether the user already has one
         public async Task<ShoppingCart> GetOrCreateShoppingCartAsync(string userId)
         {
@@ -95,7 +95,7 @@ namespace FlowerStore.Core.Services
             var model = new CartViewModel()
             {
                 Id = cart.Id,
-                ProductsCounter = cart.ShoppingCartProducts.Count(),
+                ProductsCounter = cart.ShoppingCartProducts.Sum(p => p.Quantity),
                 TotalPrice = cart.TotalPrice,
                 ShoppingCartProducts = cart.ShoppingCartProducts.Select(scp => new CartProductViewModel()
                 {
@@ -107,8 +107,6 @@ namespace FlowerStore.Core.Services
                     ImageUrl = scp.Product.ImageUrl,
                     Category = categoies.FirstOrDefault(c => c.Id == scp.Product.CategoryId).Name
                 }).ToList()
-
-
             };
 
             return model;
@@ -198,10 +196,9 @@ namespace FlowerStore.Core.Services
 
         public async Task<bool> SaveAsync()
         {
-            await repository.SaveChangesAsync(); 
+            await repository.SaveChangesAsync();
             return true;
         }
-
     }
 }
 

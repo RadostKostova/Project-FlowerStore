@@ -10,8 +10,7 @@ using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 namespace FlowerStore.Controllers
 {
     /// <summary>
-    /// Manages operations related to displaying products (flowers), such as listing all flowers, displaying details of a specific flower 
-    /// and searching for flowers based on criteria like category, name, or else.
+    /// Manages operations related to displaying products (flowers), such as listing all flowers, displaying details of a specific flower and searching for flowers based on criteria like category, name, or else.
     /// </summary>
 
     public class ProductController : BaseController

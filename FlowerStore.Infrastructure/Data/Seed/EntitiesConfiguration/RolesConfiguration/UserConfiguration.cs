@@ -11,7 +11,7 @@ namespace FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration.RolesConfig
         {
             var data = new DataSeed();
 
-            builder.HasData(new IdentityUser[] { data.GuestUser, data.AdministratorUser });
+            builder.HasData(new IdentityUser[] { data.AdministratorUser, data.GuestUser });
         }
     }
 }

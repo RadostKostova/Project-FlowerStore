@@ -28,34 +28,41 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderHistory> OrderHistories { get; set; }
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
-        {            
+        {
             builder.Entity<Order>()
                 .Property(o => o.TotalPrice)
                 .HasPrecision(18, 2);       //HasColumnType("decimal(18, 2)")
 
-            builder.Entity<OrderProduct>()
-                .Property(op => op.UnitPrice)
+            builder.Entity<Product>()
+                .Property(p => p.Price)
                 .HasPrecision(18, 2);
 
             builder.Entity<ShoppingCartProduct>()
                 .Property(shp => shp.Price)
                 .HasPrecision(18, 2);
 
-            builder.Entity<Product>()
-                .Property(p => p.Price)
-                .HasPrecision(18, 2);
-
             //Mapping entities (tables)
             builder.Entity<ShoppingCartProduct>()
                 .HasKey(psc => new { psc.ProductId, psc.ShoppingCartId });
 
-            builder.Entity<OrderProduct>()
-                .HasKey(op => new { op.ProductId, op.OrderId });
+            builder.Entity<ShoppingCart>()
+                .HasOne(sc => sc.Order)
+                .WithOne(o => o.ShoppingCart)
+                .HasForeignKey<Order>(o => o.ShoppingCartId);
+
+            //builder.Entity<Order>()
+            //   .HasKey(o => new { o.UserId, o.PaymentMethodId, o.ShoppingCartId });
+
+            //builder.Entity<Order>()
+            //   .HasOne(o => o.ShoppingCart)
+            //   .WithOne(s => s.Order)
+            //   .HasForeignKey<Order>(o => o.ShoppingCartId);
+
 
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new AdministratorConfiguration());

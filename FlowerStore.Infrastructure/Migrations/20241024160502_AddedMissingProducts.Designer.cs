@@ -4,6 +4,7 @@ using FlowerStore.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerStore.Infrastructure.Migrations
 {
     [DbContext(typeof(FlowerStoreDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241024160502_AddedMissingProducts")]
+    partial class AddedMissingProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,6 +61,10 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int")
+                        .HasComment("Order identifier");
+
                     b.Property<int>("ProductsCounter")
                         .HasMaxLength(15)
                         .HasColumnType("int")
@@ -100,6 +106,7 @@ namespace FlowerStore.Infrastructure.Migrations
                         .HasComment("Price of product");
 
                     b.Property<int>("Quantity")
+                        .HasMaxLength(20)
                         .HasColumnType("int")
                         .HasComment("Quantity of product");
 
@@ -201,12 +208,25 @@ namespace FlowerStore.Infrastructure.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasComment("More details of the order");
 
+                    b.Property<int?>("OrderHistoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int")
                         .HasComment("Chosen payment identifier");
+
+                    b.Property<string>("ShippingAddress")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)")
+                        .HasComment("Shipping address");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int")
+                        .HasComment("Shopping Cart identifier");
 
                     b.Property<decimal>("TotalPrice")
                         .HasPrecision(18, 2)
@@ -220,44 +240,44 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderHistoryId");
+
                     b.HasIndex("OrderStatusId");
 
                     b.HasIndex("PaymentMethodId");
+
+                    b.HasIndex("ShoppingCartId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderProduct", b =>
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderHistory", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
-                        .HasComment("Product identifier");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
-                        .HasComment("Order identifier");
-
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasComment("Order line identifier");
+                        .HasComment("Order history identifier");
 
-                    b.Property<int>("Quantity")
-                        .HasMaxLength(20)
-                        .HasColumnType("int")
-                        .HasComment("Unit's quantity of product");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)")
-                        .HasComment("Unit's price of product");
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
 
-                    b.HasKey("ProductId", "OrderId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasComment("User identifier");
 
-                    b.HasIndex("OrderId");
+                    b.HasKey("Id");
 
-                    b.ToTable("OrderProducts");
+                    b.HasIndex("OrderStatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("OrderHistories");
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderStatus", b =>
@@ -431,12 +451,36 @@ namespace FlowerStore.Infrastructure.Migrations
                             Id = 1,
                             Availability = true,
                             CategoryId = 6,
-                            DateAdded = new DateTime(2024, 4, 2, 14, 1, 19, 646, DateTimeKind.Utc).AddTicks(2732),
+                            DateAdded = new DateTime(2024, 10, 24, 16, 5, 2, 146, DateTimeKind.Utc).AddTicks(7603),
                             FlowersCount = 5,
-                            FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.",
+                            FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.Origin Story:\r\nIn the tapestry of botanical history, the Red Rose emerges as a symbol of passion, romance, and enduring love. Its origins are steeped in ancient lore, tracing back to the verdant gardens of Persia, where its scarlet petals first unfurled beneath the gaze of starlit skies. Legends speak of goddesses and mortal admirers alike, captivated by the velvety allure and intoxicating fragrance of this timeless bloom.\r\n\r\nWhy Red?\r\nThe Red Rose, with its velvety crimson petals, symbolizes the fervent flames of love and desire. Its rich hue evokes the blush of a lover's cheek and the ardor of a heart aflame. From clandestine rendezvous to grand declarations, the Red Rose has enraptured souls throughout the ages, transcending boundaries of time and culture with its timeless allure.",
                             ImageUrl = "https://plantparadise.in/cdn/shop/products/ROSE1_4a1f52f8-ebe7-4dab-93ed-f7af98cb11e7.jpg?v=1691200467",
                             Name = "Rose",
                             Price = 4.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Availability = true,
+                            CategoryId = 7,
+                            DateAdded = new DateTime(2024, 10, 24, 16, 5, 2, 146, DateTimeKind.Utc).AddTicks(7604),
+                            FlowersCount = 7,
+                            FullDescription = "Origin Story:\r\nThe elusive Blue Orchid, with its captivating hue, whispers tales of ancient mystique and ethereal beauty. Legend has it that this rare bloom emerged from the depths of forgotten realms, its petals kissed by moonlight and tears of the gods. Its enchanting color, a symphony of cobalt and azure, reflects the secrets of the universe, beckoning admirers into a world of wonder and enchantment.\r\n\r\nWhy Blue?\r\nUnlike its vibrant counterparts, the Blue Orchid owes its unique coloration to a delicate balance of genetic mutation and environmental alchemy. Through a serendipitous interplay of genetic expression and environmental factors, this majestic flower dons its celestial cloak, inviting awe and admiration from all who behold its splendor.",
+                            ImageUrl = "https://fyf.tac-cdn.net/images/products/large/P-149.jpg?auto=webp&quality=60&width=690",
+                            Name = "Blue Orchid",
+                            Price = 17.50m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Availability = true,
+                            CategoryId = 7,
+                            DateAdded = new DateTime(2024, 10, 24, 16, 5, 2, 146, DateTimeKind.Utc).AddTicks(7605),
+                            FlowersCount = 4,
+                            FullDescription = "Origin Story:\r\nDeep within the lush rainforests of West Africa, the majestic Ficus Lyrata, known colloquially as the Fiddle Leaf Fig, reigns as a verdant monarch of the jungle. Its origins intertwine with the ancient rhythms of the forest, where sunlight dances through emerald canopies and gentle rains nurture the soil. Born from the earth's embrace and nurtured by the whispers of the wind, the Ficus Lyrata embodies the resilience and grace of its tropical homeland.\r\n\r\nWhy Fiddle Leaf Fig?\r\nThe Fiddle Leaf Fig derives its moniker from the lyrical curvature of its expansive leaves, which resemble the graceful silhouette of a fiddle or violin. Each leaf unfurls with a symphony of green hues, invoking a sense of harmony and tranquility in any space it inhabits. From its ancestral roots to its contemporary allure, the Ficus Lyrata remains a cherished emblem of natural beauty and botanical elegance.",
+                            ImageUrl = "https://cdn.webshopapp.com/shops/30495/files/448237057/ficus-lyrata-xl-fiddle-leaf-fig-pot-21cm-height-80.jpg",
+                            Name = "Ficus Lyrata",
+                            Price = 22.30m
                         });
                 });
 
@@ -561,15 +605,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "testId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d6b99aed-6136-4d14-83a4-faa2b887ae98",
+                            ConcurrencyStamp = "6b8e9b5b-d1ef-4b67-8ae5-2ae70066855b",
                             Email = "test@test.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "TEST@TEST.COM",
                             NormalizedUserName = "TEST@TEST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEI7JxuLq/5dVUXMO50b9VtgfXNHvJeSS80qKIvMWQkyJ7XYm0ZSByNREZ1dDSmGP9A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEN+f6LBWB2xg79S2uSYOLq3k05SNyDkSsVzMWV/vDCgz98g0tdthYPA0bW0moFgCyQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "cad4551a-38d8-4b8f-b058-7bf77e3e08fb",
+                            SecurityStamp = "46b443f9-72b9-4966-8b2c-a15affd68e3b",
                             TwoFactorEnabled = false,
                             UserName = "test@test.com"
                         },
@@ -577,15 +621,15 @@ namespace FlowerStore.Infrastructure.Migrations
                         {
                             Id = "adminId",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "251bd742-fb00-4deb-bf7d-3696e0d82829",
+                            ConcurrencyStamp = "4ce117b4-ccd1-4309-8a66-9f96df2dc1fe",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@MAIL.COM",
                             NormalizedUserName = "ADMIN@MAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMrqvwrHQRPLlvk0xTA6d1kQOGGRXHII2ft7zd3Rb/gQIKyca7EDPMAGgtFiioUnXA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEP2sQU2//dX62a6usQ0h0Fv9n/z9xVOqHWhcrFQM4sH9e9h38nnJwyr8WF9JuaFhw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0c620519-e713-45a5-b7fc-45bdfd17536b",
+                            SecurityStamp = "a5d2ddf1-de23-4003-b0e9-f6f116d0ed9a",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         });
@@ -719,6 +763,10 @@ namespace FlowerStore.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", b =>
                 {
+                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderHistory", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderHistoryId");
+
                     b.HasOne("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderStatus", "OrderStatus")
                         .WithMany()
                         .HasForeignKey("OrderStatusId")
@@ -728,6 +776,12 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.HasOne("FlowerStore.Infrastructure.Data.Models.Payment.PaymentMethod", "PaymentMethod")
                         .WithMany()
                         .HasForeignKey("PaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Cart.ShoppingCart", "ShoppingCart")
+                        .WithOne("Order")
+                        .HasForeignKey("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", "ShoppingCartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -741,26 +795,28 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.Navigation("PaymentMethod");
 
+                    b.Navigation("ShoppingCart");
+
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderProduct", b =>
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderHistory", b =>
                 {
-                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", "Order")
-                        .WithMany("OrdersProducts")
-                        .HasForeignKey("OrderId")
+                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderStatus", "OrderStatus")
+                        .WithMany()
+                        .HasForeignKey("OrderStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FlowerStore.Infrastructure.Data.Models.Product", "Product")
-                        .WithMany("OrdersProducts")
-                        .HasForeignKey("ProductId")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Order");
+                    b.Navigation("OrderStatus");
 
-                    b.Navigation("Product");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Payment.CardDetails", b =>
@@ -838,6 +894,8 @@ namespace FlowerStore.Infrastructure.Migrations
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Cart.ShoppingCart", b =>
                 {
+                    b.Navigation("Order");
+
                     b.Navigation("ShoppingCartProducts");
                 });
 
@@ -846,15 +904,13 @@ namespace FlowerStore.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.Order", b =>
+            modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderHistory", b =>
                 {
-                    b.Navigation("OrdersProducts");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Product", b =>
                 {
-                    b.Navigation("OrdersProducts");
-
                     b.Navigation("UsersShoppingCarts");
                 });
 #pragma warning restore 612, 618

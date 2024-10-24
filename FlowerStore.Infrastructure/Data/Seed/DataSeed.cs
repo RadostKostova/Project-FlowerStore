@@ -13,9 +13,9 @@ namespace FlowerStore.Infrastructure.Data.Seed
     internal class DataSeed
     {
         //Users
-        public IdentityUser AdministratorUser { get; set; } = null!;
-        public IdentityUser GuestUser { get; set; } = null!;
         public Administrator Administrator { get; set; } = null!;
+        public IdentityUser AdministratorUser { get; set; } = null!;      
+        public IdentityUser GuestUser { get; set; } = null!;
 
         //Categories
         public Category Tropical { get; set; } = null!;
@@ -40,6 +40,8 @@ namespace FlowerStore.Infrastructure.Data.Seed
 
         //Products
         public Product RedRoses { get; set; } = null!;
+        public Product BlueOrchid { get; set; } = null!;
+        public Product FicusLyrata { get; set; } = null!;
 
         public DataSeed()
         {
@@ -55,17 +57,6 @@ namespace FlowerStore.Infrastructure.Data.Seed
         {
             var hasher = new PasswordHasher<IdentityUser>();
 
-            GuestUser = new IdentityUser()
-            {
-                Id = "testId",
-                UserName = "test@test.com",
-                NormalizedUserName = "TEST@TEST.COM",
-                Email = "test@test.com",
-                NormalizedEmail = "TEST@TEST.COM"
-            };
-
-            GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "test");
-
             AdministratorUser = new IdentityUser()
             {
                 Id = "adminId",
@@ -76,6 +67,17 @@ namespace FlowerStore.Infrastructure.Data.Seed
             };
 
             AdministratorUser.PasswordHash = hasher.HashPassword(AdministratorUser, "admin123");
+
+            GuestUser = new IdentityUser()
+            {
+                Id = "testId",
+                UserName = "test@test.com",
+                NormalizedUserName = "TEST@TEST.COM",
+                Email = "test@test.com",
+                NormalizedEmail = "TEST@TEST.COM"
+            };
+
+            GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "test");
         }
 
         private void SeedAdministrator()
@@ -197,8 +199,35 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 DateAdded = DateTime.UtcNow,
                 ImageUrl = "https://plantparadise.in/cdn/shop/products/ROSE1_4a1f52f8-ebe7-4dab-93ed-f7af98cb11e7.jpg?v=1691200467",
                 Availability = true,
-                FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality.",
+                FullDescription = "The rose is a classic symbol of love and beauty, known for its exquisite fragrance and delicate petals. This beautiful flower comes in various colors, with the red rose being the most iconic symbol of romance. Our roses are carefully cultivated to ensure freshness and quality." +
+                "Origin Story:\r\nIn the tapestry of botanical history, the Red Rose emerges as a symbol of passion, romance, and enduring love. Its origins are steeped in ancient lore, tracing back to the verdant gardens of Persia, where its scarlet petals first unfurled beneath the gaze of starlit skies. Legends speak of goddesses and mortal admirers alike, captivated by the velvety allure and intoxicating fragrance of this timeless bloom.\r\n\r\nWhy Red?\r\nThe Red Rose, with its velvety crimson petals, symbolizes the fervent flames of love and desire. Its rich hue evokes the blush of a lover's cheek and the ardor of a heart aflame. From clandestine rendezvous to grand declarations, the Red Rose has enraptured souls throughout the ages, transcending boundaries of time and culture with its timeless allure.",
                 FlowersCount = 5
+            };
+
+            BlueOrchid = new Product
+            {
+                Id = 2,
+                Name = "Blue Orchid",
+                CategoryId = 7,
+                Price = 17.50m,
+                DateAdded = DateTime.UtcNow,
+                ImageUrl = "https://fyf.tac-cdn.net/images/products/large/P-149.jpg?auto=webp&quality=60&width=690",
+                Availability = true,
+                FullDescription = "Origin Story:\r\nThe elusive Blue Orchid, with its captivating hue, whispers tales of ancient mystique and ethereal beauty. Legend has it that this rare bloom emerged from the depths of forgotten realms, its petals kissed by moonlight and tears of the gods. Its enchanting color, a symphony of cobalt and azure, reflects the secrets of the universe, beckoning admirers into a world of wonder and enchantment.\r\n\r\nWhy Blue?\r\nUnlike its vibrant counterparts, the Blue Orchid owes its unique coloration to a delicate balance of genetic mutation and environmental alchemy. Through a serendipitous interplay of genetic expression and environmental factors, this majestic flower dons its celestial cloak, inviting awe and admiration from all who behold its splendor.",
+                FlowersCount = 7
+            };
+
+            FicusLyrata = new Product
+            {
+                Id = 3,
+                Name = "Ficus Lyrata",
+                CategoryId = 7,
+                Price = 22.30m,
+                DateAdded = DateTime.UtcNow,
+                ImageUrl = "https://cdn.webshopapp.com/shops/30495/files/448237057/ficus-lyrata-xl-fiddle-leaf-fig-pot-21cm-height-80.jpg",
+                Availability = true,
+                FullDescription = "Origin Story:\r\nDeep within the lush rainforests of West Africa, the majestic Ficus Lyrata, known colloquially as the Fiddle Leaf Fig, reigns as a verdant monarch of the jungle. Its origins intertwine with the ancient rhythms of the forest, where sunlight dances through emerald canopies and gentle rains nurture the soil. Born from the earth's embrace and nurtured by the whispers of the wind, the Ficus Lyrata embodies the resilience and grace of its tropical homeland.\r\n\r\nWhy Fiddle Leaf Fig?\r\nThe Fiddle Leaf Fig derives its moniker from the lyrical curvature of its expansive leaves, which resemble the graceful silhouette of a fiddle or violin. Each leaf unfurls with a symphony of green hues, invoking a sense of harmony and tranquility in any space it inhabits. From its ancestral roots to its contemporary allure, the Ficus Lyrata remains a cherished emblem of natural beauty and botanical elegance.",
+                FlowersCount = 4
             };
         }
     }

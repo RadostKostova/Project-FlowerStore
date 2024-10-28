@@ -25,15 +25,18 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<CardDetails> CardDetails { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
-        public DbSet<ShoppingCartProduct> ShoppingCartProducts { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartsProducts { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
+        public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            //builder.Entity<OrderProduct>().ToTable("OrderProducts"); // Specify table
+
             builder.Entity<Order>()
                 .Property(o => o.TotalPrice)
                 .HasPrecision(18, 2);       //HasColumnType("decimal(18, 2)")
@@ -42,27 +45,44 @@ namespace FlowerStore.Infrastructure.Data
                 .Property(p => p.Price)
                 .HasPrecision(18, 2);
 
+            builder.Entity<Order>()
+                .HasIndex(o => o.ShoppingCartId)
+                .IsUnique(false);
+
+            builder.Entity<OrderHistory>()
+                .HasOne(oh => oh.Order)
+                .WithMany()
+                .HasForeignKey(oh => oh.OrderId)
+                .OnDelete(DeleteBehavior.NoAction);  
+
             builder.Entity<ShoppingCartProduct>()
                 .Property(shp => shp.Price)
                 .HasPrecision(18, 2);
 
-            //Mapping entities (tables)
+            //Composite keys
             builder.Entity<ShoppingCartProduct>()
-                .HasKey(psc => new { psc.ProductId, psc.ShoppingCartId });
+                .HasKey(psc => new { psc.ShoppingCartId, psc.ProductId });
 
+            builder.Entity<OrderProduct>()
+                .HasKey(op => new { op.OrderId , op.ProductId});
+
+            //One-to-many relationships
             builder.Entity<ShoppingCart>()
-                .HasOne(sc => sc.Order)
-                .WithOne(o => o.ShoppingCart)
-                .HasForeignKey<Order>(o => o.ShoppingCartId);
+                .HasMany(sc => sc.ShoppingCartProducts)
+                .WithOne(scp => scp.ShoppingCart)
+                .HasForeignKey(scp => scp.ShoppingCartId);
 
-            //builder.Entity<Order>()
-            //   .HasKey(o => new { o.UserId, o.PaymentMethodId, o.ShoppingCartId });
+            builder.Entity<Order>()
+                .HasMany(o => o.OrderProducts)
+                .WithOne(op => op.Order)
+                .HasForeignKey(op => op.OrderId);
 
-            //builder.Entity<Order>()
-            //   .HasOne(o => o.ShoppingCart)
-            //   .WithOne(s => s.Order)
-            //   .HasForeignKey<Order>(o => o.ShoppingCartId);
-
+            //One-to-one relashionships
+            builder.Entity<Order>()
+                .HasOne(o => o.ShoppingCart)
+                .WithMany()
+                .HasForeignKey(o => o.ShoppingCartId)
+                .OnDelete(DeleteBehavior.NoAction);    //Prevent delete
 
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new AdministratorConfiguration());

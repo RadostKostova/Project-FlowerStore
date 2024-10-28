@@ -60,7 +60,7 @@ namespace FlowerStore.Infrastructure.Data.Models
         [Comment("Product category")]
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; } = null!;
-        public virtual ICollection<OrderProduct>? OrdersProducts { get; set; }
+        //public virtual ICollection<OrderProduct>? OrdersProducts { get; set; }
         public virtual ICollection<ShoppingCartProduct>? UsersShoppingCarts { get; set; }
     }
 }

@@ -23,15 +23,15 @@
 
         //OrderProduct entity
         public const int OrderProductMinQuantity = 1;
-        public const int OrderProductMaxQuantity = 20;
+        public const int OrderProductMaxQuantity = 15;
         public const double OrderProductUnitPriceMinLength = 1;
         public const double OrderProductUnitPriceMaxLength = 500;
 
         //Order entity
-        public const int OrderDetailsMinLength = 0;
         public const int OrderDetailsMaxLength = 150;
         public const double OrderTotalPriceMinLength = 1;
         public const double OrderTotalPriceMaxLength = 2000;
+
 
         //Product entity
         public const int ProductNameMinLength = 5;
@@ -51,5 +51,8 @@
         public const int ProductsInCartQuantityMinLength = 0;
         public const int ProductsInCartQuantityMaxLength = 15;
 
+        //User entity
+        public const int AddressMinLength = 10;
+        public const int AddressMaxLength = 100;
     }
 }

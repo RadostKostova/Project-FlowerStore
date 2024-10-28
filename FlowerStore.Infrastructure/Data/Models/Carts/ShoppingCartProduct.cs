@@ -1,5 +1,6 @@
 ﻿using FlowerStore.Components;
 using FlowerStore.Infrastructure.Data.Models.Cart;
+using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,20 +9,17 @@ using static FlowerStore.Infrastructure.Constants.DataConstants;
 namespace FlowerStore.Infrastructure.Data.Models.Carts
 {
     /// <summary>
-    /// ShoppingCartProduct represents a mapping table between Product and Shopping Cart entities.
+    /// ShoppingCartProduct represents temporary stored products before User places an Order. 
     /// </summary>
 
-    public class ShoppingCartProduct  
+    public class ShoppingCartProduct
     {
-        [Required]
-        [Comment("Cart product identifier")]
-        public int Id { get; set; }
-
         [Required]
         [Comment("Product identifier")]
         public int ProductId { get; set; }
 
         [Required]
+        [MaxLength(ProductCountMaxLength)]
         [Comment("Quantity of product")]
         public int Quantity { get; set; }
 

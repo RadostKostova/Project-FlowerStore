@@ -28,7 +28,6 @@
         public const double OrderProductUnitPriceMaxLength = 500;
 
         //Order entity
-        public const int OrderDetailsMaxLength = 150;
         public const double OrderTotalPriceMinLength = 1;
         public const double OrderTotalPriceMaxLength = 2000;
 

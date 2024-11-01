@@ -1,0 +1,48 @@
+﻿@using FlowerStore.Core.ViewModels.Order
+@model OrderDetailsViewModel
+
+@{
+    ViewBag.Title = "summary of order";
+}
+
+ <h2>@ViewBag.Title</h2>
+
+<div>
+    <h3>Order Details</h3>
+    <p><strong>Order ID:</strong> @Model.Id</p>
+    <p><strong>User ID:</strong> @Model.UserId</p>
+    <p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+    <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+    <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
+    <p><strong>Order Status ID:</strong> @Model.OrderStatusId</p>
+    <p><strong>Payment Method ID:</strong> @Model.PaymentMethodId</p>
+    <p><strong>Order details:</strong> @Model.OrderDetails</p>
+    <p><strong>Shopping cart ID:</strong> @Model.ShoppingCartId</p>
+</div>
+
+
+<div>
+    <h3>Order Products</h3>
+    <ul>
+        @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+        {
+            foreach (var product in Model.OrderProducts)
+            {
+                <li>
+                    <strong>Product ID:</strong> @product.ProductId,
+                    <strong>Quantity:</strong> @product.Quantity,
+                    <strong>Price:</strong> @product.Price.ToString("C")
+                </li>
+            }
+        }
+        else
+        {
+            <li>No products in this order.</li>
+        }
+    </ul>
+</div>
+
+<form asp-controller="Order" asp-action="ConfirmOrder" method="post">
+    @* <button type="submit" class="btn btn-success">Confirm Order</button>
+    <a asp-controller="Order" asp-action="Create" class="btn btn-secondary">Edit Order</a> *@
+</form>

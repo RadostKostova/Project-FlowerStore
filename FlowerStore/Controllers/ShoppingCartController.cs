@@ -1,7 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
-using FlowerStore.Core.ViewModels.Cart;
 using FlowerStore.Extensions;
-using FlowerStore.Infrastructure.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +31,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var cart = await cartService.GetOrCreateShoppingCartAsync(userId);
+            //var cart = await cartService.GetOrCreateShoppingCartAsync(userId);
             var model = await cartService.ViewShoppingCartAsync(userId);
 
             return View(model);
@@ -83,40 +81,6 @@ namespace FlowerStore.Controllers
 
             return BadRequest("Failed to remove the product from the cart.");
         }
-
-        //[HttpPost]
-        ////[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> UpdateCart(int productId, int newQuantity)   
-        //{
-        //    var userId = User.GetUserId();
-
-        //    if (userId == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var cart = await cartService.GetOrCreateShoppingCartAsync(userId);
-        //    int cartId = cart.Id;
-
-        //    if (cart == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    var productFound = await cartService.GetProductInCartByIdAsync(cartId, productId);
-
-        //    if (productFound == null)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    productFound.Quantity = newQuantity;
-        //    cart.TotalPrice = cart.ShoppingCartProducts.Sum(p => p.Quantity * p.Price);
-
-        //    await cartService.SaveAsync();
-
-        //    return View("MyShoppingCart", "ShoppingCart");
-        //}
 
     }
 }

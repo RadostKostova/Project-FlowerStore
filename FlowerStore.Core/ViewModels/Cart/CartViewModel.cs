@@ -3,7 +3,7 @@
 namespace FlowerStore.Core.ViewModels.Cart
 {
     /// <summary>
-    /// This view model represents the Shopping Cart.
+    /// This View Model represents the Shopping Cart.
     /// </summary>
     
     public class CartViewModel

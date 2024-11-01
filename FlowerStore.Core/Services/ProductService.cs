@@ -5,6 +5,7 @@ using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace FlowerStore.Core.Services
 {
     /// <summary>
@@ -72,9 +73,7 @@ namespace FlowerStore.Core.Services
         //Get details of product (return viewModel)
         public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
         {
-            var productFound = await repository
-                .AllAsReadOnly<Product>()
-                .FirstOrDefaultAsync(p => p.Id == productId);
+            var productFound = await ProductByIdExistAsync(productId);
 
             var categoryFound = await repository
                 .AllAsReadOnly<Category>()
@@ -106,10 +105,7 @@ namespace FlowerStore.Core.Services
         //Get edit form of product
         public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
         {
-            var product = await repository.All<Product>()
-                .FirstOrDefaultAsync(p => p.Id == productId);
-
-          
+            var product = await ProductByIdExistAsync(productId);
 
             var model = new ProductEditViewModel()
             {
@@ -131,9 +127,7 @@ namespace FlowerStore.Core.Services
         //Post edit form of product
         public async Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model)
         {
-            var product = await repository.All<Product>()
-                .Where(p => p.Id == model.Id)
-                .FirstOrDefaultAsync();
+            var product = await ProductByIdExistAsync(model.Id);
 
             product.Name = model.Name;
             product.Price = model.Price;

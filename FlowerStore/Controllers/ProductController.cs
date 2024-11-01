@@ -46,7 +46,6 @@ namespace FlowerStore.Controllers
             return View(model);
         }
 
-
         [HttpGet]
         //[ShouldBeAdmin]
         public async Task<IActionResult> Add()

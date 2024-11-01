@@ -99,7 +99,6 @@ namespace FlowerStore.Core.Services
                 TotalPrice = cart.TotalPrice,
                 ShoppingCartProducts = cart.ShoppingCartProducts.Select(scp => new CartProductViewModel()
                 {
-                    Id = scp.Id,
                     ProductId = scp.ProductId,
                     Name = scp.Product.Name,
                     Quantity = scp.Quantity,
@@ -182,7 +181,6 @@ namespace FlowerStore.Core.Services
                 .Where(scp => scp.ShoppingCartId == cartId && scp.ProductId == productId)
                 .Select(scp => new CartProductViewModel()
                 {
-                    Id = scp.Id,
                     ProductId = scp.ProductId,
                     Name = scp.Product.Name,
                     Quantity = scp.Quantity,
@@ -192,6 +190,20 @@ namespace FlowerStore.Core.Services
                 .FirstOrDefaultAsync();
 
             return product;
+        }
+
+        //Clear shopping cart products
+        public async Task ClearCartAsync(string userId)
+        {
+            var cart = await GetOrCreateShoppingCartAsync(userId);
+
+            if (cart != null)
+            {
+                cart.ShoppingCartProducts.Clear();
+                cart.TotalPrice = 0;
+                cart.ProductsCounter = 0;
+                await repository.SaveChangesAsync();
+            }
         }
 
         public async Task<bool> SaveAsync()

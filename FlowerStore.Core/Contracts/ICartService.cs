@@ -1,5 +1,6 @@
 ﻿using FlowerStore.Core.ViewModels.Cart;
 using FlowerStore.Core.ViewModels.CartProduct;
+using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 
 namespace FlowerStore.Core.Contracts
@@ -15,6 +16,7 @@ namespace FlowerStore.Core.Contracts
         Task<bool> AddProductToCartAsync(string userId, int productId, int quantity);
         Task<bool> RemoveProductFromCartAsync(string userId, int productId);
         Task<CartProductViewModel> GetProductInCartByIdAsync(int cartId, int productId);
+        Task ClearCartAsync(string userId);
         Task<bool> SaveAsync();
     }
 }

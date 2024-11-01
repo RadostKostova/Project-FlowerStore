@@ -39,7 +39,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         public int PaymentMethodId { get; set; }
 
         [Comment("More details of the order")]
-        public string OrderDetails { get; set; } = string.Empty;
+        public string? OrderDetails { get; set; }
 
         [Required]
         [MaxLength(AddressMaxLength)]

@@ -35,8 +35,6 @@ namespace FlowerStore.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity<OrderProduct>().ToTable("OrderProducts"); // Specify table
-
             builder.Entity<Order>()
                 .Property(o => o.TotalPrice)
                 .HasPrecision(18, 2);       //HasColumnType("decimal(18, 2)")

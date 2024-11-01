@@ -33,7 +33,7 @@ namespace FlowerStore.Core.ViewModels.Order
         public int PaymentMethodId { get; set; }
 
         [Display(Name = "Order details")]
-        public string OrderDetails { get; set; } = string.Empty;
+        public string? OrderDetails { get; set; }
 
         [Required]
         [StringLength(AddressMaxLength, 

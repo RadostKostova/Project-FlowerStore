@@ -21,7 +21,7 @@ namespace FlowerStore.Core.ViewModels.Order
         public int PaymentMethodId { get; set; }
 
         [Display(Name = "Order details")]
-        public string OrderDetails { get; set; } = "";
+        public string? OrderDetails { get; set; }
 
         [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; } = string.Empty;

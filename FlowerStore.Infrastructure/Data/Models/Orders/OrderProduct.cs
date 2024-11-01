@@ -17,6 +17,11 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         public int ProductId { get; set; }
 
         [Required]
+        [MaxLength(ProductNameMaxLength)]
+        [Comment("Product name")]
+        public string ProductName { get; set; } = string.Empty;
+
+        [Required]
         [MaxLength(ProductCountMaxLength)]
         [Comment("Quantity of product")]
         public int Quantity { get; set; }

@@ -5,18 +5,22 @@ using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 
 namespace FlowerStore.Core.ViewModels.Order
 {
-    public class OrderFormViewModel
+    /// <summary>
+    /// ViewModel for form edit
+    /// </summary>
+   
+    public class OrderEditViewModel
     {
         public int Id { get; set; }
 
         [Required]
-        [StringLength(AddressMaxLength, 
-            MinimumLength = AddressMinLength, 
+        [StringLength(AddressMaxLength,
+            MinimumLength = AddressMinLength,
             ErrorMessage = StringLengthErrorMessage)]
         public string ShippingAddress { get; set; } = string.Empty;
 
         [Display(Name = "Order details")]
-        public string? OrderDetails { get; set; } 
+        public string? OrderDetails { get; set; }
 
         [Required]
         [Display(Name = "Payment Method")]

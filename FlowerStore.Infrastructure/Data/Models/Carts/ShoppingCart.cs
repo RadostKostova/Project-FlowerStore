@@ -1,6 +1,7 @@
 ﻿using FlowerStore.Components;
 using FlowerStore.Infrastructure.Data.Models.Carts;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -36,7 +37,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Cart
         public string UserId { get; set; } = null!;
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public virtual ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new List<ShoppingCartProduct>();
     }

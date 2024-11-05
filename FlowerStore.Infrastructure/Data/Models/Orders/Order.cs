@@ -1,6 +1,7 @@
 ﻿using FlowerStore.Components;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 using FlowerStore.Infrastructure.Data.Models.Payment;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -55,7 +56,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         public int ShoppingCartId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(PaymentMethodId))]
         public PaymentMethod PaymentMethod { get; set; } = null!;

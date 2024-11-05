@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FlowerStore.Infrastructure.Data.Models.Roles;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -43,6 +44,6 @@ namespace FlowerStore.Infrastructure.Data.Models.Payment
         public string CardHolderName { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
-        public IdentityUser? User { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

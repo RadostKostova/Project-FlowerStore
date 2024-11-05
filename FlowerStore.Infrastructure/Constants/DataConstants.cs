@@ -30,7 +30,8 @@
         //Order entity
         public const double OrderTotalPriceMinLength = 1;
         public const double OrderTotalPriceMaxLength = 2000;
-
+        public const int AddressMinLength = 10;
+        public const int AddressMaxLength = 100;
 
         //Product entity
         public const int ProductNameMinLength = 5;
@@ -51,7 +52,10 @@
         public const int ProductsInCartQuantityMaxLength = 15;
 
         //User entity
-        public const int AddressMinLength = 10;
-        public const int AddressMaxLength = 100;
+        public const int UserFirstNameMinLength = 1;
+        public const int UserFirstNameMaxLength = 50;
+        public const int UserLastNameMinLength = 1;
+        public const int UserLastNameMaxLength = 50;
+        public const int UserPhoneExactlyLength = 10;
     }
 }

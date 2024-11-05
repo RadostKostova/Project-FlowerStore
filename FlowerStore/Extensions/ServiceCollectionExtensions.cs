@@ -2,6 +2,7 @@
 using FlowerStore.Core.Services;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,8 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<FlowerStoreDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            services.AddDbContext<FlowerStoreDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IRepository, Repository>();
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireNonAlphanumeric = false;
@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.Password.RequireUppercase = false;
 
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<FlowerStoreDbContext>();
 
             return services;

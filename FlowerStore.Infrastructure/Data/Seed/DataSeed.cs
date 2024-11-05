@@ -1,8 +1,9 @@
-﻿using BookingSystem.Infrastructure.Data.Models.Roles;
-using FlowerStore.Infrastructure.Data.Models;
+﻿using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Payment;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
+using static FlowerStore.Infrastructure.Constants.CustomClaims;
 
 namespace FlowerStore.Infrastructure.Data.Seed
 {
@@ -13,9 +14,12 @@ namespace FlowerStore.Infrastructure.Data.Seed
     internal class DataSeed
     {
         //Users
-        public Administrator Administrator { get; set; } = null!;
-        public IdentityUser AdministratorUser { get; set; } = null!;      
-        public IdentityUser GuestUser { get; set; } = null!;
+        public ApplicationUser AdminUser { get; set; } = null!;      
+        public ApplicationUser GuestUser { get; set; } = null!;
+
+        //Claims
+        public IdentityUserClaim<string> AdminUserClaim { get; set; } = null!;
+        public IdentityUserClaim<string> GuestUserClaim { get; set; } = null!;
 
         //Categories
         public Category Tropical { get; set; } = null!;
@@ -46,7 +50,6 @@ namespace FlowerStore.Infrastructure.Data.Seed
         public DataSeed()
         {
             SeedUsers();
-            SeedAdministrator();
             SeedCategories();
             SeedPaymentMethods();
             SeedOrderStatus();
@@ -55,40 +58,53 @@ namespace FlowerStore.Infrastructure.Data.Seed
 
         private void SeedUsers()
         {
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            AdministratorUser = new IdentityUser()
+            AdminUser = new ApplicationUser()
             {
                 Id = "adminId",
                 UserName = "admin@mail.com",
                 NormalizedUserName = "ADMIN@MAIL.COM",
                 Email = "admin@mail.com",
-                NormalizedEmail = "ADMIN@MAIL.COM"
+                NormalizedEmail = "ADMIN@MAIL.COM",
+                FirstName = "Admin",
+                LastName = "Admin",
+                Phone = "1234567890"
             };
 
-            AdministratorUser.PasswordHash = hasher.HashPassword(AdministratorUser, "admin123");
+            AdminUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 1,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Admin Admin",
+                UserId = "adminId"
+            };
 
-            GuestUser = new IdentityUser()
+            AdminUser.PasswordHash = hasher.HashPassword(AdminUser, "admin123");
+
+            GuestUser = new ApplicationUser()
             {
                 Id = "testId",
                 UserName = "test@test.com",
                 NormalizedUserName = "TEST@TEST.COM",
                 Email = "test@test.com",
-                NormalizedEmail = "TEST@TEST.COM"
+                NormalizedEmail = "TEST@TEST.COM",
+                FirstName = "Test",
+                LastName = "Test",
+                Phone = "1234567800"
+            };
+
+            GuestUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 2,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Test Test",
+                UserId = "testId"
             };
 
             GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "test");
         }
-
-        private void SeedAdministrator()
-        {
-            Administrator = new Administrator()
-            {
-                Id = 1,
-                UserId = AdministratorUser.Id
-            };
-        }
-
+        
         private void SeedCategories()
         {
             Tropical = new Category

@@ -1,27 +1,27 @@
-﻿using BookingSystem.Infrastructure.Data.Models.Roles;
-using FlowerStore.Infrastructure.Data.Models;
+﻿using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 using FlowerStore.Infrastructure.Data.Models.Carts;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Payment;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 using FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration;
 using FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration.RolesConfiguration;
+using FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration.UserConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerStore.Infrastructure.Data
 {
-    public class FlowerStoreDbContext : IdentityDbContext
+    public class FlowerStoreDbContext : IdentityDbContext<ApplicationUser>
     {
         /// <summary>
-        /// Declaring DBSets and configuration with initial data seeding.
+        /// Declaring DBSets and configuration for data seeding.
         /// </summary>
         public FlowerStoreDbContext(DbContextOptions<FlowerStoreDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Administrator> Administrators { get; set; }
         public DbSet<CardDetails> CardDetails { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
@@ -37,7 +37,7 @@ namespace FlowerStore.Infrastructure.Data
         {
             builder.Entity<Order>()
                 .Property(o => o.TotalPrice)
-                .HasPrecision(18, 2);       //HasColumnType("decimal(18, 2)")
+                .HasPrecision(18, 2);       
 
             builder.Entity<Product>()
                 .Property(p => p.Price)
@@ -80,10 +80,10 @@ namespace FlowerStore.Infrastructure.Data
                 .HasOne(o => o.ShoppingCart)
                 .WithMany()
                 .HasForeignKey(o => o.ShoppingCartId)
-                .OnDelete(DeleteBehavior.NoAction);    //Prevent delete
+                .OnDelete(DeleteBehavior.NoAction);    
 
             builder.ApplyConfiguration(new UserConfiguration());
-            builder.ApplyConfiguration(new AdministratorConfiguration());
+            builder.ApplyConfiguration(new UserClaimsConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
             builder.ApplyConfiguration(new PaymentMethodConfiguration());
             builder.ApplyConfiguration(new OrderStatusConfiguration());

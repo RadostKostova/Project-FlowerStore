@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using static FlowerStore.Core.Constants.AdminConstants.AdministratorConstants;
+using static FlowerStore.Core.Constants.AdminConstants;
 
 namespace FlowerStore.Extensions
 {

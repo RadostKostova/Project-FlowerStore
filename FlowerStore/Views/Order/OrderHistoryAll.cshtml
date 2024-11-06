@@ -1,0 +1,39 @@
+﻿@using FlowerStore.Core.ViewModels.OrderHistory
+@model IEnumerable<OrderHistoryViewModel>
+
+@{
+    ViewBag.Title = "Order History";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Payment Method</th>
+            <th>Shipping Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.UserId</td>
+                <td>@order.OrderDate</td>
+                <td>@order.TotalPrice</td>
+                <td>@order.OrderStatus</td>
+                <td>@order.PaymentMethod</td>
+                <td>@order.ShippingAddress</td>
+                <td>
+                    <a asp-action="OrderDetails" asp-route-id="@order.Id">Details</a>
+                    <a asp-action="Edit" asp-route-id="@order.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

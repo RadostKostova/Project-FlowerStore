@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using FlowerStore.Components
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,15 +21,13 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">Happy Flower Co.</a>
-                        </li>
+
+                        @await Component.InvokeAsync(nameof(MainMenuComponent))
+
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Catalog">Our Catalog</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Add">Add New Product</a>
-                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Dropdown
@@ -39,10 +39,8 @@
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li>
                     </ul>
+
                     <form class="d-flex" role="search" asp-controller="Product" asp-action="Search" method="get">
                         <input class="form-control me-2" name="searchString" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success fst-italic" type="submit">Search</button>
@@ -60,7 +58,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.Now.Year - Happy Flower Co. - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - Happy Flower Co. 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

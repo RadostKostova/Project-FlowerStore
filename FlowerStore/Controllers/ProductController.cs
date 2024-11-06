@@ -2,10 +2,6 @@
 using FlowerStore.Core.ViewModels.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using static FlowerStore.Infrastructure.Constants.DataConstants;
-using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 
 namespace FlowerStore.Controllers
 {
@@ -46,54 +42,54 @@ namespace FlowerStore.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        //[ShouldBeAdmin]
-        public async Task<IActionResult> Add()
-        {
-            //should validate for Admin only
-            var model = new ProductAddViewModel()
-            {
-                Categories = await productService.GetAllCategoriesAsync(),
-            };
+        //[HttpGet]
+        ////[ShouldBeAdmin]
+        //public async Task<IActionResult> Add()
+        //{
+        //    //should validate for Admin only
+        //    var model = new ProductAddViewModel()
+        //    {
+        //        Categories = await productService.GetAllCategoriesAsync(),
+        //    };
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
-        [HttpPost]
-        //[ShouldBeAdmin]
-        public async Task<IActionResult> Add(ProductAddViewModel model)
-        {
-            //Null model validation
-            if (model == null)
-            {
-                return BadRequest();
-            }
+        //[HttpPost]
+        ////[ShouldBeAdmin]
+        //public async Task<IActionResult> Add(ProductAddViewModel model)
+        //{
+        //    //Null model validation
+        //    if (model == null)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var categories = await productService.GetAllCategoriesAsync();
+        //    var categories = await productService.GetAllCategoriesAsync();
 
-            if (!categories.Any(c => c.Id == model.CategoryId))
-            {
-                ModelState.AddModelError(nameof(model.CategoryId), "The category does not exist.");
-            }
+        //    if (!categories.Any(c => c.Id == model.CategoryId))
+        //    {
+        //        ModelState.AddModelError(nameof(model.CategoryId), "The category does not exist.");
+        //    }
 
-            //DateTime dateAndTime;
-            //if (!DateTime.TryParseExact(model.DateAdded, DateFormatNeeded, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAndTime))
-            //{
-            //    ModelState.AddModelError(nameof(model.DateAdded), errorMessage: DateFormatErrorMessage);
-            //}
+        //    //DateTime dateAndTime;
+        //    //if (!DateTime.TryParseExact(model.DateAdded, DateFormatNeeded, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAndTime))
+        //    //{
+        //    //    ModelState.AddModelError(nameof(model.DateAdded), errorMessage: DateFormatErrorMessage);
+        //    //}
 
-            var availability = await CalculateAvailability(model.FlowersCount);
+        //    var availability = await CalculateAvailability(model.FlowersCount);
 
-            if (!ModelState.IsValid)
-            {
-                model.Availability = availability;
-                model.Categories = categories;
-                return View(model);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        model.Availability = availability;
+        //        model.Categories = categories;
+        //        return View(model);
+        //    }
 
-            int modelId = await productService.AddProductAsync(model);
-            return RedirectToAction(nameof(Catalog));
-        }
+        //    int modelId = await productService.AddProductAsync(model);
+        //    return RedirectToAction(nameof(Catalog));
+        //}
 
         [HttpGet]
         //[ShouldBeAdmin]

@@ -1,14 +1,12 @@
 ﻿@using FlowerStore.Core.ViewModels.Order
-@model OrderFormViewModel
+@model OrderEditViewModel
 
-@{
-    ViewBag.Title = "Fill Your Order Details";
-}
-
+<h2>Edit Order</h2>
 
 <h2>@ViewBag.Title</h2>
 
-<form asp-controller="Order" asp-action="ShippingDetails" method="post">
+<form asp-controller="Order" asp-action="EditOrder" method="post">
+    <input type="hidden" asp-for="Id" />
     <div class="form-group">
         <label asp-for="@Model.ShippingAddress">Delivery address</label>
         <input asp-for="@Model.ShippingAddress" class="form-control" placeholder="Write your full address" />
@@ -21,11 +19,16 @@
     </div>
 
     <div class="form-group">
-        <label asp-for="@Model.PaymentMethodId"></label>
+        <label asp-for="@Model.PaymentMethodId">Choose payment method</label>
         <select asp-for="@Model.PaymentMethodId" asp-items="@(new SelectList(Model.PaymentMethods, "Id", "Name"))" class="form-control"></select>
         <span asp-validation-for="@Model.PaymentMethodId" class="text-danger"></span>
     </div>
 
-    @* <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-warning btn-lg">Fill shipment details</a> *@
-    <button type="submit" class="btn btn-primary">See order details</button>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="OrderDetails" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
 </form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

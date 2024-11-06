@@ -58,6 +58,7 @@ namespace FlowerStore.Core.Services
             var existingCart = await repository
                 .All<ShoppingCart>()
                 .Include(sc => sc.ShoppingCartProducts)
+                .ThenInclude(scp => scp.Product)
                 .FirstOrDefaultAsync(sc => sc.UserId == userId);
 
             if (existingCart != null)

@@ -2,10 +2,10 @@
 @model OrderDetailsViewModel
 
 @{
-    ViewBag.Title = "summary of order";
+    ViewBag.Title = "Details of the Order";
 }
 
- <h2>@ViewBag.Title</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
     <h3>Order Details</h3>
@@ -29,6 +29,7 @@
             foreach (var product in Model.OrderProducts)
             {
                 <li>
+                    <strong>Product Name:</strong> @product.ProductName,
                     <strong>Product ID:</strong> @product.ProductId,
                     <strong>Quantity:</strong> @product.Quantity,
                     <strong>Price:</strong> @product.Price.ToString("C")
@@ -42,7 +43,12 @@
     </ul>
 </div>
 
-<form asp-controller="Order" asp-action="ConfirmOrder" method="post">
-    @* <button type="submit" class="btn btn-success">Confirm Order</button>
-    <a asp-controller="Order" asp-action="Create" class="btn btn-secondary">Edit Order</a> *@
-</form>
+<a asp-action="EditOrder" asp-route-id="@Model.Id" class="btn btn-primary">Edit shipping details</a>
+
+@if (Model.OrderStatusId == 1)
+{
+    <form asp-action="Confirm" method="post">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button type="submit" class="btn btn-success">Confirm Order</button>
+    </form>
+}

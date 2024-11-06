@@ -5,7 +5,6 @@ using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace FlowerStore.Core.Services
 {
     /// <summary>

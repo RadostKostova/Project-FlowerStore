@@ -5,7 +5,7 @@ using FlowerStore.Infrastructure.Data.Models;
 namespace FlowerStore.Core.Contracts
 {
     /// <summary>
-    /// Interface for Product Service. Implement needed methods for further operations.
+    /// Interface for Product Service.
     /// </summary>
 
     public interface IProductService

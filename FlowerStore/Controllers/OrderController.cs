@@ -3,7 +3,6 @@ using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
 namespace FlowerStore.Controllers
@@ -42,7 +41,7 @@ namespace FlowerStore.Controllers
 
         //Display form for collecting user input data
         [HttpGet]
-        public async Task<IActionResult> ShippingDetails()
+        public async Task<IActionResult> ShippingDetails()  //keeps model in invalid state
         {
             var model = new OrderFormViewModel
             {
@@ -57,10 +56,9 @@ namespace FlowerStore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShippingDetails(OrderFormViewModel formModel)
         {
-            if (!ModelState.IsValid)
+            if (formModel == null)  //add validation for empty ShippingAddress
             {
-                formModel.PaymentMethods = await orderService.GetAllPaymentMethodsAsync();
-                return View(formModel);
+                return BadRequest();
             }
 
             var userId = User.GetUserId();
@@ -70,7 +68,7 @@ namespace FlowerStore.Controllers
             {
                 UserId = userId,
                 ShippingAddress = formModel.ShippingAddress,
-                OrderDetails = string.IsNullOrEmpty(formModel.OrderDetails) ? " " : formModel.OrderDetails,
+                OrderDetails = formModel.OrderDetails,
                 PaymentMethodId = formModel.PaymentMethodId,
                 OrderDate = DateTime.Now,
                 OrderStatusId = 1,
@@ -82,10 +80,10 @@ namespace FlowerStore.Controllers
                 {
                     OrderId = formModel.Id,
                     ProductId = scp.ProductId,
+                    ProductName = scp.Product.Name,
                     Price = scp.Price,
                     Quantity = scp.Quantity
-                })
-                .ToList()
+                }).ToList()
             };
 
             if (!ModelState.IsValid)
@@ -94,10 +92,86 @@ namespace FlowerStore.Controllers
                 orderModel.PaymentMethods = await orderService.GetAllPaymentMethodsAsync();
                 return View(orderModel);
             }
-
+            
             var newOrderId = await orderService.CreateOrderAsync(orderModel);
-            //await cartService.ClearCartAsync(userId); //after confirm
             return RedirectToAction(nameof(OrderDetails), new { id = newOrderId });
+        }
+
+        //Get edit shipping details form
+        [HttpGet]
+        public async Task<IActionResult> EditOrder(int id)
+        {
+            var orderDetails = await orderService.GetOrderDetailsAsync(id);
+            if (orderDetails == null)
+            {
+                return NotFound();
+            }
+
+            var model = new OrderEditViewModel
+            {
+                Id = orderDetails.Id,
+                ShippingAddress = orderDetails.ShippingAddress,
+                OrderDetails = orderDetails.OrderDetails,
+                PaymentMethodId = orderDetails.PaymentMethodId,
+                PaymentMethods = await orderService.GetAllPaymentMethodsAsync()
+            };
+
+            return View(model);
+        }
+
+        //Post the updated order data
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditOrder(OrderEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                model.PaymentMethods = await orderService.GetAllPaymentMethodsAsync();
+                return View(model);
+            }
+
+            var result = await orderService.UpdateOrderAsync(model);
+
+            if (result == false)
+            {
+                ModelState.AddModelError(string.Empty, "Error updating order.");
+                model.PaymentMethods = await orderService.GetAllPaymentMethodsAsync();
+                return View(model);
+            }
+            return RedirectToAction("OrderDetails", new { id = model.Id });
+        }
+
+        //Confirm the order
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Confirm(int id)
+        {
+            var userId = User.GetUserId();
+            var order = await orderService.OrderByIdExistAsync(id);
+
+            if (order == null || order.UserId != userId || order.OrderStatusId != 1)
+            {
+                return NotFound();
+            }
+
+            var isConfirmed = await orderService.ConfirmOrderAsync(id);
+            if (!isConfirmed)
+            {
+                TempData["ErrorMessage"] = "Unable to confirm the order.";
+                return RedirectToAction("OrderDetails", new { id });
+            }
+
+            await cartService.ClearCartAsync(userId);
+
+            TempData["SuccessMessage"] = "Order confirmed successfully.";
+            return RedirectToAction("OrderHistoryAll");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderHistoryAll()
+        {
+            var allOrders = await orderService.GetAllOrdersAsync();
+            return View(allOrders);
         }
     }
 }

@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// This controller manages product operations for Admin area
+    /// </summary>
+     
     public class ProductController : AdminBaseController
     {
         private readonly IProductService productService;
@@ -13,6 +17,15 @@ namespace FlowerStore.Areas.Admin.Controllers
             productService = _productService;
         }
 
+        //Display all products
+        [HttpGet]
+        public async Task<IActionResult> AllProducts()
+        {
+            var products = await productService.ShowAllProductsAsync();
+            return View(products);
+        }
+
+        //Get add form
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -24,7 +37,9 @@ namespace FlowerStore.Areas.Admin.Controllers
             return View(model);
         }
 
+        //Add product to database
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductAddViewModel model)
         {
             if (model == null)
@@ -55,8 +70,79 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             int modelId = await productService.AddProductAsync(model);
-            //return RedirectToAction(nameof(Catalog));
-            return RedirectToAction("Catalog", "Product", new { area = "" });
+            return RedirectToAction(nameof(AllProducts));
+        }
+
+        //Get edit form
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await productService.ProductByIdExistAsync(id);
+
+            if (product == null)
+            {
+                return BadRequest();
+            }
+
+            var model = await productService.GetEditProductAsync(id);
+            return View(model);
+        }
+
+        //Edit product and save to database
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ProductEditViewModel model)
+        {
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            var categories = await productService.GetAllCategoriesAsync();
+            var availability = await CalculateAvailability(model.FlowersCount);
+
+            if (!ModelState.IsValid)
+            {
+                model.Categories = categories;
+                model.Availability = availability;
+
+                return View(model);
+            }
+
+            await productService.PostEditProductAsync(model);
+            return RedirectToAction(nameof(AllProducts));
+        }
+
+        //Get delete form
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var productId = await productService.ProductByIdExistAsync(id);
+
+            if (productId == null)
+            {
+                return BadRequest();
+            }
+
+            var productFound = await productService.DeleteProductAsync(id);
+
+            return View(productFound);
+        }
+
+        //Delete product from database
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(ProductDeleteViewModel model)
+        {
+            var product = await productService.ProductByIdExistAsync(model.Id);
+
+            if (product == null)
+            {
+                return BadRequest();
+            }
+
+            await productService.ConfirmDeleteAsync(product.Id);
+            return RedirectToAction(nameof(AllProducts));
         }
 
 

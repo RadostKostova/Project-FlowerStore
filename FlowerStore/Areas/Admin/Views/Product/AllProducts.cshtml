@@ -1,0 +1,41 @@
+﻿@using FlowerStore.Core.ViewModels.Product
+@model IEnumerable<ProductAllViewModel>
+
+@{
+    ViewBag.Title = "All Products";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="row row-cols-1 row-cols-md-5 g-4">
+    @if (Model != null)
+    {
+        @foreach (var product in Model)
+        {
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+
+                        <img src="@product.ImageUrl" class="card-img-top img-fluid" alt="@product.Name" style="object-fit: cover;">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text"><strong>Product Id:</strong>@product.Id</p>
+                        <p class="card-text"><strong>Price:</strong>@product.Price BGN</p>
+                        
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Details</a>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h2>Our catalog is empty. New flowers coming soon.</h2>
+    }
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

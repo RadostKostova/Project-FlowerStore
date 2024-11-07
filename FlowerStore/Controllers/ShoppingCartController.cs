@@ -39,7 +39,7 @@ namespace FlowerStore.Controllers
 
         //Add product to shopping cart
         [HttpPost]
-        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
         {
             string userId = User.GetUserId();
@@ -66,20 +66,19 @@ namespace FlowerStore.Controllers
 
         //Remove product from shopping cart
         [HttpPost]
-        //[ValidateAntiForgeryToken]
-        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveFromCart(int productId)
         {          
             string userId = User.GetUserId();
 
             var isRemoved = await cartService.RemoveProductFromCartAsync(userId, productId);
 
-            if (isRemoved)
+            if (isRemoved == false)
             {
-                return RedirectToAction("MyShoppingCart", "ShoppingCart");
+                return BadRequest();                
             }
 
-            return BadRequest("Failed to remove the product from the cart.");
+            return RedirectToAction("MyShoppingCart", "ShoppingCart");
         }
 
     }

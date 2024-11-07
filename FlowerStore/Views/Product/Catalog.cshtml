@@ -14,22 +14,19 @@
         {
             <div class="col">
                 <div class="card h-100 text-center">
-                    <img src="@product.ImageUrl" class="card-img-top img-fluid" alt="@product.Name" style="object-fit: cover;">
                     <div class="card-body">
+                        <img src="@product.ImageUrl" class="card-img-top img-fluid" alt="@product.Name" style="object-fit: cover;">
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text"><strong>Price:</strong>@product.Price BGN</p>
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Details</a>
 
-                        @if (User?.Identity?.Name != null)
+                        @if (User.Identity?.IsAuthenticated != false)
                         {
                             <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.Id">
                                 <input type="hidden" name="productId" value="@product.Id" />
                                 <button type="submit" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</button>
                             </form>
                         }
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Id: @product.Id</small>
                     </div>
                 </div>
             </div>

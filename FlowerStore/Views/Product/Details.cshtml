@@ -5,7 +5,7 @@
     ViewBag.Title = "Product Details";
 }
 
-<h2 class="text-center">More details of the product: @Model.Id</h2>
+<h2 class="text-center">More details of the product: @Model.Name</h2>
 
 <div class="row">
     <div class="card w-100">
@@ -14,18 +14,18 @@
             <h3 class="card-title text-center">@Model.Name</h3>
             <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price</p>
             <p class="mb-0"><span class="fw-bold">Product added on: </span>@Model.DateAdded</p>
-            <p class="mb-0"><span class="fw-bold">Quantity in storage: </span>@Model.FlowersCount</p>
             <p class="mb-0"><span class="fw-bold">Availability: </span>@Model.Availability</p>
             <p class="mb-0"><span class="fw-bold">Description: </span>@Model.FullDescription</p>
             <p class="mb-0"><span class="fw-bold">Category: </span>@Model.Category</p>
         </div>
 
-        <a asp-controller="Product" asp-action="Catalog" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to the Catalog</a>
-        @if (User?.Identity?.Name != null)
+        @if (User.Identity?.IsAuthenticated != false)
         {
-            <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
-            <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
+            <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@Model.Id">
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button type="submit" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</button>
+            </form>
         }
-
+        <a asp-controller="Product" asp-action="Catalog" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back to the Catalog</a>
     </div>
 </div>

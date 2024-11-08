@@ -16,9 +16,11 @@ namespace FlowerStore.Core.Contracts
         Task<IEnumerable<PaymentMethodViewModel>> GetAllPaymentMethodsAsync();
         Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync();
         Task<Order> OrderByIdExistAsync(int orderId);
-        Task<int> CreateOrderAsync(OrderCreateViewModel model);
+        Task<OrderViewModel> CreateOrderViewModel(OrderFormViewModel formModel, ShoppingCart cart);
+        Task<int> CreateOrderAsync(OrderViewModel model);
+
         Task<OrderDetailsViewModel> GetOrderDetailsAsync(int orderId);
-        Task<bool> UpdateOrderAsync(OrderEditViewModel model);
+        Task<bool> UpdateOrderAsync(OrderFormViewModel model);
         Task<bool> ConfirmOrderAsync(int orderId);
         Task<int> CreateOrderHistoryAsync(int orderId);
         decimal CalculateTotalPrice(ShoppingCart cart);

@@ -21,6 +21,7 @@ namespace FlowerStore.Core.Services
     {
         private readonly IRepository repository;
         private readonly ICartService cartService;
+        private readonly IUserService userService;
 
         public OrderService(IRepository _repository,
             ICartService _cartService)
@@ -70,8 +71,36 @@ namespace FlowerStore.Core.Services
             return orderStatuses;
         }
 
-        //Create order in database
-        public async Task<int> CreateOrderAsync(OrderCreateViewModel model)
+        //Collect all order data with user input data and create OrderViewModel
+        public async Task<OrderViewModel> CreateOrderViewModel(OrderFormViewModel formModel, ShoppingCart cart)
+        {
+            var orderModel = new OrderViewModel
+            {
+                UserId = cart.UserId,
+                ShippingAddress = formModel.ShippingAddress,
+                OrderDetails = formModel.OrderDetails,
+                PaymentMethodId = formModel.PaymentMethodId,
+                OrderDate = DateTime.Now,
+                OrderStatusId = 1,  //Pending
+                ShoppingCartId = cart.Id,
+                TotalPrice = CalculateTotalPrice(cart),
+                PaymentMethods = await GetAllPaymentMethodsAsync(),
+                OrderStatuses = await GetAllOrderStatusesAsync(),
+                OrderProducts = cart.ShoppingCartProducts.Select(scp => new OrderProductViewModel
+                {
+                    OrderId = formModel.Id,
+                    ProductId = scp.ProductId,
+                    ProductName = scp.Product.Name,
+                    Price = scp.Price,
+                    Quantity = scp.Quantity
+                }).ToList()
+            };
+
+            return orderModel;
+        }
+
+        //Create new order in database
+        public async Task<int> CreateOrderAsync(OrderViewModel model)
         {
             var cart = await cartService.GetOrCreateShoppingCartAsync(model.UserId);
 
@@ -142,8 +171,8 @@ namespace FlowerStore.Core.Services
             return newOrder;
         }
 
-        //Update order entity and return boolean
-        public async Task<bool> UpdateOrderAsync(OrderEditViewModel model)
+        //Update order after edit and return boolean
+        public async Task<bool> UpdateOrderAsync(OrderFormViewModel model)
         {
             var order = await OrderByIdExistAsync(model.Id);
             if (order == null)
@@ -186,14 +215,12 @@ namespace FlowerStore.Core.Services
             return true;
         }
 
-
         //Get current user order
         //public async Task<Order?> GetUserPendingOrderAsync(string userId)
         //{
-        //    return await repository.All<Order>()
+        //    return await repository.AllAsReadOnly<Order>()
         //        .FirstOrDefaultAsync(o => o.UserId == userId && o.OrderStatus.OrderStatusName == "Pending");
         //}
-
 
         //Add Order to OrderHistory
         public async Task<int> CreateOrderHistoryAsync(int orderId)
@@ -230,7 +257,7 @@ namespace FlowerStore.Core.Services
             return orderHistory.Id;
         }
 
-        //Get all orders (should be Admin only)
+        //Get all orders (admin only)
         public async Task<IEnumerable<OrderHistoryViewModel>> GetAllOrdersAsync()
         {
             return await repository

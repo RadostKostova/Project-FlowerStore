@@ -1,0 +1,27 @@
+﻿@using FlowerStore.Core.ViewModels.Product
+@model ProductDetailsViewModel
+
+@{
+    ViewBag.Title = "Product Details";
+}
+
+<h2 class="text-center">@ViewBag.Title: @Model.Id</h2>
+
+<div class="row">
+    <div class="card w-100">
+        <div class="card-body">
+            <img src="@Model.ImageUrl" />
+            <h3 class="card-title text-center">@Model.Name</h3>
+            <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price</p>
+            <p class="mb-0"><span class="fw-bold">Product added on: </span>@Model.DateAdded</p>
+            <p class="mb-0"><span class="fw-bold">Quantity in storage: </span>@Model.FlowersCount</p>
+            <p class="mb-0"><span class="fw-bold">Availability: </span>@Model.Availability</p>
+            <p class="mb-0"><span class="fw-bold">Description: </span>@Model.FullDescription</p>
+            <p class="mb-0"><span class="fw-bold">Category: </span>@Model.Category</p>
+        </div>
+
+        <a asp-area="Admin" asp-controller="Product" asp-action="AllProducts" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back</a>
+        <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+        <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
+    </div>
+</div>

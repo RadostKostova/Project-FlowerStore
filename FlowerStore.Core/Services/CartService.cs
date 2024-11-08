@@ -82,7 +82,7 @@ namespace FlowerStore.Core.Services
             }
         }
 
-        //Return the ViewModel for the shopping cart
+        //Display the shopping cart as viewModel
         public async Task<CartViewModel> ViewShoppingCartAsync(string userId)
         {
             var cart = await repository
@@ -174,6 +174,7 @@ namespace FlowerStore.Core.Services
             return true;
         }
 
+        //Get specific product in cart
         public async Task<CartProductViewModel> GetProductInCartByIdAsync(int cartId, int productId)
         {
             var product = await repository
@@ -205,6 +206,14 @@ namespace FlowerStore.Core.Services
                 cart.ProductsCounter = 0;
                 await repository.SaveChangesAsync();
             }
+        }
+
+        //Check if cart contains any products
+        public async Task<bool> IsShoppingCartEmpty(string userId)
+        {
+            var cart = await GetOrCreateShoppingCartAsync(userId);
+
+            return !cart.ShoppingCartProducts.Any();
         }
 
         public async Task<bool> SaveAsync()

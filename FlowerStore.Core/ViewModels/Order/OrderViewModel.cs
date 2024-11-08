@@ -8,7 +8,7 @@ using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 
 namespace FlowerStore.Core.ViewModels.Order
 {
-    public class OrderCreateViewModel
+    public class OrderViewModel
     {
         [Required]
         public int Id { get; set; }

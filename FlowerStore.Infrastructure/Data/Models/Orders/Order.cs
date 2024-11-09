@@ -67,6 +67,12 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         [ForeignKey(nameof(ShoppingCartId))]
         public ShoppingCart ShoppingCart { get; set; } = null!;
 
+        [Comment("Card identifier")]
+        public int? CardDetailsId { get; set; } 
+
+        [ForeignKey("CardDetailsId")]
+        public CardDetails? CardDetails { get; set; }
+
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }

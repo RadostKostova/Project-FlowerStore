@@ -1,8 +1,5 @@
-﻿using FlowerStore.Infrastructure.Data.Models.Roles;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 
 namespace FlowerStore.Infrastructure.Data.Models.Payment
@@ -24,17 +21,19 @@ namespace FlowerStore.Infrastructure.Data.Models.Payment
 
         [Required]
         [MaxLength(CardNumberExactlyLength)]
+        [RegularExpression(CardNumberRegexFormat)]
         [Comment("Card number")]
         public string CardNumber { get; set; } = string.Empty;
 
         [Required]
-        [DisplayFormat(DataFormatString = CardExpirationDateFormat,
-            ApplyFormatInEditMode = true)]
+        [MaxLength(CardExpirationExactlyLength)]
+        [RegularExpression(CardExpirationRegexDateFormat)] //Format MM/yy
         [Comment("Card's expiration date")]
-        public DateTime ExpirationDate { get; set; } //Format MM/yy
+        public string ExpirationDate { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(CardCVVExactlyLength)]
+        [RegularExpression(CardCVVRegexFormat)]
         [Comment("Code of Card Verification Value")]
         public string CVV { get; set; } = string.Empty;
 
@@ -42,8 +41,5 @@ namespace FlowerStore.Infrastructure.Data.Models.Payment
         [MaxLength(CardHolderMaxLength)]
         [Comment("First and last name of holder")]
         public string CardHolderName { get; set; } = string.Empty;
-
-        [ForeignKey(nameof(UserId))]
-        public ApplicationUser? User { get; set; }
     }
 }

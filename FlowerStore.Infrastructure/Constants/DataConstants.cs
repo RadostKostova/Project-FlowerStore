@@ -11,8 +11,11 @@
         public const string DateFormatNeeded = "dd/MM/yyyy HH:mm";
 
         //Card entity
-        public const string CardExpirationDateFormat = "{0:MM/yy}";
+        public const string CardExpirationRegexDateFormat = @"^(0[1-9]|1[0-2])\/\d{2}$";
+        public const int CardExpirationExactlyLength = 5;
+        public const string CardNumberRegexFormat = @"^\d{16}$";
         public const int CardNumberExactlyLength = 16;
+        public const string CardCVVRegexFormat = @"^\d{3}$";
         public const int CardCVVExactlyLength = 3;
         public const int CardHolderMinLength = 5;
         public const int CardHolderMaxLength = 30;

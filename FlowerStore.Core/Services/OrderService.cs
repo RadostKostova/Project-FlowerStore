@@ -1,4 +1,6 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.ViewModels.CardDetails;
+using FlowerStore.Core.ViewModels.Cart;
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderHistory;
 using FlowerStore.Core.ViewModels.OrderProduct;
@@ -43,7 +45,7 @@ namespace FlowerStore.Core.Services
             return orderFound;
         }
 
-        //Get all payment methods from database
+        //Get all payment methods from database as view models
         public async Task<IEnumerable<PaymentMethodViewModel>> GetAllPaymentMethodsAsync()
         {
             var payments = await repository.AllAsReadOnly<PaymentMethod>()
@@ -57,7 +59,7 @@ namespace FlowerStore.Core.Services
             return payments;
         }
 
-        //Get all order statuses from database
+        //Get all order statuses from database as view models
         public async Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync()
         {
             var orderStatuses = await repository.AllAsReadOnly<OrderStatus>()
@@ -71,9 +73,21 @@ namespace FlowerStore.Core.Services
             return orderStatuses;
         }
 
-        //Collect all order data with user input data and create OrderViewModel
-        public async Task<OrderViewModel> CreateOrderViewModel(OrderFormViewModel formModel, ShoppingCart cart)
+        //Get payment method from database by id
+        public async Task<PaymentMethod> GetChosenPaymentMethodAsync(int paymentId)
         {
+            var payment = await repository
+                .AllAsReadOnly<PaymentMethod>()
+                .FirstOrDefaultAsync(pm => pm.Id == paymentId);
+
+            return payment!;
+        }
+
+        //Collect all order data with user input data and create OrderViewModel
+        public async Task<OrderViewModel> CreateOrderViewModelAsync(OrderFormViewModel formModel, CartViewModel cart)
+        {
+            var cartFound = await cartService.ShoppingCartExistByUserIdAsync(cart.UserId);
+
             var orderModel = new OrderViewModel
             {
                 UserId = cart.UserId,
@@ -83,15 +97,15 @@ namespace FlowerStore.Core.Services
                 OrderDate = DateTime.Now,
                 OrderStatusId = 1,  //Pending
                 ShoppingCartId = cart.Id,
-                TotalPrice = CalculateTotalPrice(cart),
+                TotalPrice = CalculateTotalPrice(cartFound),
                 PaymentMethods = await GetAllPaymentMethodsAsync(),
                 OrderStatuses = await GetAllOrderStatusesAsync(),
                 OrderProducts = cart.ShoppingCartProducts.Select(scp => new OrderProductViewModel
                 {
                     OrderId = formModel.Id,
                     ProductId = scp.ProductId,
-                    ProductName = scp.Product.Name,
-                    Price = scp.Price,
+                    ProductName = scp.Name,
+                    Price = scp.UnitPrice,
                     Quantity = scp.Quantity
                 }).ToList()
             };
@@ -100,9 +114,9 @@ namespace FlowerStore.Core.Services
         }
 
         //Create new order in database
-        public async Task<int> CreateOrderAsync(OrderViewModel model)
+        public async Task<int> CreateOrderAsync(OrderViewModel model, int? cardDetailsId = null)
         {
-            var cart = await cartService.GetOrCreateShoppingCartAsync(model.UserId);
+            var cart = await cartService.ShoppingCartExistByUserIdAsync(model.UserId);
 
             var order = new Order
             {
@@ -114,6 +128,7 @@ namespace FlowerStore.Core.Services
                 OrderStatusId = model.OrderStatusId,
                 PaymentMethodId = model.PaymentMethodId,
                 ShoppingCartId = model.ShoppingCartId,
+                CardDetailsId = cardDetailsId,
             };
 
             await repository.AddAsync(order);
@@ -133,6 +148,23 @@ namespace FlowerStore.Core.Services
             await repository.SaveChangesAsync();
 
             return order.Id;
+        }
+
+        //Create new card details in database
+        public async Task<int> CreateCardDetailsAsync(CardDetailsAddViewModel model)
+        {
+            var newCard = new CardDetails
+            {
+                UserId = model.UserId,
+                CardHolderName = model.CardHolderName,
+                CardNumber = model.CardNumber,
+                ExpirationDate = model.ExpirationDate,
+                CVV = model.CVV
+            };
+
+            await repository.AddAsync(newCard);
+            await repository.SaveChangesAsync();
+            return newCard.Id;
         }
 
         //Get full information about order details
@@ -283,9 +315,11 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
         }
 
+        //Calculating total price from entity for precision
         public decimal CalculateTotalPrice(ShoppingCart cart)
         {
             return cart.ShoppingCartProducts.Sum(p => p.Price * p.Quantity);
         }
     }
 }
+

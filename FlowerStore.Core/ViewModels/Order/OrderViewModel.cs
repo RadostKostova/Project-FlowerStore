@@ -1,4 +1,5 @@
 ﻿using FlowerStore.Components;
+using FlowerStore.Core.ViewModels.CardDetails;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.PaymentMethod;
@@ -23,7 +24,7 @@ namespace FlowerStore.Core.ViewModels.Order
         public DateTime OrderDate { get; set; }
 
         [Required]
-        [DecimalRange(OrderTotalPriceMinLength,  
+        [DecimalRange(OrderTotalPriceMinLength,
             OrderTotalPriceMaxLength,
             ErrorMessage = NumberRangeErrorMessage)]
         [Display(Name = "Total price")]
@@ -36,8 +37,8 @@ namespace FlowerStore.Core.ViewModels.Order
         public string? OrderDetails { get; set; }
 
         [Required]
-        [StringLength(AddressMaxLength, 
-            MinimumLength = AddressMinLength, 
+        [StringLength(AddressMaxLength,
+            MinimumLength = AddressMinLength,
             ErrorMessage = StringLengthErrorMessage)]
         [Display(Name = "Shipping Address")]
         public string ShippingAddress { get; set; } = string.Empty;
@@ -48,8 +49,10 @@ namespace FlowerStore.Core.ViewModels.Order
         [Required]
         public int ShoppingCartId { get; set; }
 
+        public CardDetailsAddViewModel? CardDetails { get; set; }
         public IEnumerable<OrderStatusViewModel> OrderStatuses { get; set; } = new List<OrderStatusViewModel>();
         public IEnumerable<PaymentMethodViewModel> PaymentMethods { get; set; } = new List<PaymentMethodViewModel>();
         public IEnumerable<OrderProductViewModel> OrderProducts { get; set; } = new List<OrderProductViewModel>();
     }
 }
+

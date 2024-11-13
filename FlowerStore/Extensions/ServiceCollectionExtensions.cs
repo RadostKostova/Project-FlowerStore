@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// These extension methods are used to clean up Program.cs and also to register the services used. 
+    /// These extension methods are used to clean up the Program.cs class and also to register the services used. 
     /// Extensions for appServices, Db context and Identity
     /// </summary>
 
@@ -22,7 +22,6 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminService>();
-
             return services;
         }
 

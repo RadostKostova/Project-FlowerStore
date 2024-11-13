@@ -59,7 +59,7 @@ namespace FlowerStore.Controllers
         }       
 
         //Private methods (helpers)
-        private async Task<bool> CalculateAvailability(int flowerCount) 
+        private async Task<bool> CalculateAvailability(int flowerCount)
         {
             return flowerCount >= 1;
         }

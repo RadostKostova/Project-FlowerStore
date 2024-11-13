@@ -2,42 +2,30 @@
 @model OrderFormViewModel
 
 @{
-    ViewBag.Title = "Fill In Your Shipping Details";
+    ViewBag.Title = "Fill Your Order Details";
 }
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="text-center">@ViewBag.Title</h2>
 
-        <form asp-controller="Order" asp-action="ShippingDetails" method="post">
-            <div class="form-group mb-3">
-                <label asp-for="@Model.ShippingAddress">Delivery address</label>
-                <input asp-for="@Model.ShippingAddress" class="form-control" placeholder="Write your full address" />
-                <span asp-validation-for="@Model.ShippingAddress" class="text-danger"></span>
-            </div>
+<h2>@ViewBag.Title</h2>
 
-            <div class="form-group mb-3">
-                <label asp-for="@Model.OrderDetails">Order Details (If any)</label>
-                <textarea asp-for="@Model.OrderDetails" class="form-control">Write your additional request here (Birthday cards, Giftpack color and etc)</textarea>
-            </div>
-
-            <div class="form-group mb-3">
-                <label asp-for="@Model.PaymentMethodId">Choose payment method:</label>
-                <select id="PaymentMethodId" name="PaymentMethodId" class="form-control">
-                    @foreach (var paymentMethod in Model.PaymentMethods)
-                    {
-                        <option value="@paymentMethod.Id">@paymentMethod.Name</option>
-                    }
-                </select>
-            </div>
-
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-warning">Preview order</button>
-            </div>
-        </form>
+<form asp-controller="Order" asp-action="ShippingDetails" method="post">
+    <div class="form-group">
+        <label asp-for="@Model.ShippingAddress">Delivery address</label>
+        <input asp-for="@Model.ShippingAddress" class="form-control" placeholder="Write your full address" />
+        <span asp-validation-for="@Model.ShippingAddress" class="text-danger"></span>
     </div>
-</div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    <div class="form-group">
+        <label asp-for="@Model.OrderDetails">Order Details (If any)</label>
+        <textarea asp-for="@Model.OrderDetails" class="form-control">Write your additional request here (Birthday cards, Giftpack color and etc)</textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.PaymentMethodId"></label>
+        <select asp-for="@Model.PaymentMethodId" asp-items="@(new SelectList(Model.PaymentMethods, "Id", "Name"))" class="form-control"></select>
+        <span asp-validation-for="@Model.PaymentMethodId" class="text-danger"></span>
+    </div>
+
+    @* <a asp-controller="Order" asp-action="CreateOrder" class="btn btn-warning btn-lg">Fill shipment details</a> *@
+    <button type="submit" class="btn btn-primary">See order details</button>
+</form>

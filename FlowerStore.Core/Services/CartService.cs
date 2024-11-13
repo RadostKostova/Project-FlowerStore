@@ -4,13 +4,12 @@ using FlowerStore.Core.ViewModels.CartProduct;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 using FlowerStore.Infrastructure.Data.Models.Carts;
-using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerStore.Core.Services
 {
     /// <summary>
-    /// Shopping Cart services implemented. Handles id finding, existing, add or remove product from cart, clear and etc.
+    /// Shopping Cart services implemented for more code reusability.
     /// </summary>
 
     public class CartService : ICartService
@@ -25,36 +24,66 @@ namespace FlowerStore.Core.Services
             productService = _productService;
         }
 
-        //Checks if user have existing cart by userId
-        public async Task<ShoppingCart> ShoppingCartExistByUserIdAsync(string userId)
+        //Check if user has a cart
+        //public async Task<bool> ShoppingCartExistAsync(string userId)
+        //{
+        //    var cart = await repository
+        //        .All<ShoppingCart>()
+        //        .AnyAsync(sc => sc.UserId == userId);
+
+        //    return cart;
+        //}
+
+        //Creates new shopping cart
+        //public async Task<ShoppingCart> CreateShoppingCartAsync(string userId)
+        //{
+        //    var newCart = new ShoppingCart
+        //    {
+        //        UserId = userId,
+        //        ProductsCounter = 0, 
+        //        TotalPrice = 0,      
+        //        ShoppingCartProducts = new List<ShoppingCartProduct>() 
+        //    };
+
+        //    await repository.AddAsync(newCart);
+        //    await repository.SaveChangesAsync();
+
+        //    return newCart;
+        //}
+
+
+        //Get or create a cart, depending on whether the user already has one
+        public async Task<ShoppingCart> GetOrCreateShoppingCartAsync(string userId)
         {
-            var cart = await repository
-                .AllAsReadOnly<ShoppingCart>()
+            var existingCart = await repository
+                .All<ShoppingCart>()
                 .Include(sc => sc.ShoppingCartProducts)
                 .ThenInclude(scp => scp.Product)
                 .FirstOrDefaultAsync(sc => sc.UserId == userId);
 
-            return cart;
-        }
-
-        //Creates a new shopping cart in database
-        public async Task<ShoppingCart> CreateShoppingCartAsync(string userId)
-        {
-            var newCart = new ShoppingCart
+            if (existingCart != null)
             {
-                UserId = userId,
-                ProductsCounter = 0,
-                TotalPrice = 0,
-                ShoppingCartProducts = new List<ShoppingCartProduct>()
-            };
+                return existingCart;
+            }
+            else
+            {
+                var newCart = new ShoppingCart
+                {
+                    UserId = userId,
+                    ProductsCounter = 0,
+                    TotalPrice = 0,
+                    ShoppingCartProducts = new List<ShoppingCartProduct>()
+                };
 
-            await repository.AddAsync(newCart);
-            await repository.SaveChangesAsync();
-            return newCart;
+                await repository.AddAsync(newCart);
+                await repository.SaveChangesAsync();
+
+                return newCart;
+            }
         }
 
         //Display the shopping cart as viewModel
-        public async Task<CartViewModel> GetShoppingCartAsync(string userId)
+        public async Task<CartViewModel> ViewShoppingCartAsync(string userId)
         {
             var cart = await repository
                 .AllAsReadOnly<ShoppingCart>()
@@ -79,31 +108,14 @@ namespace FlowerStore.Core.Services
                     Category = categoies.FirstOrDefault(c => c.Id == scp.Product.CategoryId).Name
                 }).ToList()
             };
+
             return model;
-        }
-
-        //Mixed service, which calls other two methods - get OR create cart and returns viewModel
-        public async Task<CartViewModel> GetOrCreateShoppingCartAsync(string userId)
-        {
-            var existingCart = await ShoppingCartExistByUserIdAsync(userId);
-
-            if (existingCart != null)
-            {
-                var model = await GetShoppingCartAsync(userId);
-                return model;
-            }
-            else
-            {
-                var newCart = await CreateShoppingCartAsync(userId);
-                var model = await GetShoppingCartAsync(userId);
-                return model;
-            }
         }
 
         //Add a product to the shopping cart
         public async Task<bool> AddProductToCartAsync(string userId, int productId, int quantity)
         {
-            var cart = await ShoppingCartExistByUserIdAsync(userId);
+            var cart = await GetOrCreateShoppingCartAsync(userId);
 
             if (cart == null)
             {
@@ -126,9 +138,7 @@ namespace FlowerStore.Core.Services
                     Price = (decimal)await productService.GetProductPriceAsync(productId),
                 };
 
-                await repository.AddAsync(newProductInCart);
-                await repository.SaveChangesAsync();
-                
+                cart.ShoppingCartProducts.Add(newProductInCart);
             };
 
             cart.TotalPrice += (decimal)(await productService.GetProductPriceAsync(productId)) * quantity;
@@ -141,7 +151,7 @@ namespace FlowerStore.Core.Services
         //Remove product from shopping cart
         public async Task<bool> RemoveProductFromCartAsync(string userId, int productId)
         {
-            var cart = await ShoppingCartExistByUserIdAsync(userId);
+            var cart = await GetOrCreateShoppingCartAsync(userId);
 
             if (cart == null)
             {
@@ -158,7 +168,8 @@ namespace FlowerStore.Core.Services
             cart.TotalPrice -= product.Price * product.Quantity;
             cart.ProductsCounter -= product.Quantity;
 
-            await repository.RemoveAsync(product);
+            cart.ShoppingCartProducts.Remove(product);
+
             await repository.SaveChangesAsync();
             return true;
         }
@@ -186,7 +197,7 @@ namespace FlowerStore.Core.Services
         //Clear shopping cart products
         public async Task ClearCartAsync(string userId)
         {
-            var cart = await ShoppingCartExistByUserIdAsync(userId);
+            var cart = await GetOrCreateShoppingCartAsync(userId);
 
             if (cart != null)
             {
@@ -200,7 +211,7 @@ namespace FlowerStore.Core.Services
         //Check if cart contains any products
         public async Task<bool> IsShoppingCartEmpty(string userId)
         {
-            var cart = await GetShoppingCartAsync(userId);
+            var cart = await GetOrCreateShoppingCartAsync(userId);
 
             return !cart.ShoppingCartProducts.Any();
         }

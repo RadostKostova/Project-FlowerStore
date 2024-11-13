@@ -50,6 +50,8 @@ namespace FlowerStore.Core.Services
         //Add product to store
         public async Task<int> AddProductAsync(ProductAddViewModel model)
         {
+            //should have condition if == "Admin" (later)
+
             var product = new Product()
             {
                 Name = model.Name,

@@ -11,8 +11,10 @@ namespace FlowerStore.Core.Contracts
 
     public interface ICartService
     {
-        Task<ShoppingCart> GetOrCreateShoppingCartAsync(string userId);
-        Task<CartViewModel> ViewShoppingCartAsync(string userId);
+        Task<ShoppingCart> ShoppingCartExistByUserIdAsync(string userId);
+        Task<ShoppingCart> CreateShoppingCartAsync(string userId);
+        Task<CartViewModel> GetOrCreateShoppingCartAsync(string userId);
+        Task<CartViewModel> GetShoppingCartAsync(string userId);
         Task<bool> AddProductToCartAsync(string userId, int productId, int quantity);
         Task<bool> RemoveProductFromCartAsync(string userId, int productId);
         Task<CartProductViewModel> GetProductInCartByIdAsync(int cartId, int productId);

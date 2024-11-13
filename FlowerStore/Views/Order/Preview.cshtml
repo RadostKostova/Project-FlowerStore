@@ -2,52 +2,138 @@
 @model OrderViewModel
 
 @{
-    ViewBag.Title = "Details of the Order";
+    ViewBag.Title = "Order Summary";
 }
 
-<h2>@ViewBag.Title</h2>
+@* <div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewBag.Title</h2>
 
-<div>
-    <p><strong>Order ID:</strong> @Model.Id</p>
-    <p><strong>User ID:</strong> @Model.UserId</p>
-    <p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
-    <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
-    <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
-    <p><strong>Order Status ID:</strong> @Model.OrderStatusId</p>
-    <p><strong>Payment Method ID:</strong> @Model.PaymentMethodId</p>
-    <p><strong>Order details:</strong> @Model.OrderDetails</p>
-    <p><strong>Shopping cart ID:</strong> @Model.ShoppingCartId</p>
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>Order ID:</strong> @Model.Id</p>
+            <p><strong>User ID:</strong> @Model.UserId</p>
+            <p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+            <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+            <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
+            <p><strong>Order Status ID:</strong> @Model.OrderStatusId</p>
+            <p><strong>Payment Method ID:</strong> @Model.PaymentMethodId</p>
+            <p><strong>Order Details:</strong> @(Model.OrderDetails ?? "None")</p>
+            <p><strong>Shopping Cart ID:</strong> @Model.ShoppingCartId</p>
+        </div>
+    </div>
+
+    @if (Model.CardDetails != null)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title">Card Details</h4>
+                <p><strong>Card Holder:</strong> @Model.CardDetails.CardHolderName</p>
+                <p><strong>Card Number:</strong> **** **** **** @(Model.CardDetails.CardNumber.Substring(12))</p>
+                <p><strong>CVV:</strong> @Model.CardDetails.CVV</p>
+                <p><strong>Expiration:</strong> @Model.CardDetails.ExpirationDate</p>
+            </div>
+        </div>
+    }
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Order Products</h4>
+            <ul class="list-group list-group-flush">
+                @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+                {
+                    foreach (var product in Model.OrderProducts)
+                    {
+                        <li class="list-group-item">
+                            <strong>Product Name:</strong> @product.ProductName,<br>
+                            <strong>Product ID:</strong> @product.ProductId,<br>
+                            <strong>Quantity:</strong> @product.Quantity,<br>
+                            <strong>Price:</strong> @product.Price.ToString("C")
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item">No products in this order.</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a asp-area="" asp-controller="Order" asp-action="ShippingDetails" class="btn btn-primary">Edit Shipping Details</a>
+        @if (Model.CardDetails != null)
+        {
+            <a asp-area="" asp-controller="Order" asp-action="CardDetails" class="btn btn-primary">Edit Card Details</a>
+        }
+        <form asp-action="PlaceOrder" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success">Confirm Order</button>
+        </form>
+    </div>
+</div> *@
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4 fst-italic">@ViewBag.Title</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="card-title text-center">Shipping details</h4>
+                    <p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
+                    <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+                    <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
+                    <p><strong>Order Details:</strong> @(Model.OrderDetails ?? "None")</p>
+                </div>
+               
+                <div class="col-md-6">
+                    <h4 class="card-title text-center">Products</h4>
+                    <ul class="list-group list-group-flush">
+                        @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+                        {
+                            foreach (var product in Model.OrderProducts)
+                            {
+                                <li class="list-group-item">
+                                    <strong>Product Name:</strong> @product.ProductName<br>
+                                    <strong>Product ID:</strong> @product.ProductId<br>
+                                    <strong>Quantity:</strong> @product.Quantity<br>
+                                    <strong>Price:</strong> @product.Price.ToString("C")
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="list-group-item">No products in this order.</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.CardDetails != null)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4 class="card-title fst-italic">Card Details</h4>
+                <p><strong>Card Holder:</strong> @Model.CardDetails.CardHolderName</p>
+                <p><strong>Card Number:</strong> **** **** **** @(Model.CardDetails.CardNumber.Substring(12))</p>
+                <p><strong>CVV:</strong> @Model.CardDetails.CVV</p>
+                <p><strong>Expiration:</strong> @Model.CardDetails.ExpirationDate</p>
+            </div>
+        </div>
+    }
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a asp-area="" asp-controller="Order" asp-action="ShippingDetails" class="btn btn-primary">Back to Shipping Details</a>
+        @if (Model.CardDetails != null)
+        {
+            <a asp-area="" asp-controller="Order" asp-action="CardDetails" class="btn btn-primary">Back to Card Details</a>
+        }
+        <form asp-action="PlaceOrder" method="post" class="d-inline">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <button type="submit" class="btn btn-success">Confirm Order</button>
+        </form>
+    </div>
 </div>
 
-
-<div>
-    <h3>Order Products</h3>
-    <ul>
-        @if (Model.OrderProducts != null && Model.OrderProducts.Any())
-        {
-            foreach (var product in Model.OrderProducts)
-            {
-                <li>
-                    <strong>Product Name:</strong> @product.ProductName,
-                    <strong>Product ID:</strong> @product.ProductId,
-                    <strong>Quantity:</strong> @product.Quantity,
-                    <strong>Price:</strong> @product.Price.ToString("C")
-                </li>
-            }
-        }
-        else
-        {
-            <li>No products in this order.</li>
-        }
-    </ul>
-</div>
-
-<a asp-action="ShippingDetails"  class="btn btn-primary">Edit</a>
-
-@if (Model.OrderStatusId == 1)
-{
-    <form asp-action="Confirm" method="post">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <button type="submit" class="btn btn-success">Confirm Order</button>
-    </form>
-}

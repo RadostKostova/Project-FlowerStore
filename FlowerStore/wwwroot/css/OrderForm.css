@@ -1,56 +1,21 @@
-﻿.order-form-container {
-    border: 2px solid pink; /* Soft pink border */
-    border-radius: 15px; /* Rounded corners */
-    background-color: white; /* White background */
-    padding: 20px; /* Padding inside the form */
-    max-width: 600px; /* Maximum width for the form */
-    margin: auto; /* Center the form horizontally */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional shadow for a soft effect */
+﻿.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-h2 {
-    text-align: center; /* Center the title */
-    color: #333; /* Dark color for better readability */
+.form-content {
+    width: 400px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
-.form-group {
-    margin-bottom: 15px; /* Space between form fields */
+.submit-button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    width: auto;
 }
 
-.form-label {
-    display: block; /* Ensures label is on its own line */
-    margin-bottom: 5px; /* Space between label and input */
-    font-weight: bold; /* Bold label text */
-}
-
-textarea.form-control,
-input.form-control {
-    width: 100%; /* Full width */
-    padding: 10px; /* Padding inside inputs */
-    border: 1px solid #ccc; /* Default input border */
-    border-radius: 5px; /* Rounded input corners */
-}
-
-    textarea.form-control:focus,
-    input.form-control:focus {
-        border-color: pink; /* Highlight border on focus */
-    }
-
-.btn {
-    display: block; /* Center the button */
-    width: 100%; /* Full width for button */
-    padding: 10px; /* Padding inside button */
-    background-color: pink; /* Button background color */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners for button */
-    color: white; /* White text color */
-    font-size: 16px; /* Larger text for readability */
-}
-
-    .btn:hover {
-        background-color: darkpink; /* Darker shade on hover */
-    }
-
-.payment-details {
-    margin-top: 15px; /* Space above dynamic payment details */
-}

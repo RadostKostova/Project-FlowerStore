@@ -1,4 +1,5 @@
 ﻿using FlowerStore.Components;
+using FlowerStore.Core.ViewModels.CardDetails;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.PaymentMethod;
@@ -47,6 +48,8 @@ namespace FlowerStore.Core.ViewModels.Order
 
         [Required]
         public int ShoppingCartId { get; set; }
+
+        public CardDetailsAddViewModel? CardDetails { get; set; }
 
         public IEnumerable<OrderStatusViewModel> OrderStatuses { get; set; } = new List<OrderStatusViewModel>();
         public IEnumerable<PaymentMethodViewModel> PaymentMethods { get; set; } = new List<PaymentMethodViewModel>();

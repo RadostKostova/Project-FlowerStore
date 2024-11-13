@@ -1,6 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Controllers
@@ -31,9 +30,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            //var cart = await cartService.GetOrCreateShoppingCartAsync(userId);
-            var model = await cartService.ViewShoppingCartAsync(userId);
-
+            var model = await cartService.GetOrCreateShoppingCartAsync(userId);
             return View(model);
         }
 
@@ -61,7 +58,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            return RedirectToAction("Catalog", "Product");
+            return RedirectToAction(nameof(MyShoppingCart));
         }
 
         //Remove product from shopping cart
@@ -78,8 +75,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();                
             }
 
-            return RedirectToAction("MyShoppingCart", "ShoppingCart");
+            return RedirectToAction(nameof(MyShoppingCart));
         }
-
     }
 }

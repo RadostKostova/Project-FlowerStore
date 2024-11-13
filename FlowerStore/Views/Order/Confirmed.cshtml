@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Confirmed orded";
+}
+
+<div class="container mt-5 text-center">
+    <img src="/img/thank-you-1-800pxl-72dpi.png" alt="Thank you for your order!" style="object-fit: cover; max-width: 100%; height: auto; width: 400px;">
+    <h1>Thank you for your order!</h1>  
+    <p>Your order number is <strong>@ViewBag.OrderId</strong>.</p>
+    <p>Your items are being prepared for shipment and are estimated to be delivered within 2-3 business days. We hope you enjoy your purchase!</p>
+    <p>You can track your order status in your <a href="/Account/Orders">Order History</a>.</p>    
+
+    <a asp-area="" asp-controller="Product" asp-action="Catalog" class="btn btn-secondary mt-4">Continue Shopping</a>
+    <a href="/Account/Orders" class="btn btn-primary mt-4">View My Orders</a>
+</div>

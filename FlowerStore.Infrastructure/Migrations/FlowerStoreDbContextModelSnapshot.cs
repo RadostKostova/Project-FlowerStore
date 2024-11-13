@@ -49,7 +49,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCarts");
+                    b.ToTable("ShoppingCarts", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Carts.ShoppingCartProduct", b =>
@@ -76,7 +76,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCartsProducts");
+                    b.ToTable("ShoppingCartsProducts", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Category", b =>
@@ -96,7 +96,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -212,7 +212,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderHistory", b =>
@@ -269,7 +269,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("OrderHistories");
+                    b.ToTable("OrderHistories", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderProduct", b =>
@@ -301,7 +301,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrdersProducts");
+                    b.ToTable("OrdersProducts", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Orders.Order.OrderStatus", b =>
@@ -321,7 +321,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatuses");
+                    b.ToTable("OrderStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -376,7 +376,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("OrderHistoryId");
 
-                    b.ToTable("OrderProductHistory");
+                    b.ToTable("OrderProductHistory", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Payment.CardDetails", b =>
@@ -419,7 +419,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardDetails");
+                    b.ToTable("CardDetails", (string)null);
                 });
 
             modelBuilder.Entity("FlowerStore.Infrastructure.Data.Models.Payment.PaymentMethod", b =>
@@ -438,7 +438,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PaymentMethods");
+                    b.ToTable("PaymentMethods", (string)null);
 
                     b.HasData(
                         new
@@ -505,7 +505,7 @@ namespace FlowerStore.Infrastructure.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new

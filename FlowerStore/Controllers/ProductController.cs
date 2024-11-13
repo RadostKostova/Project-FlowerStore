@@ -56,7 +56,7 @@ namespace FlowerStore.Controllers
             var products = await productService.SearchProductAsync(searchString);
 
             return View(products);
-        }       
+        }
 
         //Private methods (helpers)
         private async Task<bool> CalculateAvailability(int flowerCount)

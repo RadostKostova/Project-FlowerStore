@@ -50,8 +50,6 @@ namespace FlowerStore.Core.Services
         //Add product to store
         public async Task<int> AddProductAsync(ProductAddViewModel model)
         {
-            //should have condition if == "Admin" (later)
-
             var product = new Product()
             {
                 Name = model.Name,
@@ -96,7 +94,7 @@ namespace FlowerStore.Core.Services
 
         public async Task<decimal?> GetProductPriceAsync(int productId)
         {
-            var product = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p=>p.Id == productId); 
+            var product = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p => p.Id == productId);
 
             return product?.Price;
         }
@@ -194,7 +192,7 @@ namespace FlowerStore.Core.Services
         {
             var product = await repository
                 .AllAsReadOnly<Product>()
-                .Where (p => p.Id == productId)
+                .Where(p => p.Id == productId)
                 .FirstOrDefaultAsync();
 
             //should remove from each entity
@@ -204,3 +202,4 @@ namespace FlowerStore.Core.Services
         }
     }
 }
+

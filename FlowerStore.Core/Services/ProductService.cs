@@ -94,7 +94,9 @@ namespace FlowerStore.Core.Services
 
         public async Task<decimal?> GetProductPriceAsync(int productId)
         {
-            var product = await repository.AllAsReadOnly<Product>().FirstOrDefaultAsync(p => p.Id == productId);
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             return product?.Price;
         }
@@ -163,7 +165,8 @@ namespace FlowerStore.Core.Services
         //Get all categories from database
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            return await repository.AllAsReadOnly<Category>()
+            return await repository
+                .AllAsReadOnly<Category>()
                 .Select(c => new CategoryViewModel()
                 {
                     Id = c.Id,

@@ -19,7 +19,7 @@ namespace FlowerStore.Controllers
             productService = _productService;
         }
 
-        //Get view of shopping cart
+        //Check if cart exists - return the model if it does, else create and return
         [HttpGet]
         public async Task<IActionResult> MyShoppingCart()
         {
@@ -27,10 +27,22 @@ namespace FlowerStore.Controllers
 
             if (userId == null)
             {
+                return Unauthorized();
+            }
+
+            var model = await cartService.GetShoppingCartByUserIdAsync(userId);
+
+            if (model == null)
+            {
+                await cartService.CreateShoppingCartAsync(userId);
+                model = await cartService.GetShoppingCartByUserIdAsync(userId);
+            }
+
+            if (model == null)
+            {
                 return BadRequest();
             }
 
-            var model = await cartService.GetOrCreateShoppingCartAsync(userId);
             return View(model);
         }
 
@@ -41,23 +53,12 @@ namespace FlowerStore.Controllers
         {
             string userId = User.GetUserId();
 
-            if (userId == null)
+            if (userId == null || productId <= 0)
             {
                 return BadRequest();
             }
 
-            if (productId <= 0 || quantity <= 0)
-            {
-                return BadRequest();
-            }
-
-            var isProductAdded = await cartService.AddProductToCartAsync(userId, productId, quantity);
-
-            if (isProductAdded == false)
-            {
-                return BadRequest();
-            }
-
+            await cartService.AddProductToCartAsync(userId, productId, quantity);
             return RedirectToAction(nameof(MyShoppingCart));
         }
 

@@ -86,7 +86,7 @@ namespace FlowerStore.Core.Services
         //Collect all order data with user input data and create OrderViewModel
         public async Task<OrderViewModel> CreateOrderViewModelAsync(OrderFormViewModel formModel, CartViewModel cart)
         {
-            var cartFound = await cartService.ShoppingCartExistByUserIdAsync(cart.UserId);
+            //var cartFound = await cartService.ShoppingCartExistByUserIdAsync(cart.UserId);
 
             var orderModel = new OrderViewModel
             {
@@ -97,7 +97,7 @@ namespace FlowerStore.Core.Services
                 OrderDate = DateTime.Now,
                 OrderStatusId = 1,  //Pending
                 ShoppingCartId = cart.Id,
-                TotalPrice = CalculateTotalPrice(cartFound),
+                TotalPrice = CalculateTotalPrice(await cartService.ShoppingCartExistByUserIdAsync(cart.UserId)),
                 PaymentMethods = await GetAllPaymentMethodsAsync(),
                 OrderStatuses = await GetAllOrderStatusesAsync(),
                 OrderProducts = cart.ShoppingCartProducts.Select(scp => new OrderProductViewModel

@@ -107,7 +107,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var cart = await cartService.GetShoppingCartAsync(User.GetUserId());
+            var cart = await cartService.GetShoppingCartByUserIdAsync(User.GetUserId());
             var orderModel = await orderService.CreateOrderViewModelAsync(formModel, cart); 
 
             if (orderModel == null)

@@ -79,7 +79,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h4 class="card-title text-center">Shipping details</h4>
+                    <h4 class="card-title text-center">Customer Details:</h4>
+                    <p><strong>First Name:</strong> @Model.FirstName</p>
+                    <p><strong>Last Name:</strong> @Model.LastName</p>
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
                     <p><strong>Order Date:</strong> @Model.OrderDate.ToString("g")</p>
                     <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
                     <p><strong>Shipping Address:</strong> @Model.ShippingAddress</p>
@@ -87,7 +91,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <h4 class="card-title text-center">Products</h4>
+                    <h4 class="card-title text-center">Products:</h4>
                     <ul class="list-group list-group-flush">
                         @if (Model.OrderProducts != null && Model.OrderProducts.Any())
                         {
@@ -115,7 +119,7 @@
     {
         <div class="card mb-4">
             <div class="card-body">
-                <h4 class="card-title fst-italic">Card Details</h4>
+                <h4 class="card-title fst-italic">Card Details:</h4>
                 <p><strong>Card Holder:</strong> @Model.CardDetails.CardHolderName</p>
                 <p><strong>Card Number:</strong> **** **** **** @(Model.CardDetails.CardNumber.Substring(12))</p>
                 <p><strong>CVV:</strong> @Model.CardDetails.CVV</p>

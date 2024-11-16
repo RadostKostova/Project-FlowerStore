@@ -10,6 +10,7 @@
         public const string NumberRangeErrorMessage = "The field {0} should be between {2} and {1}.";
         public const string DateFormatErrorMessage = "Date must be in dd/MM/yyyy HH:mm format.";
         public const string ExactNumberErrorMessage = "The {0} field should be exactly {1} numbers.";
+        public const string InvalidFieldErrorMessage = "The {0} field is invalid.";
 
         //Specific Error Messages
         public const string ImageUrlErrorMessage = "The {0} should be valid URL. Only images with extension .jpg and .png are allowed.";

@@ -35,6 +35,10 @@
         public const double OrderTotalPriceMaxLength = 2000;
         public const int AddressMinLength = 10;
         public const int AddressMaxLength = 100;
+        public const int FirstNameMinLength = 2;
+        public const int FirstNameMaxLength = 30;
+        public const int LastNameMinLength = 2;
+        public const int LastNameMaxLength = 30;
 
         //Product entity
         public const int ProductNameMinLength = 5;

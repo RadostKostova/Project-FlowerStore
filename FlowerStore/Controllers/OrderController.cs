@@ -100,11 +100,11 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(TempData["OrderFormData"].ToString());
+            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(TempData["OrderFormData"]?.ToString());
 
             if (formModel == null)
             {
-                return BadRequest();
+                return RedirectToAction(nameof(ShippingDetails));
             }
 
             var cart = await cartService.GetShoppingCartByUserIdAsync(User.GetUserId());
@@ -117,7 +117,12 @@ namespace FlowerStore.Controllers
 
             if (TempData.ContainsKey("CardDetailsData"))
             {   
-                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(TempData["CardDetailsData"].ToString());
+                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(TempData["CardDetailsData"]?.ToString());
+
+                if (cardModel == null)
+                {
+                    return RedirectToAction(nameof(CardDetails));
+                }
                 orderModel.CardDetails = cardModel;                 
             }
 

@@ -62,7 +62,8 @@ namespace FlowerStore.Core.Services
         //Get all order statuses from database as view models
         public async Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync()
         {
-            var orderStatuses = await repository.AllAsReadOnly<OrderStatus>()
+            var orderStatuses = await repository
+                .AllAsReadOnly<OrderStatus>()
                 .Select(os => new OrderStatusViewModel()
                 {
                     Id = os.Id,
@@ -100,6 +101,10 @@ namespace FlowerStore.Core.Services
                 TotalPrice = CalculateTotalPrice(await cartService.ShoppingCartExistByUserIdAsync(cart.UserId)),
                 PaymentMethods = await GetAllPaymentMethodsAsync(),
                 OrderStatuses = await GetAllOrderStatusesAsync(),
+                FirstName = formModel.FirstName,
+                LastName = formModel.LastName,
+                Phone = formModel.Phone,
+                Email = formModel.Email,
                 OrderProducts = cart.ShoppingCartProducts.Select(scp => new OrderProductViewModel
                 {
                     OrderId = formModel.Id,
@@ -128,6 +133,10 @@ namespace FlowerStore.Core.Services
                 OrderStatusId = model.OrderStatusId,
                 PaymentMethodId = model.PaymentMethodId,
                 ShoppingCartId = model.ShoppingCartId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Phone = model.Phone,
+                Email = model.Email,
                 CardDetailsId = cardDetailsId,
             };
 
@@ -222,6 +231,10 @@ namespace FlowerStore.Core.Services
             order.ShippingAddress = model.ShippingAddress;
             order.OrderDetails = model.OrderDetails;
             order.PaymentMethodId = model.PaymentMethodId;
+            order.FirstName = model.FirstName;
+            order.LastName = model.LastName;
+            order.Email = model.Email;
+            order.Phone = model.Phone;
 
             await repository.SaveChangesAsync();
             return true;
@@ -230,7 +243,8 @@ namespace FlowerStore.Core.Services
         //Confirm the order, change order status and return boolean
         public async Task<bool> ConfirmOrderAsync(int orderId)
         {
-            var order = await repository.All<Order>()
+            var order = await repository
+                .All<Order>()
                 .Include(o => o.OrderProducts)
                 .FirstOrDefaultAsync(o => o.Id == orderId && o.OrderStatusId == 1);
 
@@ -239,7 +253,8 @@ namespace FlowerStore.Core.Services
                 return false;
             }
 
-            var shippedStatus = await repository.All<OrderStatus>()
+            var shippedStatus = await repository
+                .All<OrderStatus>()
                 .FirstOrDefaultAsync(os => os.OrderStatusName == "Shipped");
 
             order.OrderStatusId = shippedStatus!.Id;
@@ -274,6 +289,10 @@ namespace FlowerStore.Core.Services
                 TotalPrice = order.TotalPrice,
                 PaymentMethodId = order.PaymentMethodId,
                 OrderStatusId = order.OrderStatusId,
+                FirstName = order.FirstName,
+                LastName = order.LastName,
+                Email = order.Email,
+                Phone = order.Phone,
                 OrderProducts = order.OrderProducts.Select(op => new OrderProductHistory
                 {
                     ProductId = op.ProductId,
@@ -304,6 +323,10 @@ namespace FlowerStore.Core.Services
                     ShippingAddress = oh.ShippingAddress,
                     PaymentMethod = oh.PaymentMethod.Name,
                     OrderStatus = oh.OrderStatus.OrderStatusName,
+                    FirstName= oh.FirstName,
+                    LastName= oh.LastName,
+                    Email = oh.Email,
+                    Phone = oh.Phone,
                     OrderProducts = oh.OrderProducts.Select(op => new OrderProductViewModel
                     {
                         ProductId = op.ProductId,

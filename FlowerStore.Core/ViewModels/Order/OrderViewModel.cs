@@ -3,6 +3,7 @@ using FlowerStore.Core.ViewModels.CardDetails;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.PaymentMethod;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 using static FlowerStore.Infrastructure.Constants.ErrorConstants;
@@ -48,6 +49,28 @@ namespace FlowerStore.Core.ViewModels.Order
 
         [Required]
         public int ShoppingCartId { get; set; }
+
+        [Required]
+        [StringLength(FirstNameMaxLength,
+            MinimumLength = FirstNameMinLength,
+            ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(LastNameMaxLength,
+            MinimumLength = LastNameMinLength,
+            ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress(ErrorMessage = InvalidFieldErrorMessage)]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Phone(ErrorMessage = InvalidFieldErrorMessage)]
+        public string Phone { get; set; } = string.Empty;
 
         public CardDetailsAddViewModel? CardDetails { get; set; }
         public IEnumerable<OrderStatusViewModel> OrderStatuses { get; set; } = new List<OrderStatusViewModel>();

@@ -22,6 +22,28 @@ namespace FlowerStore.Core.ViewModels.Order
         [Display(Name = "Payment Method")]
         public int PaymentMethodId { get; set; }
 
+        [Required]
+        [StringLength(FirstNameMaxLength,
+            MinimumLength = FirstNameMinLength,
+            ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(LastNameMaxLength,
+            MinimumLength = LastNameMinLength,
+            ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress(ErrorMessage = InvalidFieldErrorMessage)]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Phone(ErrorMessage = InvalidFieldErrorMessage)]
+        public string Phone { get; set; } = string.Empty;
+
         public IEnumerable<PaymentMethodViewModel> PaymentMethods { get; set; } = new List<PaymentMethodViewModel>();
     }
 }

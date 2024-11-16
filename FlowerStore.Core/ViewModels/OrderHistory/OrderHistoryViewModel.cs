@@ -1,4 +1,5 @@
 ﻿using FlowerStore.Core.ViewModels.OrderProduct;
+using System.ComponentModel.DataAnnotations;
 
 namespace FlowerStore.Core.ViewModels.OrderHistory
 {
@@ -12,6 +13,10 @@ namespace FlowerStore.Core.ViewModels.OrderHistory
         public string ShippingAddress { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = string.Empty;
         public string OrderStatus { get; set; } = string.Empty;
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string Phone { get; set; } = string.Empty;
         public List<OrderProductViewModel> OrderProducts { get; internal set; } = new List<OrderProductViewModel>();
     }
 }

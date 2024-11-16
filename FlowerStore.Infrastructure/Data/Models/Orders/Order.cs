@@ -54,6 +54,32 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         [Comment("Shopping Cart identifier")]
         public int ShoppingCartId { get; set; }
 
+        [Required]
+        [MaxLength(FirstNameMaxLength)]
+        [Comment("First name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(LastNameMaxLength)]
+        [Comment("Last name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        [Comment("Email")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Phone]
+        [Comment("Phone")]
+        public string Phone { get; set; } = string.Empty;
+
+        [Comment("Card identifier")]
+        public int? CardDetailsId { get; set; }
+
+        [ForeignKey("CardDetailsId")]
+        public CardDetails? CardDetails { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public ApplicationUser User { get; set; } = null!;
 
@@ -65,12 +91,6 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 
         [ForeignKey(nameof(ShoppingCartId))]
         public ShoppingCart ShoppingCart { get; set; } = null!;
-
-        [Comment("Card identifier")]
-        public int? CardDetailsId { get; set; } 
-
-        [ForeignKey("CardDetailsId")]
-        public CardDetails? CardDetails { get; set; }
 
         public virtual ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }

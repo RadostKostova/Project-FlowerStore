@@ -52,7 +52,26 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
         [Comment("Order status identifier")]
         public int OrderStatusId { get; set; }
 
-        // Navigation Properties
+        [Required]
+        [MaxLength(FirstNameMaxLength)]
+        [Comment("First name")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(LastNameMaxLength)]
+        [Comment("Last name")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        [Comment("Email")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        [Phone]
+        [Comment("Phone")]
+        public string Phone { get; set; } = string.Empty;
+
         [ForeignKey(nameof(OrderId))]
         public Order Order { get; set; } = null!;
 

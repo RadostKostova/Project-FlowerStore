@@ -42,7 +42,6 @@ namespace FlowerStore.Controllers
 
         //Retrieve user input (shipping info) and redirect based on payment method
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ShippingDetails(OrderFormViewModel formModel)
         {
             if (!ModelState.IsValid)
@@ -79,7 +78,6 @@ namespace FlowerStore.Controllers
 
         //Retrieve user's card details and redirect to Preview
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult CardDetails(CardDetailsAddViewModel cardModel)
         {
             if (!ModelState.IsValid)
@@ -132,7 +130,6 @@ namespace FlowerStore.Controllers
 
         //Create new actual order in database (and eventual CardDetails)
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PlaceOrder()
         {
             var orderModel = JsonConvert.DeserializeObject<OrderViewModel>(TempData["OrderViewModel"].ToString());
@@ -161,6 +158,7 @@ namespace FlowerStore.Controllers
             return RedirectToAction("Confirmed", new { orderId = newOrderId });
         }
 
+        //Display confirmation page
         [HttpGet]
         public async Task<IActionResult> Confirmed(int orderId)
         {

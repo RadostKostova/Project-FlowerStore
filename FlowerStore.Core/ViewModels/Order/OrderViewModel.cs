@@ -3,7 +3,6 @@ using FlowerStore.Core.ViewModels.CardDetails;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.PaymentMethod;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 using static FlowerStore.Infrastructure.Constants.ErrorConstants;

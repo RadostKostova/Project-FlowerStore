@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 
-namespace HouseRentingSystem.ModelBinders
+namespace FlowerStore.ModelBinders
 {
     public class DecimalModelBinder : IModelBinder
     {

@@ -48,7 +48,6 @@ namespace FlowerStore.Controllers
 
         //Add product to shopping cart
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(int productId, int quantity = 1)
         {
             string userId = User.GetUserId();
@@ -64,7 +63,6 @@ namespace FlowerStore.Controllers
 
         //Remove product from shopping cart
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveFromCart(int productId)
         {
             string userId = User.GetUserId();

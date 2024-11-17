@@ -39,7 +39,6 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Add product to database
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(ProductAddViewModel model)
         {
             if (model == null)
@@ -90,7 +89,6 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Edit product and save to database
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(ProductEditViewModel model)
         {
             if (model == null)
@@ -131,7 +129,6 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Delete product from database
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(ProductDeleteViewModel model)
         {
             var product = await productService.ProductByIdExistAsync(model.Id);

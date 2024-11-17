@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace HouseRentingSystem.ModelBinders
+namespace FlowerStore.ModelBinders
 {
     public class DecimalModelBinderProvider : IModelBinderProvider
     {

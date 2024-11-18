@@ -6,21 +6,21 @@ namespace FlowerStore.Areas.Admin.Controllers
     public class OrderController : AdminBaseController
     {
         /// <summary>
-        /// Manages operations related to orders and admin
+        /// Manages operations related to orders.
         /// </summary>
         
-        private readonly IOrderService orderService;
+        private readonly IAdminService adminService;
 
-        public OrderController(IOrderService _orderService)
+        public OrderController(IAdminService _adminService)
         {
-            orderService = _orderService;
+            adminService = _adminService;
         }
         
         //Get all orders
         [HttpGet]
-        public async Task<IActionResult> OrderHistoryAll()
+        public async Task<IActionResult> All()
         {
-            var allOrders = await orderService.GetAllOrdersAsync();
+            var allOrders = await adminService.GetAllOrdersAsync();
             return View(allOrders);
         }
     }

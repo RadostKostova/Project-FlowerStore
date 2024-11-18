@@ -53,5 +53,18 @@ namespace Microsoft.Extensions.DependencyInjection
 
             return services;
         }
+
+        public static IServiceCollection AddApplicationSession(this IServiceCollection services)
+        {
+            services.AddDistributedMemoryCache(); 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(15); 
+                options.Cookie.HttpOnly = true; //against XSS
+                options.Cookie.IsEssential = true; 
+            });
+
+            return services;
+        }
     }
 }

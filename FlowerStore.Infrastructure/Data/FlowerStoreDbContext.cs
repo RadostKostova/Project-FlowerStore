@@ -29,7 +29,6 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
-        public DbSet<OrderHistory> OrderHistories { get; set; }
         public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Product> Products { get; set; }
 
@@ -46,12 +45,6 @@ namespace FlowerStore.Infrastructure.Data
             builder.Entity<Order>()
                 .HasIndex(o => o.ShoppingCartId)
                 .IsUnique(false);
-
-            builder.Entity<OrderHistory>()
-                .HasOne(oh => oh.Order)
-                .WithMany()
-                .HasForeignKey(oh => oh.OrderId)
-                .OnDelete(DeleteBehavior.NoAction);  
 
             builder.Entity<ShoppingCartProduct>()
                 .Property(shp => shp.Price)

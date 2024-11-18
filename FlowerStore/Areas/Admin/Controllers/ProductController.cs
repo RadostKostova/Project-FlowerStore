@@ -19,7 +19,7 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Display all products
         [HttpGet]
-        public async Task<IActionResult> AllProducts()
+        public async Task<IActionResult> All()
         {
             var products = await productService.ShowAllProductsAsync();
             return View(products);
@@ -69,7 +69,7 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             int modelId = await productService.AddProductAsync(model);
-            return RedirectToAction(nameof(AllProducts));
+            return RedirectToAction(nameof(All));
         }
 
         //Get edit form
@@ -108,7 +108,7 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             await productService.PostEditProductAsync(model);
-            return RedirectToAction(nameof(AllProducts));
+            return RedirectToAction(nameof(All));
         }
 
         //Get delete form
@@ -139,7 +139,7 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             await productService.ConfirmDeleteAsync(product.Id);
-            return RedirectToAction(nameof(AllProducts));
+            return RedirectToAction(nameof(All));
         }
 
 

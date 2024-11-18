@@ -1,6 +1,6 @@
 ﻿using FlowerStore.Core.Contracts;
-using FlowerStore.Core.ViewModels.OrderHistory;
-using FlowerStore.Core.ViewModels.OrderProduct;
+using FlowerStore.Core.ViewModels.Order;
+using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Roles;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FlowerStore.Core.Services
 {
     /// <summary>
-    /// The admin service class includes methods for user management and administrative tasks.
+    /// The admin service class includes methods for user management, administrative tasks, adding/editing products and etc.
     /// </summary>
 
     public class AdminService : IAdminService
@@ -28,32 +28,46 @@ namespace FlowerStore.Core.Services
             userManager = _userManager;
         }
 
-        //Get all orders (order history of all users)
-        public async Task<IEnumerable<OrderHistoryViewModel>> GetAllOrdersAsync()
+        //Get all orders
+        public async Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync()
         {
             return await repository
-                .AllAsReadOnly<OrderHistory>()
-                .Select(oh => new OrderHistoryViewModel
+                .AllAsReadOnly<Order>()
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.OrderStatus)
+                .Select(o => new OrderAllViewModel
                 {
-                    Id = oh.Id,
-                    UserId = oh.UserId,
-                    OrderId = oh.OrderId,
-                    OrderDate = oh.OrderDate,
-                    TotalPrice = oh.TotalPrice,
-                    ShippingAddress = oh.ShippingAddress,
-                    PaymentMethod = oh.PaymentMethod.Name,
-                    OrderStatus = oh.OrderStatus.OrderStatusName,
-                    OrderProducts = oh.OrderProducts.Select(op => new OrderProductViewModel
-                    {
-                        ProductId = op.ProductId,
-                        ProductName = op.ProductName,
-                        Price = op.Price,
-                        Quantity = op.Quantity
-                    }).ToList()
+                    Id = o.Id,
+                    UserId = o.UserId,
+                    OrderDate = o.OrderDate.ToString(),
+                    TotalPrice = o.TotalPrice,
+                    PaymentMethod = o.PaymentMethod.Name,
+                    OrderDetails = o.OrderDetails,
+                    ShippingAddress = o.ShippingAddress,
+                    OrderStatus = o.OrderStatus.OrderStatusName,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    Email = o.Email,
+                    Phone = o.Phone
                 })
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync()
+        {
+            var users = await userManager.Users
+                .Select(user => new UserAllViewModel
+                {
+                    Id = user.Id,
+                    Username = user.UserName,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber
+                })
+                .ToListAsync();
 
+            return users;
+        }
     }
 }

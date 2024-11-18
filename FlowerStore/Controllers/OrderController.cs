@@ -9,8 +9,10 @@ using Newtonsoft.Json;
 namespace FlowerStore.Controllers
 {
     /// <summary>
-    /// The OrderController handles operations related to placing an order, such as choosing payment method, shipping info and etc. 
+    /// The OrderController handles operations related to placing an order, such as choosing payment method, shipping info and etc.
+    /// The main target of the controller is first to collect the needed user input data (as viewModels) in session (in-memory session store) and then to create actual order at the database.
     /// </summary>
+    
     public class OrderController : BaseController
     {
         private readonly IOrderService orderService;
@@ -50,7 +52,7 @@ namespace FlowerStore.Controllers
                 return View(formModel);
             }
 
-            TempData["OrderFormData"] = JsonConvert.SerializeObject(formModel); //save for Preview()
+            HttpContext.Session.SetString("OrderFormViewModel", JsonConvert.SerializeObject(formModel));
             var paymentChosen = await orderService.GetChosenPaymentMethodAsync(formModel.PaymentMethodId);
 
             if (paymentChosen.Name == "Card")
@@ -84,8 +86,8 @@ namespace FlowerStore.Controllers
             {
                 return View(cardModel);
             }
-           
-            TempData["CardDetailsData"] = JsonConvert.SerializeObject(cardModel); //save for Preview()
+
+            HttpContext.Session.SetString("CardDetailsAddViewModel", JsonConvert.SerializeObject(cardModel));
             return RedirectToAction(nameof(Preview));
         }
 
@@ -98,7 +100,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(TempData["OrderFormData"]?.ToString());
+            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(HttpContext.Session.GetString("OrderFormViewModel"));
 
             if (formModel == null)
             {
@@ -113,18 +115,21 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            if (TempData.ContainsKey("CardDetailsData"))
+            if (HttpContext.Session.Keys.Contains("CardDetailsAddViewModel"))
             {   
-                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(TempData["CardDetailsData"]?.ToString());
+                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(HttpContext.Session.GetString("CardDetailsAddViewModel"));
 
                 if (cardModel == null)
                 {
                     return RedirectToAction(nameof(CardDetails));
                 }
+
                 orderModel.CardDetails = cardModel;                 
             }
+            HttpContext.Session.Remove("OrderFormViewModel");
+            HttpContext.Session.Remove("CardDetailsAddViewModel");
 
-            TempData["OrderViewModel"] = JsonConvert.SerializeObject(orderModel);
+            HttpContext.Session.SetString("OrderViewModel", JsonConvert.SerializeObject(orderModel));
             return View(orderModel);
         }
 
@@ -132,7 +137,7 @@ namespace FlowerStore.Controllers
         [HttpPost]
         public async Task<IActionResult> PlaceOrder()
         {
-            var orderModel = JsonConvert.DeserializeObject<OrderViewModel>(TempData["OrderViewModel"].ToString());
+            var orderModel = JsonConvert.DeserializeObject<OrderViewModel>(HttpContext.Session.GetString("OrderViewModel"));
 
             if (orderModel == null || !ModelState.IsValid)
             {
@@ -153,7 +158,7 @@ namespace FlowerStore.Controllers
                 return View(nameof(Preview));
             }
 
-            TempData.Clear();
+            HttpContext.Session.Remove("OrderViewModel");
             await cartService.ClearCartAsync(User.GetUserId());
             return RedirectToAction("Confirmed", new { orderId = newOrderId });
         }

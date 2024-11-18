@@ -38,7 +38,6 @@ namespace FlowerStore.Controllers
             {
                 PaymentMethods = await orderService.GetAllPaymentMethodsAsync()
             };
-
             return View(model);
         }
 
@@ -53,6 +52,7 @@ namespace FlowerStore.Controllers
             }
 
             HttpContext.Session.SetString("OrderFormViewModel", JsonConvert.SerializeObject(formModel));
+
             var paymentChosen = await orderService.GetChosenPaymentMethodAsync(formModel.PaymentMethodId);
 
             if (paymentChosen.Name == "Card")
@@ -154,7 +154,6 @@ namespace FlowerStore.Controllers
 
             if (newOrderId == 0)
             {
-                ModelState.AddModelError("", "There was an issue creating your order. Please try again.");
                 return View(nameof(Preview));
             }
 
@@ -163,12 +162,11 @@ namespace FlowerStore.Controllers
             return RedirectToAction("Confirmed", new { orderId = newOrderId });
         }
 
-        //Display confirmation page
+        //Display confirmed page
         [HttpGet]
         public async Task<IActionResult> Confirmed(int orderId)
         {
             var order = await orderService.OrderByIdExistAsync(orderId);
-            //TODO: change orderStatus
 
             if (order == null)
             {
@@ -180,7 +178,8 @@ namespace FlowerStore.Controllers
                 return Unauthorized();
             }
 
-            ViewBag.OrderId = orderId;
+            ViewBag.OrderId = order.Id;
+            ViewBag.OrderDate = order.OrderDate;
             return View();
         }
     }

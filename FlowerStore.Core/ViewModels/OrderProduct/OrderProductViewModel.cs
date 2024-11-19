@@ -1,9 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace FlowerStore.Core.ViewModels.OrderProduct
+﻿namespace FlowerStore.Core.ViewModels.OrderProduct
 {
     /// <summary>
-    /// OrderProductViewModel represents view model that contains the data about products extracted from cart.
+    /// OrderProductViewModel represents view model that contains the data about products extracted from cart. It's reused.
     /// </summary>
 
     public class OrderProductViewModel

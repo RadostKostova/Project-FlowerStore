@@ -23,5 +23,19 @@ namespace FlowerStore.Areas.Admin.Controllers
             var allOrders = await adminService.GetAllOrdersAsync();
             return View(allOrders);
         }
+
+        //Get details of order
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var order = await adminService.GetOrderByIdAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
     }
 }

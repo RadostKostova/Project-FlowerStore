@@ -1,0 +1,49 @@
+﻿@using FlowerStore.Core.ViewModels.Order
+@model OrderDetailsViewModel
+
+@{
+    ViewBag.Title = "Details of order with Id:";
+}
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewBag.Title @Model.OrderId</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="order-info-item"><strong>OrderId:</strong> @Model.OrderId</div>
+                    <div class="order-info-item"><strong>Customer Name:</strong> @Model.FirstName @Model.LastName</div>
+                    <div class="order-info-item"><strong>Email:</strong> @Model.Email</div>
+                    <div class="order-info-item"><strong>Phone:</strong> @Model.Phone</div>
+                    <div class="order-info-item"><strong>Order Date:</strong> @Model.OrderDate.ToString("dd-MM-yyyy")</div>
+                    <div class="order-info-item"><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</div>
+                    <div class="order-info-item"><strong>Shipping Address:</strong> @Model.ShippingAddress</div>
+                    <div class="order-info-item"><strong>Order Status:</strong> @Model.OrderStatus</div>
+                    <div class="order-info-item"><strong>Payment Method:</strong> @Model.PaymentMethod</div>
+                    <div class="order-info-item"><strong>Order Details:</strong> @(Model.OrderDetails ?? "None")</div>
+                </div>
+
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush">
+                        @foreach (var product in Model.OrderProducts)
+                        {
+                            <li class="list-group-item">
+                                <strong>Product ID:</strong> @product.ProductId<br>
+                                <strong>Product Name:</strong> @product.ProductName<br>                                
+                                <strong>Quantity:</strong> @product.Quantity<br>
+                                <strong>Price:</strong> @product.Price.ToString("C")<br>
+                                <strong>Total:</strong> @((product.Price * product.Quantity).ToString("C"))
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+        <a asp-area="Admin" asp-controller="Order" asp-action="EditStatus" asp-route-id="@Model.OrderId" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+    </div>
+</div>

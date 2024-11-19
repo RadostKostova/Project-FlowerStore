@@ -10,6 +10,7 @@ namespace FlowerStore.Core.Contracts
     public interface IAdminService
     {
         Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync();
+        Task<OrderDetailsViewModel> GetOrderByIdAsync(int orderId);
         Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync();
     }
 }

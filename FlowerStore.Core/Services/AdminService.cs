@@ -1,5 +1,6 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Order;
+using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
@@ -39,7 +40,7 @@ namespace FlowerStore.Core.Services
                 {
                     Id = o.Id,
                     UserId = o.UserId,
-                    OrderDate = o.OrderDate.ToString(),
+                    OrderDate = o.OrderDate,
                     TotalPrice = o.TotalPrice,
                     PaymentMethod = o.PaymentMethod.Name,
                     OrderDetails = o.OrderDetails,
@@ -53,6 +54,45 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
         }
 
+        //Get order by id
+        public async Task<OrderDetailsViewModel> GetOrderByIdAsync(int orderId)
+        {
+            var order = await repository
+                .AllAsReadOnly<Order>()
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Include(o => o.OrderStatus)
+                .Include(o => o.PaymentMethod)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            var model = new OrderDetailsViewModel
+            {
+                OrderId = order.Id,
+                UserId = order.UserId,
+                FirstName = order.FirstName,
+                LastName = order.LastName,
+                Email = order.Email,
+                Phone = order.Phone,
+                OrderDate = order.OrderDate,
+                TotalPrice = order.TotalPrice,
+                OrderDetails = order.OrderDetails ?? string.Empty,
+                ShippingAddress = order.ShippingAddress,
+                OrderStatus = order.OrderStatus.OrderStatusName,
+                PaymentMethod = order.PaymentMethod.Name,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                {
+                    OrderId = op.OrderId,
+                    ProductId = op.ProductId,
+                    ProductName = op.ProductName,
+                    Quantity = op.Quantity,
+                    Price = op.Price
+                }).ToList()
+            };
+
+            return model;
+        }
+
+        //Get all users
         public async Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync()
         {
             var users = await userManager.Users

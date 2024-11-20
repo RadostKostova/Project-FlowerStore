@@ -18,7 +18,7 @@
                     <div class="order-info-item"><strong>Email:</strong> @Model.Email</div>
                     <div class="order-info-item"><strong>Phone:</strong> @Model.Phone</div>
                     <div class="order-info-item"><strong>Order Date:</strong> @Model.OrderDate.ToString("dd-MM-yyyy")</div>
-                    <div class="order-info-item"><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</div>
+                    <div class="order-info-item"><strong>Total Price:</strong> @Model.TotalPrice BGN</div>
                     <div class="order-info-item"><strong>Shipping Address:</strong> @Model.ShippingAddress</div>
                     <div class="order-info-item"><strong>Order Status:</strong> <span class="text-danger">@Model.OrderStatus</span></div>
                     <div class="order-info-item"><strong>Payment Method:</strong> @Model.PaymentMethod</div>
@@ -33,8 +33,8 @@
                                 <strong>Product ID:</strong> @product.ProductId<br>
                                 <strong>Product Name:</strong> @product.ProductName<br>
                                 <strong>Quantity:</strong> @product.Quantity<br>
-                                <strong>Price:</strong> @product.Price.ToString("C")<br>
-                                <strong>Total:</strong> @((product.Price * product.Quantity).ToString("C")) BGN
+                                <strong>Price:</strong> @product.Price BGN<br>
+                                <strong>Total:</strong> @((product.Price * product.Quantity)) BGN
                             </li>
                         }
                     </ul>

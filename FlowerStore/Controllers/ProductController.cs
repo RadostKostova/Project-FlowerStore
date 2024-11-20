@@ -39,7 +39,6 @@ namespace FlowerStore.Controllers
             }
 
             var model = await productService.GetProductDetailsAsync(productFound.Id);
-
             return View(model);
         }
 
@@ -54,14 +53,7 @@ namespace FlowerStore.Controllers
             }
 
             var products = await productService.SearchProductAsync(searchString);
-
             return View(products);
-        }
-
-        //Private methods (helpers)
-        private async Task<bool> CalculateAvailability(int flowerCount)
-        {
-            return flowerCount >= 1;
-        }
+        }        
     }
 }

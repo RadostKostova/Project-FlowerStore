@@ -7,14 +7,17 @@ namespace FlowerStore.Areas.Admin.Controllers
     /// <summary>
     /// This controller manages product operations for Admin area
     /// </summary>
-     
+
     public class ProductController : AdminBaseController
     {
         private readonly IProductService productService;
+        private readonly IAdminService adminService;
 
-        public ProductController(IProductService _productService)
+        public ProductController(IProductService _productService,
+            IAdminService _adminService)
         {
             productService = _productService;
+            adminService = _adminService;
         }
 
         //Display all products
@@ -59,12 +62,9 @@ namespace FlowerStore.Areas.Admin.Controllers
             //    ModelState.AddModelError(nameof(model.DateAdded), errorMessage: DateFormatErrorMessage);
             //}
 
-            var availability = await CalculateAvailability(model.FlowersCount);
-
             if (!ModelState.IsValid)
             {
-                model.Availability = availability;
-                model.Categories = categories;
+                model.Categories = await productService.GetAllCategoriesAsync();
                 return View(model);
             }
 
@@ -96,14 +96,9 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            var categories = await productService.GetAllCategoriesAsync();
-            var availability = await CalculateAvailability(model.FlowersCount);
-
             if (!ModelState.IsValid)
             {
-                model.Categories = categories;
-                model.Availability = availability;
-
+                model.Categories = await productService.GetAllCategoriesAsync();
                 return View(model);
             }
 
@@ -123,7 +118,6 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             var productFound = await productService.DeleteProductAsync(id);
-
             return View(productFound);
         }
 
@@ -142,11 +136,21 @@ namespace FlowerStore.Areas.Admin.Controllers
             return RedirectToAction(nameof(All));
         }
 
-
-        //Private methods (helpers)
-        private async Task<bool> CalculateAvailability(int flowerCount)
+        [HttpGet]
+        public async Task<IActionResult> LowStockWarning()   //TODO
         {
-            return flowerCount >= 1;
+            var lowStockProducts = await adminService.GetLowStockProductsAsync();
+
+            if (!lowStockProducts.Any())
+            {
+                return Ok("All products are sufficiently stocked.");
+            }
+
+            var warnings = lowStockProducts
+                .Select(p => $"{p.Name} has only {p.FlowersCount} left in stock.")
+                .ToList();
+
+            return View(warnings); // Or return as JSON, depending on the scenario
         }
     }
 }

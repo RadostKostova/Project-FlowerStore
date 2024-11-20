@@ -1,0 +1,44 @@
+﻿@using FlowerStore.Core.ViewModels.Order
+@model OrderEditStatusViewModel
+
+@{
+    ViewData["Title"] = "Edit the Status of Order No.:";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <h2 class="text-center">@ViewBag.Title @Model.OrderId</h2>
+
+            <form asp-area="Admin" asp-controller="Order" asp-action="EditStatus" method="post">
+                <input type="hidden" asp-for="OrderId" />
+
+                <div class="mb-3">
+                    <label asp-for="@Model.CurrentStatus" class="form-label">Current Status:</label>
+                    <input type="text" asp-for="@Model.CurrentStatus" class="form-control" aria-required="true" readonly />
+                    <span asp-validation-for="@Model.CurrentStatus" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="@Model.SelectedStatusId" class="form-label">New Status:</label>
+                    <select asp-for="@Model.SelectedStatusId" class="form-select" aria-required="true">
+                        <option disabled selected value="">Select Order Status...</option>
+                        @foreach (var status in Model.OrderStatuses)
+                        {
+                            <option value="@status.Id">@status.OrderStatusName</option>
+                        }
+                    </select>
+                    <span asp-validation-for="@Model.SelectedStatusId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Save changes" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

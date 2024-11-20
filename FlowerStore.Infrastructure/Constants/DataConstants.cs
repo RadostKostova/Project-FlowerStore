@@ -41,7 +41,7 @@
         public const int LastNameMaxLength = 30;
 
         //Product entity
-        public const int ProductNameMinLength = 5;
+        public const int ProductNameMinLength = 2;
         public const int ProductNameMaxLength = 30;
         public const double ProductPriceMinLength = 1;
         public const double ProductPriceMaxLength = 500;

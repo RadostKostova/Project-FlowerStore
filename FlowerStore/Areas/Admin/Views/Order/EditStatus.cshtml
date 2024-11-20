@@ -19,7 +19,7 @@
                     <span asp-validation-for="@Model.CurrentStatus" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-4">
                     <label asp-for="@Model.SelectedStatusId" class="form-label">New Status:</label>
                     <select asp-for="@Model.SelectedStatusId" class="form-select" aria-required="true">
                         <option disabled selected value="">Select Order Status...</option>
@@ -31,10 +31,16 @@
                     <span asp-validation-for="@Model.SelectedStatusId" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3">
+                <div class="mb-1">
                     <input class="btn btn-warning mb-2 w-100 p-3 fw-bold" type="submit" value="Save changes" />
                 </div>
             </form>
+
+            <div class="mb-3">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@Model.OrderId" class="btn btn-secondary w-100 p-3 fw-bold">
+                    Go Back
+                </a>
+            </div>
         </div>
     </div>
 </div>

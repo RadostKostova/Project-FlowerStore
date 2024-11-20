@@ -31,10 +31,10 @@
                         {
                             <li class="list-group-item">
                                 <strong>Product ID:</strong> @product.ProductId<br>
-                                <strong>Product Name:</strong> @product.ProductName<br>                                
+                                <strong>Product Name:</strong> @product.ProductName<br>
                                 <strong>Quantity:</strong> @product.Quantity<br>
                                 <strong>Price:</strong> @product.Price.ToString("C")<br>
-                                <strong>Total:</strong> @((product.Price * product.Quantity).ToString("C"))
+                                <strong>Total:</strong> @((product.Price * product.Quantity).ToString("C")) BGN
                             </li>
                         }
                     </ul>
@@ -44,6 +44,8 @@
     </div>
 
     <div class="d-flex justify-content-center gap-3 mt-4">
-        <a asp-area="Admin" asp-controller="Order" asp-action="EditStatus" asp-route-id="@Model.OrderId" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+        <a asp-area="Admin" asp-controller="Order" asp-action="All" class="btn btn-secondary mb-2 w-100 p-3 fw-bold">Go Back</a>
+
+        <a asp-area="Admin" asp-controller="Order" asp-action="EditStatus" asp-route-id="@Model.OrderId" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit Status</a>
     </div>
 </div>

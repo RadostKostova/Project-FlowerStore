@@ -1,6 +1,7 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;
+using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
@@ -28,7 +29,7 @@ namespace FlowerStore.Core.Services
             userService = _userService;
             userManager = _userManager;
         }
-
+        //-----------------------------------------------------------------------------------------ORDER SERVICES:
         //Get all orders
         public async Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync()
         {
@@ -92,6 +93,55 @@ namespace FlowerStore.Core.Services
             return model;
         }
 
+        //Get all order statuses
+        public async Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync()
+        {
+            var orderStatuses = await repository
+                .AllAsReadOnly<OrderStatus>()
+                .Select(os => new OrderStatusViewModel()
+                {
+                    Id = os.Id,
+                    OrderStatusName = os.OrderStatusName
+                })
+                .ToListAsync();
+
+            return orderStatuses;
+        }
+
+        //Get order with it's status as viewModel
+        public async Task<OrderEditStatusViewModel> GetOrderForStatusEditing(int orderId)
+        {
+            var order = await repository
+                .AllAsReadOnly<Order>()
+                .Include(o => o.OrderStatus)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            return new OrderEditStatusViewModel
+            {
+                OrderId = order.Id,
+                CurrentStatus = order.OrderStatus.OrderStatusName,
+                OrderStatuses = await GetAllOrderStatusesAsync()
+            };
+        }
+
+        //Edit status of an order
+        public async Task<bool> EditStatusAsync(int orderId, int newStatusId)
+        {
+            var order = await repository
+                .All<Order>()
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            order.OrderStatusId = newStatusId;
+            await repository.SaveChangesAsync();
+            return true;
+        }
+
+        //-----------------------------------------------------------------------------------------USER SERVICES:
         //Get all users
         public async Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync()
         {

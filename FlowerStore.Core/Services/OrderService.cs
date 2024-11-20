@@ -21,12 +21,15 @@ namespace FlowerStore.Core.Services
     {
         private readonly IRepository repository;
         private readonly ICartService cartService;
+        private readonly IProductService productService;
 
         public OrderService(IRepository _repository,
-            ICartService _cartService)
+            ICartService _cartService,
+            IProductService _productService)
         {
             repository = _repository;
             cartService = _cartService;
+            productService = _productService;
         }
 
         //Check if Order exist by id and return it as Order entity
@@ -45,7 +48,8 @@ namespace FlowerStore.Core.Services
         //Get all payment methods from database as view models
         public async Task<IEnumerable<PaymentMethodViewModel>> GetAllPaymentMethodsAsync()
         {
-            var payments = await repository.AllAsReadOnly<PaymentMethod>()
+            var payments = await repository
+                .AllAsReadOnly<PaymentMethod>()
                 .Select(p => new PaymentMethodViewModel()
                 {
                     Id = p.Id,
@@ -84,8 +88,6 @@ namespace FlowerStore.Core.Services
         //Collect all order data with user input data and create OrderViewModel
         public async Task<OrderViewModel> CreateOrderViewModelAsync(OrderFormViewModel formModel, CartViewModel cart)
         {
-            //var cartFound = await cartService.ShoppingCartExistByUserIdAsync(cart.UserId);
-
             var orderModel = new OrderViewModel
             {
                 UserId = cart.UserId,
@@ -115,7 +117,7 @@ namespace FlowerStore.Core.Services
             return orderModel;
         }
 
-        //Create new order in database
+        //Create new order in database (and decrease the quantity of product in stock)
         public async Task<int> CreateOrderAsync(OrderViewModel model, int? cardDetailsId = null)
         {
             var cart = await cartService.ShoppingCartExistByUserIdAsync(model.UserId);
@@ -151,8 +153,13 @@ namespace FlowerStore.Core.Services
 
             order.ShoppingCart = cart;
             order.OrderProducts = orderedProducts;
-            await repository.SaveChangesAsync();
 
+            foreach (var orderedProduct in orderedProducts)
+            {
+                await productService.UpdateProductStockAsync(orderedProduct.ProductId, orderedProduct.Quantity);
+            }
+
+            await repository.SaveChangesAsync();
             return order.Id;
         }
 

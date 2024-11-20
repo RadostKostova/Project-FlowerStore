@@ -37,7 +37,7 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
         }
 
-        //Check if Product exist by id and return it as Product
+        //Check if product exist by id 
         public async Task<Product> ProductByIdExistAsync(int productId)
         {
             var productFound = await repository
@@ -58,7 +58,7 @@ namespace FlowerStore.Core.Services
                 FullDescription = model.FullDescription,
                 DateAdded = DateTime.UtcNow,
                 FlowersCount = model.FlowersCount,
-                Availability = model.Availability,
+                Availability = model.FlowersCount > 0,
                 CategoryId = model.CategoryId
             };
 
@@ -92,6 +92,7 @@ namespace FlowerStore.Core.Services
             return product;
         }
 
+        //Get price of product
         public async Task<decimal?> GetProductPriceAsync(int productId)
         {
             var product = await repository
@@ -104,7 +105,9 @@ namespace FlowerStore.Core.Services
         //Get edit form of product
         public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
         {
-            var product = await ProductByIdExistAsync(productId);
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
 
             var model = new ProductEditViewModel()
             {
@@ -126,7 +129,9 @@ namespace FlowerStore.Core.Services
         //Post edit form of product
         public async Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model)
         {
-            var product = await ProductByIdExistAsync(model.Id);
+            var product = await repository
+                .All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
 
             product.Name = model.Name;
             product.Price = model.Price;
@@ -134,14 +139,14 @@ namespace FlowerStore.Core.Services
             product.FullDescription = model.FullDescription;
             product.DateAdded = model.DateAdded;
             product.FlowersCount = model.FlowersCount;
-            product.Availability = model.Availability;
+            product.Availability = model.FlowersCount > 0;
             product.CategoryId = model.CategoryId;
 
             await repository.SaveChangesAsync();
             return model;
         }
 
-        //Search for product
+        //Search product
         public async Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString)
         {
             var searchToLower = searchString.ToLower();
@@ -175,6 +180,7 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
         }
 
+        //Delete product
         public async Task<ProductDeleteViewModel> DeleteProductAsync(int productId)
         {
             var product = await repository
@@ -191,17 +197,34 @@ namespace FlowerStore.Core.Services
             return model;
         }
 
+        //Confirm delete
         public async Task<int> ConfirmDeleteAsync(int productId)
         {
             var product = await repository
                 .AllAsReadOnly<Product>()
                 .Where(p => p.Id == productId)
                 .FirstOrDefaultAsync();
-
-            //should remove from each entity
+         
             await repository.RemoveAsync(product);
             await repository.SaveChangesAsync();
             return product.Id;
+        }
+
+        //Update the product stock after placed order
+        public async Task UpdateProductStockAsync(int productId, int quantity)
+        {
+            var product = await repository
+                .All<Product>() 
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            if (product == null || product.FlowersCount < quantity)
+            {
+                throw new ArgumentException("Something went wrong.");
+            }
+
+            product.FlowersCount -= quantity;
+            product.Availability = product.FlowersCount > 0;
+            await repository.SaveChangesAsync();
         }
     }
 }

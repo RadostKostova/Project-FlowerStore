@@ -20,7 +20,7 @@
                     <div class="order-info-item"><strong>Order Date:</strong> @Model.OrderDate.ToString("dd-MM-yyyy")</div>
                     <div class="order-info-item"><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</div>
                     <div class="order-info-item"><strong>Shipping Address:</strong> @Model.ShippingAddress</div>
-                    <div class="order-info-item"><strong>Order Status:</strong> @Model.OrderStatus</div>
+                    <div class="order-info-item"><strong>Order Status:</strong> <span class="text-danger">@Model.OrderStatus</span></div>
                     <div class="order-info-item"><strong>Payment Method:</strong> @Model.PaymentMethod</div>
                     <div class="order-info-item"><strong>Order Details:</strong> @(Model.OrderDetails ?? "None")</div>
                 </div>

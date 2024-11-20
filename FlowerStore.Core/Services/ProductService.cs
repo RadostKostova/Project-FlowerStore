@@ -20,7 +20,6 @@ namespace FlowerStore.Core.Services
             repository = _repository;
         }
 
-
         //Show all products (catalog)
         public async Task<IEnumerable<ProductAllViewModel>> ShowAllProductsAsync()
         {
@@ -45,27 +44,7 @@ namespace FlowerStore.Core.Services
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
             return productFound;
-        }
-
-        //Add product to store
-        public async Task<int> AddProductAsync(ProductAddViewModel model)
-        {
-            var product = new Product()
-            {
-                Name = model.Name,
-                Price = model.Price,
-                ImageUrl = model.ImageUrl,
-                FullDescription = model.FullDescription,
-                DateAdded = DateTime.UtcNow,
-                FlowersCount = model.FlowersCount,
-                Availability = model.FlowersCount > 0,
-                CategoryId = model.CategoryId
-            };
-
-            await repository.AddAsync(product);
-            await repository.SaveChangesAsync();
-            return product.Id;
-        }
+        }        
 
         //Get details of product (return viewModel)
         public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
@@ -102,50 +81,6 @@ namespace FlowerStore.Core.Services
             return product?.Price;
         }
 
-        //Get edit form of product
-        public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
-        {
-            var product = await repository
-                .AllAsReadOnly<Product>()
-                .FirstOrDefaultAsync(p => p.Id == productId);
-
-            var model = new ProductEditViewModel()
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                FullDescription = product.FullDescription,
-                DateAdded = product.DateAdded,
-                FlowersCount = product.FlowersCount,
-                Availability = product.Availability,
-                CategoryId = product.CategoryId
-            };
-
-            model.Categories = await GetAllCategoriesAsync();
-            return model;
-        }
-
-        //Post edit form of product
-        public async Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model)
-        {
-            var product = await repository
-                .All<Product>()
-                .FirstOrDefaultAsync(p => p.Id == model.Id);
-
-            product.Name = model.Name;
-            product.Price = model.Price;
-            product.ImageUrl = model.ImageUrl;
-            product.FullDescription = model.FullDescription;
-            product.DateAdded = model.DateAdded;
-            product.FlowersCount = model.FlowersCount;
-            product.Availability = model.FlowersCount > 0;
-            product.CategoryId = model.CategoryId;
-
-            await repository.SaveChangesAsync();
-            return model;
-        }
-
         //Search product
         public async Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString)
         {
@@ -178,36 +113,6 @@ namespace FlowerStore.Core.Services
                     Name = c.Name
                 })
                 .ToListAsync();
-        }
-
-        //Delete product
-        public async Task<ProductDeleteViewModel> DeleteProductAsync(int productId)
-        {
-            var product = await repository
-                .AllAsReadOnly<Product>()
-                .Where(p => p.Id == productId)
-                .FirstOrDefaultAsync();
-
-            var model = new ProductDeleteViewModel()
-            {
-                Id = product.Id,
-                Name = product.Name
-            };
-
-            return model;
-        }
-
-        //Confirm delete
-        public async Task<int> ConfirmDeleteAsync(int productId)
-        {
-            var product = await repository
-                .AllAsReadOnly<Product>()
-                .Where(p => p.Id == productId)
-                .FirstOrDefaultAsync();
-         
-            await repository.RemoveAsync(product);
-            await repository.SaveChangesAsync();
-            return product.Id;
         }
 
         //Update the product stock after placed order

@@ -11,15 +11,10 @@ namespace FlowerStore.Core.Contracts
     public interface IProductService
     {
         Task<IEnumerable<ProductAllViewModel>> ShowAllProductsAsync();
-        Task<int> AddProductAsync(ProductAddViewModel model);
-        Task<ProductEditViewModel> GetEditProductAsync(int productId);
-        Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model);
+        Task<Product> ProductByIdExistAsync(int productId);
         Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId);
         Task<decimal?> GetProductPriceAsync(int productId);
         Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString);
-        Task<ProductDeleteViewModel> DeleteProductAsync(int productId);
-        Task<int> ConfirmDeleteAsync(int productId);
-        Task<Product> ProductByIdExistAsync(int productId);
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
         Task UpdateProductStockAsync(int productId, int quantity);
     }

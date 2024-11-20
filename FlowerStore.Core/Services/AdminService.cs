@@ -2,6 +2,7 @@
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
+using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
@@ -19,14 +20,17 @@ namespace FlowerStore.Core.Services
     public class AdminService : IAdminService
     {
         private readonly IRepository repository;
+        private readonly IProductService productService;
         private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public AdminService(IRepository _repository,
+            IProductService _productService,
             IUserService _userService,
             UserManager<ApplicationUser> _userManager)
         {
             repository = _repository;
+            productService = _productService;
             userService = _userService;
             userManager = _userManager;
         }
@@ -163,6 +167,101 @@ namespace FlowerStore.Core.Services
         }
 
         //-----------------------------------------------------------------------------------------PRODUCT SERVICES:
+
+        //Add new product
+        public async Task<int> AddProductAsync(ProductAddViewModel model)
+        {
+            var product = new Product()
+            {
+                Name = model.Name,
+                Price = model.Price,
+                ImageUrl = model.ImageUrl,
+                FullDescription = model.FullDescription,
+                DateAdded = DateTime.UtcNow,
+                FlowersCount = model.FlowersCount,
+                Availability = model.FlowersCount > 0,
+                CategoryId = model.CategoryId
+            };
+
+            await repository.AddAsync(product);
+            await repository.SaveChangesAsync();
+            return product.Id;
+        }
+
+        //Get edit form of product
+        public async Task<ProductEditViewModel> GetEditProductAsync(int productId)
+        {
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .FirstOrDefaultAsync(p => p.Id == productId);
+
+            var model = new ProductEditViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                FullDescription = product.FullDescription,
+                DateAdded = product.DateAdded,
+                FlowersCount = product.FlowersCount,
+                Availability = product.Availability,
+                CategoryId = product.CategoryId
+            };
+
+            model.Categories = await productService.GetAllCategoriesAsync();
+            return model;
+        }
+
+        //Post edit form of product
+        public async Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model)
+        {
+            var product = await repository
+                .All<Product>()
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
+
+            product.Name = model.Name;
+            product.Price = model.Price;
+            product.ImageUrl = model.ImageUrl;
+            product.FullDescription = model.FullDescription;
+            product.DateAdded = model.DateAdded;
+            product.FlowersCount = model.FlowersCount;
+            product.Availability = model.FlowersCount > 0;
+            product.CategoryId = model.CategoryId;
+
+            await repository.SaveChangesAsync();
+            return model;
+        }
+
+        //Delete product
+        public async Task<ProductDeleteViewModel> DeleteProductAsync(int productId)
+        {
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .Where(p => p.Id == productId)
+                .FirstOrDefaultAsync();
+
+            var model = new ProductDeleteViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name
+            };
+
+            return model;
+        }
+
+        //Confirm delete
+        public async Task<int> ConfirmDeleteAsync(int productId)
+        {
+            var product = await repository
+                .AllAsReadOnly<Product>()
+                .Where(p => p.Id == productId)
+                .FirstOrDefaultAsync();
+
+            await repository.RemoveAsync(product);
+            await repository.SaveChangesAsync();
+            return product.Id;
+        }
+
         //Get low stock products that are at or below 3 as quantity
         public async Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 3)
         {

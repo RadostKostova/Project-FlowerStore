@@ -68,7 +68,7 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return View(model);
             }
 
-            int modelId = await productService.AddProductAsync(model);
+            int modelId = await adminService.AddProductAsync(model);
             return RedirectToAction(nameof(All));
         }
 
@@ -83,7 +83,7 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            var model = await productService.GetEditProductAsync(id);
+            var model = await adminService.GetEditProductAsync(id);
             return View(model);
         }
 
@@ -102,7 +102,7 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return View(model);
             }
 
-            await productService.PostEditProductAsync(model);
+            await adminService.PostEditProductAsync(model);
             return RedirectToAction(nameof(All));
         }
 
@@ -117,7 +117,7 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            var productFound = await productService.DeleteProductAsync(id);
+            var productFound = await adminService.DeleteProductAsync(id);
             return View(productFound);
         }
 
@@ -132,12 +132,12 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            await productService.ConfirmDeleteAsync(product.Id);
+            await adminService.ConfirmDeleteAsync(product.Id);
             return RedirectToAction(nameof(All));
         }
 
         [HttpGet]
-        public async Task<IActionResult> LowStockWarning()   //TODO
+        public async Task<IActionResult> LowStockProducts()   //TODO tomorrow...
         {
             var lowStockProducts = await adminService.GetLowStockProductsAsync();
 

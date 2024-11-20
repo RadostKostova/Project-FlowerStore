@@ -21,5 +21,6 @@ namespace FlowerStore.Core.Contracts
         Task<int> ConfirmDeleteAsync(int productId);
         Task<Product> ProductByIdExistAsync(int productId);
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
+        Task UpdateProductStockAsync(int productId, int quantity);
     }
 }

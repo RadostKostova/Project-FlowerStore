@@ -1,6 +1,7 @@
 ﻿using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.User;
+using FlowerStore.Infrastructure.Data.Models;
 
 namespace FlowerStore.Core.Contracts
 {
@@ -19,5 +20,8 @@ namespace FlowerStore.Core.Contracts
 
         //--------------------------------------------------------USER
         Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync();
+
+        //--------------------------------------------------------PRODUCT
+        Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 3);
     }
 }

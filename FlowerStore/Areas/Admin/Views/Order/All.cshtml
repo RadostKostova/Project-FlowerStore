@@ -23,18 +23,19 @@
                         <p class="card-text">
                             <strong>User:</strong> @order.UserId<br />
                             <strong>Order Date:</strong> @order.OrderDate.ToString("dd-MM-yyyy")<br />
-                            <strong>Total Price:</strong> @order.TotalPrice<br />
+                            <strong>Total Price:</strong> @order.TotalPrice BGN<br />
                             <strong>Status:</strong> <span class="text-danger">@order.OrderStatus</span><br />
                             <strong>Payment:</strong> @order.PaymentMethod<br />
                         </p>
                     </div>
 
-                    <div class="card-footer d-flex justify-content-between">
+                    <div class="card-footer d-flex justify-content-between">                       
                         <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-warning">
                             Details
                         </a>
+
                         <a asp-area="Admin" asp-controller="Order" asp-action="EditStatus" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
-                            Edit
+                            Edit Status
                         </a>
                     </div>
                 </div>

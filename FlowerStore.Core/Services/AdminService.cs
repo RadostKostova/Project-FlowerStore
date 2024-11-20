@@ -4,6 +4,7 @@ using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
+using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,7 @@ namespace FlowerStore.Core.Services
             userService = _userService;
             userManager = _userManager;
         }
+
         //-----------------------------------------------------------------------------------------ORDER SERVICES:
         //Get all orders
         public async Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync()
@@ -158,6 +160,16 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
 
             return users;
+        }
+
+        //-----------------------------------------------------------------------------------------PRODUCT SERVICES:
+        //Get low stock products that are at or below 3 as quantity
+        public async Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 3)
+        {
+            return await repository
+                .AllAsReadOnly<Product>()
+                .Where(p => p.FlowersCount <= threshold)
+                .ToListAsync();
         }
     }
 }

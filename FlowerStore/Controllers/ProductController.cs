@@ -17,7 +17,7 @@ namespace FlowerStore.Controllers
             productService = _productService;
         }
 
-        //Show all products with pagination (handles unexisting pages)
+        //Show all products with pagination (handles unexisting page)
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> Catalog(int page = 1, int pageSize = 8)

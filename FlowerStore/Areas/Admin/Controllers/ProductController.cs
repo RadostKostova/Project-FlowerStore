@@ -1,6 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Product;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers
@@ -21,11 +20,22 @@ namespace FlowerStore.Areas.Admin.Controllers
             adminService = _adminService;
         }
 
-        //Display all products
+        //Display all products with pagination (handles unexisting page)
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1, int pageSize = 2)
         {
-            var products = await productService.ShowAllProductsAsync();
+            var products = await productService.GetPaginatedProductsAsync(page, pageSize);
+
+            if (page < 1)
+            {
+                return RedirectToAction(nameof(All), new { page = 1 });
+            }
+
+            if (page > products.TotalPages && products.TotalPages > 0)
+            {
+                return RedirectToAction(nameof(All), new { page = 1 });
+            }
+
             return View(products);
         }
 
@@ -152,6 +162,7 @@ namespace FlowerStore.Areas.Admin.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        //Display low-stock products
         [HttpGet]
         public async Task<IActionResult> LowStockProducts()
         {

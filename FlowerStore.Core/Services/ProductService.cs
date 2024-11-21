@@ -20,12 +20,20 @@ namespace FlowerStore.Core.Services
             repository = _repository;
         }
 
-        //Show all products (catalog)
-        public async Task<IEnumerable<ProductAllViewModel>> ShowAllProductsAsync()
+        //Display all products with pagination
+        public async Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize)
         {
-            return await repository
+            var productsCount = await repository
                 .AllAsReadOnly<Product>()
-                .Select(p => new ProductAllViewModel()
+                .CountAsync();
+
+            var totalPages = (int)Math.Ceiling((double)productsCount / pageSize);
+
+            var products = await repository
+                .AllAsReadOnly<Product>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new ProductAllViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
@@ -34,6 +42,13 @@ namespace FlowerStore.Core.Services
                     Category = p.Category.Name
                 })
                 .ToListAsync();
+
+            return new ProductsPaginatedViewModel
+            {
+                Products = products,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
         }
 
         //Check if product exist by id 
@@ -130,36 +145,7 @@ namespace FlowerStore.Core.Services
             product.FlowersCount -= quantity;
             product.Availability = product.FlowersCount > 0;
             await repository.SaveChangesAsync();
-        }
-
-        public async Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize)
-        {
-            var productsCount = await repository
-                .AllAsReadOnly<Product>().CountAsync();
-
-            var totalPages = (int)Math.Ceiling((double)productsCount / pageSize);
-
-            var products = await repository
-                .AllAsReadOnly<Product>()
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Select(p => new ProductAllViewModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    ImageUrl = p.ImageUrl,
-                    Category = p.Category.Name
-                })
-                .ToListAsync();
-
-            return new ProductsPaginatedViewModel
-            {
-                Products = products,
-                CurrentPage = page,
-                TotalPages = totalPages
-            };
-        }
+        }        
     }
 }
 

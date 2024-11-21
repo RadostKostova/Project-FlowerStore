@@ -262,12 +262,19 @@ namespace FlowerStore.Core.Services
             return product.Id;
         }
 
-        //Get low stock products that are at or below 3 as quantity
-        public async Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 3)
+        //Get all low stock products that are at or below 3 as quantity
+        public async Task<IEnumerable<ProductAllLowStockViewModel>> GetLowStockProductsAsync(int threshold = 3)
         {
             return await repository
                 .AllAsReadOnly<Product>()
                 .Where(p => p.FlowersCount <= threshold)
+                .Select(p => new ProductAllLowStockViewModel()
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl,
+                    FlowersCount = p.FlowersCount
+                })
                 .ToListAsync();
         }
     }

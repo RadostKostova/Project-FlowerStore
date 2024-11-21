@@ -28,6 +28,6 @@ namespace FlowerStore.Core.Contracts
         Task<ProductEditViewModel> PostEditProductAsync(ProductEditViewModel model);
         Task<ProductDeleteViewModel> DeleteProductAsync(int productId);
         Task<int> ConfirmDeleteAsync(int productId);
-        Task<IEnumerable<Product>> GetLowStockProductsAsync(int threshold = 3);
+        Task<IEnumerable<ProductAllLowStockViewModel>> GetLowStockProductsAsync(int threshold = 3);
     }
 }

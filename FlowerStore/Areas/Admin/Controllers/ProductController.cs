@@ -1,5 +1,6 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers
@@ -26,6 +27,21 @@ namespace FlowerStore.Areas.Admin.Controllers
         {
             var products = await productService.ShowAllProductsAsync();
             return View(products);
+        }
+
+        //Display detailed product information
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var productFound = await productService.ProductByIdExistAsync(id);
+
+            if (productFound == null || ModelState.IsValid == false)
+            {
+                return BadRequest(); //should create Error Page later
+            }
+
+            var model = await productService.GetProductDetailsAsync(productFound.Id);
+            return View(model);
         }
 
         //Get add form

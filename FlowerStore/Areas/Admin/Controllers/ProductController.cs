@@ -137,20 +137,10 @@ namespace FlowerStore.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> LowStockProducts()   //TODO tomorrow...
+        public async Task<IActionResult> LowStockProducts()
         {
-            var lowStockProducts = await adminService.GetLowStockProductsAsync();
-
-            if (!lowStockProducts.Any())
-            {
-                return Ok("All products are sufficiently stocked.");
-            }
-
-            var warnings = lowStockProducts
-                .Select(p => $"{p.Name} has only {p.FlowersCount} left in stock.")
-                .ToList();
-
-            return View(warnings); // Or return as JSON, depending on the scenario
+            var products = await adminService.GetLowStockProductsAsync();
+            return View(products);
         }
     }
 }

@@ -1,0 +1,33 @@
+﻿@using FlowerStore.Core.ViewModels.Product
+@model IEnumerable<ProductAllLowStockViewModel>
+
+<h2 class="text-center">@ViewBag.Title</h2>
+
+<div class="container">
+    @if (Model.Any() != false)
+    {
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            @foreach (var product in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 text-center">
+                        <div class="card-body">
+
+                            <img src="@product.ImageUrl" class="card-img-top img-fluid mb-2" alt="@product.Name" style="object-fit: cover;">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text"><strong>In stock: </strong>@product.FlowersCount</p>
+
+                            <p class="text-danger fst-italic fw-bold mt-2">Low on stock! Please restock!</p>
+
+                            <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h2 class="text-center mt-5 fw-bold fst-italic">Great job! The products are well-stocked! No low-stock products at the moment.</h2>
+    }
+</div>

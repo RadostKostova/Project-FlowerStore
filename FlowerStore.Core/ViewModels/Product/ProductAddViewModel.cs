@@ -1,6 +1,5 @@
 ﻿using FlowerStore.Components;
 using FlowerStore.Core.ViewModels.Category;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using static FlowerStore.Infrastructure.Constants.DataConstants;
 using static FlowerStore.Infrastructure.Constants.ErrorConstants;
@@ -8,8 +7,7 @@ using static FlowerStore.Infrastructure.Constants.ErrorConstants;
 namespace FlowerStore.Core.ViewModels.Product
 {
     /// <summary>
-    /// This ViewModel represents Product entity, that will be added to database via form. Only the Admin should be able to access this.
-    /// Availability is by default false, it will be calculated by FlowersCount.
+    /// This ViewModel represents Product entity, that will be added to database via form. Availability will be calculated by FlowersCount.
     /// </summary>
     public class ProductAddViewModel
     {
@@ -57,7 +55,7 @@ namespace FlowerStore.Core.ViewModels.Product
 
 
         [Required]
-        public bool Availability { get; set; }
+        public bool Availability { get; set; } 
 
 
         [Required]

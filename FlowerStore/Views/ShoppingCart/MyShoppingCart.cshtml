@@ -5,84 +5,6 @@
     ViewBag.Title = "Shopping Cart";
 }
 
-@* <div class="card text-center">
-    <div class="row g-0">
-        <div class="col-md-8 cart">
-            <div class="title">
-                <div class="row">
-                    <div class="col align-self-center text-right text-muted">Products in cart: @Model.ProductsCounter products</div>
-                </div>
-            </div>
-            <div class="shopping-cart-container">
-            <div class="row border-top border-bottom">
-                @if (Model.ProductsCounter == 0)
-                {
-                    <h3 class="text-center fst-italic">Your cart is empty.</h3>
-                }
-                else
-                {
-                    @foreach (var product in Model.ShoppingCartProducts)
-                    {
-
-                        <div class="row main align-items-center border-bottom">
-                            <div class="col-2">
-                                <img class="img-fluid" src="@product.ImageUrl">
-                            </div>
-                            <div class="col">
-                                <div class="row text-muted">@product.Category</div>
-                                <div class="row">@product.Name</div>
-                            </div>
-                            <div class="col">
-                                <div class="quantity-form">
-                                    <button class="quantity-btn" id="minus-btn">-</button>
-                                    <input type="number" class="quantity-input" id="quantity" value="1" min="1">
-                                    <button class="quantity-btn" id="plus-btn">+</button>
-                                </div>
-                            </div>
-                            <div class="col">
-                                Product price: @product.UnitPrice BGN
-                                <span class="close">&#10005;</span>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-            </div>
-
-
-            <div class="back-to-shop">
-                <a href="#">&leftarrow;</a>
-                <span class="text-muted">Back to shop</span>
-            </div>
-        </div>
-
-        <div class="col-md-4 summary border-start">
-            <div class="text-center">
-                <h5><b>Summary</b></h5>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col" style="padding-left:0;">Items: @Model.ProductsCounter</div>
-                <div class="col text-right">@Model.TotalPrice BGN</div>
-            </div>
-            <form style="padding: 1rem">
-                <p>SHIPPING</p>
-                <select>
-                    <option class="text-muted">Standard Delivery - 5.00 BGN</option>
-                </select>
-                <p style="margin-top: 1rem">DO YOU HAVE ANY CODE?</p>
-                <input id="promoCode" placeholder="Enter your code here">
-            </form>
-            <div class="row" style="padding: 2vh 0;">
-                <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">@Model.TotalPrice BGN</div>
-            </div>
-            <button class="btn">CHECKOUT</button>
-        </div>
-    </div>
-</div> *@
-
-@* -------------------------------------------------------- *@
 <section class="h-100" style="background-color: #eee;">
     <div class="container h-100 py-5">
 
@@ -108,7 +30,7 @@
 
                 @if (Model.ProductsCounter == 0)
                 {
-                    <h3 class="text-center fst-italic">Your cart is empty.</h3>
+                    <h3 class="text-center mt-3 fw-bold fst-italic">Your cart is empty.</h3>
                     <br />
                 }
                 else

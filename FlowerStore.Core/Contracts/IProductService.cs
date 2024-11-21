@@ -17,5 +17,6 @@ namespace FlowerStore.Core.Contracts
         Task<IEnumerable<ProductAllViewModel>> SearchProductAsync(string searchString);
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
         Task UpdateProductStockAsync(int productId, int quantity);
+        Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize);
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FlowerStore.Core.Services
 {
     /// <summary>
-    /// Product services implemented for more code reusability.
+    /// User-related services for displaying products (pagination, catalog, details of product, searching and etc).
     /// </summary>
 
     public class ProductService : IProductService
@@ -44,7 +44,7 @@ namespace FlowerStore.Core.Services
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
             return productFound;
-        }        
+        }
 
         //Get details of product (return viewModel)
         public async Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId)
@@ -119,7 +119,7 @@ namespace FlowerStore.Core.Services
         public async Task UpdateProductStockAsync(int productId, int quantity)
         {
             var product = await repository
-                .All<Product>() 
+                .All<Product>()
                 .FirstOrDefaultAsync(p => p.Id == productId);
 
             if (product == null || product.FlowersCount < quantity)
@@ -130,6 +130,35 @@ namespace FlowerStore.Core.Services
             product.FlowersCount -= quantity;
             product.Availability = product.FlowersCount > 0;
             await repository.SaveChangesAsync();
+        }
+
+        public async Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize)
+        {
+            var productsCount = await repository
+                .AllAsReadOnly<Product>().CountAsync();
+
+            var totalPages = (int)Math.Ceiling((double)productsCount / pageSize);
+
+            var products = await repository
+                .AllAsReadOnly<Product>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new ProductAllViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    ImageUrl = p.ImageUrl,
+                    Category = p.Category.Name
+                })
+                .ToListAsync();
+
+            return new ProductsPaginatedViewModel
+            {
+                Products = products,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.Services;
 using FlowerStore.Core.ViewModels.Order;
+using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers
@@ -21,12 +22,18 @@ namespace FlowerStore.Areas.Admin.Controllers
             orderService = _orderService;
         }
 
-        //Get all orders
+        //Display all orders with pagination (handles unexisting page)
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(int page = 1, int pageSize = 12)
         {
-            var allOrders = await adminService.GetAllOrdersAsync();
-            return View(allOrders);
+            var orders = await adminService.GetPaginatedOrdersAsync(page, pageSize);
+
+            if (page < 1 || page > orders.TotalPages && orders.TotalPages > 0)
+            {
+                return RedirectToAction(nameof(All), new { page = 1 });
+            }           
+            
+            return View(orders);
         }
 
         //Get details of order

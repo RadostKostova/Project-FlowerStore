@@ -22,16 +22,11 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Display all products with pagination (handles unexisting page)
         [HttpGet]
-        public async Task<IActionResult> All(int page = 1, int pageSize = 2)
+        public async Task<IActionResult> All(int page = 1, int pageSize = 8)
         {
             var products = await productService.GetPaginatedProductsAsync(page, pageSize);
 
-            if (page < 1)
-            {
-                return RedirectToAction(nameof(All), new { page = 1 });
-            }
-
-            if (page > products.TotalPages && products.TotalPages > 0)
+            if (page < 1 || page > products.TotalPages && products.TotalPages > 0)
             {
                 return RedirectToAction(nameof(All), new { page = 1 });
             }

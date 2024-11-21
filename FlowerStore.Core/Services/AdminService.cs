@@ -36,6 +36,45 @@ namespace FlowerStore.Core.Services
         }
 
         //-----------------------------------------------------------------------------------------ORDER SERVICES:
+        //Display all orders with pagination (not at orderService because only admin should see all orders)
+        public async Task<OrdersPaginatedViewModel> GetPaginatedOrdersAsync(int page, int pageSize)
+        {
+            var ordersCount = await repository
+                .AllAsReadOnly<Order>()
+                .CountAsync();
+
+            var totalPages = (int)Math.Ceiling((double)ordersCount / pageSize);
+
+            var orders = await repository
+                .AllAsReadOnly<Order>()
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(p => new OrderAllViewModel
+                {
+                    Id = p.Id,
+                    UserId = p.UserId,
+                    OrderDate = p.OrderDate,
+                    TotalPrice = p.TotalPrice,
+                    PaymentMethod = p.PaymentMethod.Name,
+                    OrderDetails = p.OrderDetails,
+                    ShippingAddress = p.ShippingAddress,
+                    OrderStatus = p.OrderStatus.OrderStatusName,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    Email = p.Email,
+                    Phone = p.Phone
+                    
+                })
+                .ToListAsync();
+
+            return new OrdersPaginatedViewModel
+            {
+                Orders = orders,
+                CurrentPage = page,
+                TotalPages = totalPages
+            };
+        }
+
         //Get all orders
         public async Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync()
         {

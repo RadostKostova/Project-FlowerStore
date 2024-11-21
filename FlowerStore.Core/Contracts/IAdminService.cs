@@ -13,6 +13,7 @@ namespace FlowerStore.Core.Contracts
     public interface IAdminService
     {
         //---------------------------------------------------------ORDER
+        Task<OrdersPaginatedViewModel> GetPaginatedOrdersAsync(int page, int pageSize);
         Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync();
         Task<OrderDetailsViewModel> GetOrderByIdAsync(int orderId);
         Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync();

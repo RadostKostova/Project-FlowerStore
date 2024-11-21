@@ -17,12 +17,23 @@ namespace FlowerStore.Controllers
             productService = _productService;
         }
 
-        //Show all products
+        //Show all products with pagination (handles unexisting pages)
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Catalog()
-        {
-            var products = await productService.ShowAllProductsAsync();
+        public async Task<IActionResult> Catalog(int page = 1, int pageSize = 8)
+        {         
+            var products = await productService.GetPaginatedProductsAsync(page, pageSize);
+
+            if (page < 1)
+            {
+                return RedirectToAction(nameof(Catalog), new { page = 1 });
+            }
+
+            if (page > products.TotalPages && products.TotalPages > 0)
+            {
+                return RedirectToAction(nameof(Catalog), new { page = 1 });
+            }
+
             return View(products);
         }
 

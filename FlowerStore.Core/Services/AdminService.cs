@@ -47,6 +47,7 @@ namespace FlowerStore.Core.Services
 
             var orders = await repository
                 .AllAsReadOnly<Order>()
+                .OrderByDescending(o => o.OrderDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => new OrderAllViewModel

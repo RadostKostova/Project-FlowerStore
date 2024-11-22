@@ -25,7 +25,14 @@
                                 <strong>User:</strong> @order.UserId<br />
                                 <strong>Order Date:</strong> @order.OrderDate.ToString("dd-MM-yyyy")<br />
                                 <strong>Total Price:</strong> @order.TotalPrice BGN<br />
-                                <strong>Status:</strong> <span class="text-danger">@order.OrderStatus</span><br />
+                                @if (order.OrderStatus == "Delivered")
+                                {
+                                    <strong>Status: <span class="text-success">@order.OrderStatus</span></strong><br />
+                                }
+                                else
+                                {
+                                    <strong>Status: <span class="text-danger">@order.OrderStatus</span></strong><br />
+                                }
                                 <strong>Payment:</strong> @order.PaymentMethod<br />
                             </p>
                         </div>

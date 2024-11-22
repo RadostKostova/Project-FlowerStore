@@ -24,12 +24,7 @@ namespace FlowerStore.Controllers
         {         
             var products = await productService.GetPaginatedProductsAsync(page, pageSize);
 
-            if (page < 1)
-            {
-                return RedirectToAction(nameof(Catalog), new { page = 1 });
-            }
-
-            if (page > products.TotalPages && products.TotalPages > 0)
+            if (page < 1 || page > products.TotalPages && products.TotalPages > 0)
             {
                 return RedirectToAction(nameof(Catalog), new { page = 1 });
             }

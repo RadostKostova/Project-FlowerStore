@@ -7,37 +7,38 @@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
-<div class="row row-cols-1 row-cols-md-5 g-4">
-    @if (Model.Products != null && Model.Products.Any())
-    {
-        @foreach (var product in Model.Products)
+<div id="products-container" class="products-container">
+    <div class="row row-cols-1 row-cols-md-5 g-4">
+        @if (Model.Products != null && Model.Products.Any())
         {
-            <div class="col">
-                <div class="card h-100 text-center">
-                    <div class="card-body">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col">
+                    <div class="card h-100 text-center">
+                        <img src="@product.ImageUrl" class="card-img-top img-fluid pt-3 product-img" alt="@product.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="card-text"><strong>Price: </strong>@product.Price BGN</p>
 
-                        <img src="@product.ImageUrl" class="card-img-top img-fluid" alt="@product.Name" style="object-fit: cover;">
-                        <h5 class="card-title">@product.Name</h5>
-                        <p class="card-text"><strong>Price: </strong>@product.Price BGN</p>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Details</a>
 
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Details</a>
-
-                        @if (User.Identity?.IsAuthenticated != false)
-                        {
-                            <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.Id">
-                                <input type="hidden" name="productId" value="@product.Id" />
-                                <button type="submit" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</button>
-                            </form>
-                        }
+                            @if (User.Identity?.IsAuthenticated != false)
+                            {
+                                <form method="post" asp-controller="ShoppingCart" asp-action="AddToCart" asp-route-id="@product.Id">
+                                    <input type="hidden" name="productId" value="@product.Id" />
+                                    <button type="submit" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add To Cart</button>
+                                </form>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
-    }
-    else
-    {
-        <h2 class="text-center mt-5 fw-bold fst-italic">Our catalog is empty. New flowers coming soon...</h2>
-    }
+        else
+        {
+            <h2 class="text-center mt-5 fw-bold fst-italic">Our catalog is empty. New flowers coming soon...</h2>
+        }
+    </div>
 </div>
 
 @if (Model.TotalPages > 1)

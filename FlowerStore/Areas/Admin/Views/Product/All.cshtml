@@ -7,7 +7,7 @@
 
 <h2 class="text-center">@ViewBag.Title</h2>
 
-<div class="container">
+<div id="products-container" class="products-container">
     <div class="row row-cols-1 row-cols-md-5 g-4">
         @if (Model.Products != null && Model.Products.Any())
         {
@@ -15,9 +15,8 @@
             {
                 <div class="col">
                     <div class="card h-100 text-center">
+                        <img src="@product.ImageUrl" class="card-img-top img-fluid pt-3 product-img" alt="@product.Name">
                         <div class="card-body">
-
-                            <img src="@product.ImageUrl" class="card-img-top img-fluid mb-2" alt="@product.Name" style="object-fit: cover;">
                             <h5 class="card-title">@product.Name</h5>
                             <p class="card-text mb-0"><strong>Product Id: </strong>@product.Id</p>
                             <p class="card-text"><strong>Price: </strong>@product.Price BGN</p>
@@ -28,6 +27,7 @@
                         </div>
                     </div>
                 </div>
+
             }
         }
         else

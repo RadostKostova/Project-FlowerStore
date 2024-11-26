@@ -1,0 +1,24 @@
+﻿/* Product images at the catalog and Product/All */
+#products-container .product-img {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+}
+
+#products-container .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+#products-container .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+#products-container .btn {
+    margin-top: auto;
+}

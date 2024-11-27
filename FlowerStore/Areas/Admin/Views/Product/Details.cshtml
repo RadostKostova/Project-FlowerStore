@@ -9,21 +9,25 @@
 <h4 class="text-center">@ViewBag.Title</h4>
 <hr />
 
-<div class="row">
-    <div class="card w-100">
-        <div class="card-body">
-            <img src="@Model.ImageUrl" />
-            <<p class="mb-0"><span class="fw-bold">Product Name: </span>@Model.Name</p>
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-md-4 text-center">
+            <img src="@Model.ImageUrl" class="img-fluid mw-100 mb-2" alt="Product-image" />
+        </div>
+
+        <div class="col-md-8">
+            <p class="mb-0 mt-3"><span class="fw-bold">Product Name: </span>@Model.Name</p>
             <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price BGN</p>
             <p class="mb-0"><span class="fw-bold">Product added on: </span>@Model.DateAdded</p>
             <p class="mb-0"><span class="fw-bold">Quantity in storage: </span>@Model.FlowersCount</p>
             <p class="mb-0"><span class="fw-bold">Availability: </span>@Model.Availability</p>
-            <p class="mb-0"><span class="fw-bold">Description: </span>@Model.FullDescription</p>
             <p class="mb-0"><span class="fw-bold">Category: </span>@Model.Category</p>
+            <p class="mb-5"><span class="fw-bold">Description: </span>@Model.FullDescription</p>
         </div>
-
-        <a asp-area="Admin" asp-controller="Product" asp-action="AllProducts" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back</a>
-        <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
-        <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
     </div>
+
+    <a asp-area="Admin" asp-controller="Product" asp-action="AllProducts" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Back</a>
+    <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Edit</a>
+    <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger mb-2 w-100 p-3 fw-bold">Delete</a>
 </div>

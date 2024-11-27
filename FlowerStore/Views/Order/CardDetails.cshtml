@@ -2,43 +2,51 @@
 @model CardDetailsAddViewModel
 
 @{
-    ViewBag.Title = "Card payment";
+    ViewBag.Title = "Card Payment";
 }
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h3 class="fst-italic text-black text-center mb-0">@ViewBag.Title</h3>
+<div class="container mt-5">
+    <h3 class="fst-italic text-black text-center mb-4">@ViewBag.Title</h3>
+    <div class="row">
+        <!-- Form Section -->
+        <div class="col-lg-6">
+            <form asp-area="" asp-controller="Order" asp-action="CardDetails" method="post">
+                <input type="hidden" name="userId" value="@Model.UserId" />
 
-        <form asp-area="" asp-controller="Order" asp-action="CardDetails" method="post">
-            <input type="hidden" name="userId" value="@Model.UserId" />
-            <div class="mb-3">
-                <label asp-for="@Model.CardHolderName">Cardholder Name: </label>
-                <input asp-for="@Model.CardHolderName" type="text" id="CardHolderName" name="CardHolderName" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.CardHolderName" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.CardHolderName">Cardholder Name: </label>
+                    <input asp-for="@Model.CardHolderName" type="text" id="CardHolderName" name="CardHolderName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.CardHolderName" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="@Model.CardNumber">Card Number: </label>
-                <input asp-for="@Model.CardNumber" type="text" id="CardNumber" name="CardNumber" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.CardNumber" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.CardNumber">Card Number: </label>
+                    <input asp-for="@Model.CardNumber" type="text" id="CardNumber" name="CardNumber" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.CardNumber" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="@Model.ExpirationDate">Expiration Date: </label>
-                <input asp-for="@Model.ExpirationDate" type="text" id="ExpirationDate" name="ExpirationDate" class="form-control date-mask" aria-required="true" placeholder="Enter in MM/yy format" />
-                <span asp-validation-for="@Model.ExpirationDate" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.ExpirationDate">Expiration Date: </label>
+                    <input asp-for="@Model.ExpirationDate" type="text" id="ExpirationDate" name="ExpirationDate" class="form-control date-mask" aria-required="true" placeholder="Enter in MM/yy format" />
+                    <span asp-validation-for="@Model.ExpirationDate" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3">
-                <label asp-for="@Model.CVV">Card Verification Value (CVV): </label>
-                <input asp-for="@Model.CVV" type="text" id="CVV" name="CVV" class="form-control" aria-required="true" />
-                <span asp-validation-for="@Model.CVV" class="text-danger"></span>
-            </div>
+                <div class="mb-3">
+                    <label asp-for="@Model.CVV">Card Verification Value (CVV): </label>
+                    <input asp-for="@Model.CVV" type="text" id="CVV" name="CVV" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.CVV" class="text-danger"></span>
+                </div>
 
-            <div class="mb-3 text-center">
-                <input type="submit" value="Preview" class="submit-button btn btn-warning fw-bold" />
-            </div>
-        </form>
+                <div class="mb-3 text-center">
+                    <input type="submit" value="Preview Your Order" class="submit-button btn btn-warning fw-bold" />
+                </div>
+            </form>
+        </div>
+
+        <!-- Image Section -->
+        <div class="col-lg-6 d-flex align-items-center justify-content-center">
+            <img src="~/img/paymentCardsLogos.jpg" alt="Card Payment Logos" class="img-fluid rounded shadow" style="width: 70%; height: auto">
+        </div>
     </div>
 </div>
 
@@ -53,9 +61,9 @@
 
         if (dateInput) {
             dateInput.addEventListener("input", function (e) {
-                
+
                 let value = e.target.value.replace(/\D/g, ""); // Remove non-digit chars
-                
+
                 if (value.length >= 2) {   // Insert "/" after two digits
                     value = value.slice(0, 2) + '/' + value.slice(2);
                 }

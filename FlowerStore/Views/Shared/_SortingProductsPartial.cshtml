@@ -1,0 +1,14 @@
+﻿@using FlowerStore.Core.ViewModels.Product
+@model ProductsPaginatedViewModel
+
+
+<form method="get" asp-area="" asp-controller="Product" asp-action="Catalog" class="d-flex w-25 mb-3">
+    <select name="sortOrder" class="form-select me-2" onchange="this.form.submit()">
+        <option value="">Sort By:</option>
+        <option value="Price Ascending" selected="@(Model.SortOrder == "Price Ascending" ? "selected" : null)">Price: Low to High</option>
+        <option value="Price Descending" selected="@(Model.SortOrder == "Price Descending" ? "selected" : null)">Price: High to Low</option>
+        <option value="Name Ascending" selected="@(Model.SortOrder == "Name Ascending" ? "selected" : null)">Name: A to Z</option>
+        <option value="Name Descending" selected="@(Model.SortOrder == "Name Descending" ? "selected" : null)">Name: Z to A</option>
+    </select>
+    <input type="hidden" name="page" value="@Model.CurrentPage" />
+</form>

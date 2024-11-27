@@ -20,7 +20,7 @@ namespace FlowerStore.Controllers
         //Show all products with pagination (handles unexisting page)
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Catalog(int page = 1, int pageSize = 8)
+        public async Task<IActionResult> Catalog(int page = 1, int pageSize = 10)
         {         
             var products = await productService.GetPaginatedProductsAsync(page, pageSize);
 

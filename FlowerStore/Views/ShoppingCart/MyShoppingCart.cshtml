@@ -2,7 +2,7 @@
 @model CartViewModel
 
 @{
-    ViewBag.Title = "Shopping Cart";
+    ViewBag.Title = "My Shopping Cart";
 }
 
 <section class="h-100" style="background-color: #eee;">
@@ -14,19 +14,8 @@
             <div class="col-10">
 
                 <div class="col">
-                    <p class="mb-0">Items: @Model.ProductsCounter</p>
-                </div>
-
-                <div class="row d-flex justify-content-between align-items-center mb-4">
-                    <div class="col text-right">
-                        @* <form asp-controller="ShoppingCart" asp-action="UpdateCart" method="post">
-                        <input type="hidden" asp-for="@Model.Id" name="productId" />
-                        <button type="submit" id="refreshButton" class="btn btn-success">
-                        <i class="bi bi-arrow-clockwise"></i>
-                        </button>
-                        </form> *@
-                    </div>
-                </div>
+                    <p class="mb-0 fst-italic">Items: @Model.ProductsCounter</p>
+                </div>                
 
                 @if (Model.ProductsCounter == 0)
                 {
@@ -42,7 +31,7 @@
                                 <div class="row d-flex justify-content-between align-items-center">
 
                                     <div class="col-md-2 col-lg-2 col-xl-2">
-                                        <img class="img-fluid rounded-3" src="@product.ImageUrl" alt="Product Image">
+                                        <img class="img-fluid rounded-3" src="@product.ImageUrl" alt="Product-image">
                                     </div>
 
                                     <div class="col-md-3 col-lg-3 col-xl-3">
@@ -53,9 +42,7 @@
 
                                     <div class="col-md-2 col-lg-2 col-xl-2 d-flex">
                                         <div class="quantity-btn">
-                                            <button type="button" class="btn btn-sm btn-secondary" id="decrement">-</button>
-                                            <input type="number" class="form-control form-control-sm" id="productQuantity" name="productQuantity" value="@product.Quantity" readonly>
-                                            <button type="button" class="btn btn-sm btn-secondary" id="increment">+</button>
+                                            <input type="number" class="form-control form-control-sm" value="@product.Quantity" readonly>
                                         </div>
                                     </div>
 
@@ -65,13 +52,6 @@
 
                                     <div class="col-md-1 col-lg-1 col-xl-1 d-flex align-items-center justify-content-center">
                                         <div class="btn-group-vertical vertical-btn-group" role="group">
-
-                                            @* <form asp-controller="ShoppingCart" asp-action="UpdateCart" method="post">
-                                    <input type="hidden" asp-for="@product.ProductId" class="productId" name="productId" />
-                                    <button type="submit" id="refreshButton" class="btn btn-success">
-                                    <i class="bi bi-arrow-clockwise"></i>
-                                    </button>
-                                    </form> *@
 
                                             <form asp-controller="ShoppingCart" asp-action="RemoveFromCart" method="post">
                                                 <input type="hidden" asp-for="@product.ProductId" id="prodId" name="productId" />
@@ -106,10 +86,6 @@
                         {
                             <a asp-area="" asp-controller="Order" asp-action="ShippingDetails" class="btn btn-warning btn-lg">Proceed to Shipping Details</a>
                         }
-
-                        @* <form asp-controller="Order" asp-action="Create" method="post">
-                        <button type="submit" class="btn btn-warning btn-lg">Proceed to Pay</button>
-                        </form> *@
                     </div>
                 </div>
 

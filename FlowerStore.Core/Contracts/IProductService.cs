@@ -10,7 +10,7 @@ namespace FlowerStore.Core.Contracts
 
     public interface IProductService
     {
-        Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize);
+        Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize, string sortOrder);
         Task<Product> ProductByIdExistAsync(int productId);
         Task<ProductDetailsViewModel> GetProductDetailsAsync(int productId);
         Task<decimal?> GetProductPriceAsync(int productId);

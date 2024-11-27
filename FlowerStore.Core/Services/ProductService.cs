@@ -4,6 +4,7 @@ using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FlowerStore.Core.Services
 {
@@ -20,17 +21,38 @@ namespace FlowerStore.Core.Services
             repository = _repository;
         }
 
-        //Display all products with pagination
-        public async Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize)
+        //Display all products with pagination with options for sorting
+        public async Task<ProductsPaginatedViewModel> GetPaginatedProductsAsync(int page, int pageSize, string sortOrder)
         {
-            var productsCount = await repository
-                .AllAsReadOnly<Product>()
-                .CountAsync();
+            var productsQuery = repository.AllAsReadOnly<Product>();
+
+            switch (sortOrder)
+            {
+                case "Price Ascending":
+                    productsQuery = productsQuery.OrderBy(p => p.Price);
+                    break;
+                case "Price Descending":
+                    productsQuery = productsQuery.OrderByDescending(p => p.Price);
+                    break;
+                case "Name Ascending":
+                    productsQuery = productsQuery.OrderBy(p => p.Name);
+                    break;
+                case "Name Descending":
+                    productsQuery = productsQuery.OrderByDescending(p => p.Name);
+                    break;
+                case "Quantity Ascending":
+                    productsQuery = productsQuery.OrderBy(p => p.FlowersCount);
+                    break;
+                case "Quantity Descending":
+                    productsQuery = productsQuery.OrderByDescending(p => p.FlowersCount);
+                    break;
+            }
+
+            var productsCount = await productsQuery.CountAsync();
 
             var totalPages = (int)Math.Ceiling((double)productsCount / pageSize);
 
-            var products = await repository
-                .AllAsReadOnly<Product>()
+            var products = await productsQuery
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .Select(p => new ProductAllViewModel
@@ -47,7 +69,8 @@ namespace FlowerStore.Core.Services
             {
                 Products = products,
                 CurrentPage = page,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                SortOrder = sortOrder
             };
         }
 

@@ -14,7 +14,24 @@ namespace FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration
         {
             var data = new DataSeed();
 
-            builder.HasData( new Product[] { data.RedRoses, data.BlueOrchid, data.FicusLyrata});
+            builder.HasData(new Product[]
+            {
+                data.RedRoses,
+                data.BlueOrchid,
+                data.FicusLyrata,
+                data.OrangeTagetes,
+                data.PinkBegonia,
+                data.RedBegonia,
+                data.WhiteAnthurium,
+                data.YellowBegonia,
+                data.PinkGeranium,
+                data.PurpleAgeratum,
+                data.RedGeranium,
+                data.PinkPetunias,
+                data.PurplePelargonium,
+                data.WhiteGeranium,
+                data.PinkHibiscus
+            });
         }
     }
 }

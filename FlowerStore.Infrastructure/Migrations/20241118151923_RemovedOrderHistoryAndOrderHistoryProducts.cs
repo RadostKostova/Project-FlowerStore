@@ -12,8 +12,8 @@ namespace FlowerStore.Infrastructure.Migrations
             //migrationBuilder.DropTable(
             //    name: "OrderProductHistories");
 
-            migrationBuilder.DropTable(
-                name: "OrderHistories");
+            //migrationBuilder.DropTable(
+            //    name: "OrderHistories");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",

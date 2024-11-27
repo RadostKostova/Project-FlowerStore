@@ -1,9 +1,14 @@
 ﻿@using FlowerStore.Core.ViewModels.Product
 @model IEnumerable<ProductAllLowStockViewModel>
 
-<h2 class="text-center">@ViewBag.Title</h2>
+@{
+    ViewBag.Title = "Low-Stock Products";
+}
 
 <div class="container">
+    <h2 class="text-center fst-italic text-danger">@ViewBag.Title</h2>
+    <hr />
+
     @if (Model.Any() != false)
     {
         <div class="row row-cols-1 row-cols-md-5 g-4">
@@ -28,6 +33,6 @@
     }
     else
     {
-        <h2 class="text-center mt-5 fw-bold fst-italic">Great job! The products are well-stocked! No low-stock products at the moment.</h2>
+        <h2 class="text-center mt-5 fw-bold fst-italic text-success">Great job! The products are well-stocked! No low-stock products at the moment.</h2>
     }
 </div>

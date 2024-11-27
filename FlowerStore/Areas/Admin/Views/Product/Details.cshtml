@@ -5,15 +5,16 @@
     ViewBag.Title = "Product Details -- Admin Part";
 }
 
-<h2 class="text-center">Product No.@Model.Id</h2>
+<h2 class="text-center fst-italic">Product No.@Model.Id</h2>
 <h4 class="text-center">@ViewBag.Title</h4>
+<hr />
 
 <div class="row">
     <div class="card w-100">
         <div class="card-body">
             <img src="@Model.ImageUrl" />
-            <h3 class="card-title text-center">@Model.Name</h3>
-            <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price</p>
+            <<p class="mb-0"><span class="fw-bold">Product Name: </span>@Model.Name</p>
+            <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price BGN</p>
             <p class="mb-0"><span class="fw-bold">Product added on: </span>@Model.DateAdded</p>
             <p class="mb-0"><span class="fw-bold">Quantity in storage: </span>@Model.FlowersCount</p>
             <p class="mb-0"><span class="fw-bold">Availability: </span>@Model.Availability</p>

@@ -5,18 +5,18 @@
     ViewBag.Title = "Product Details";
 }
 
-<h2 class="text-center">More details of the product: @Model.Name</h2>
-
+<h2 class="text-center fst-italic">@Model.Name</h2>
+<hr />
 <div class="row">
     <div class="card w-100">
         <div class="card-body">
             <img src="@Model.ImageUrl" />
-            <h3 class="card-title text-center">@Model.Name</h3>
+            <p class="mb-0"><span class="fw-bold">Product Name: </span>@Model.Name</p>
             <p class="mb-0"><span class="fw-bold">Price: </span>@Model.Price BGN</p>
             <p class="mb-0"><span class="fw-bold">Product added on: </span>@Model.DateAdded</p>
             <p class="mb-0"><span class="fw-bold">Availability: </span>@Model.Availability</p>
-            <p class="mb-0"><span class="fw-bold">Description: </span>@Model.FullDescription</p>
             <p class="mb-0"><span class="fw-bold">Category: </span>@Model.Category</p>
+            <p class="mb-0"><span class="fw-bold">Description: </span>@Model.FullDescription</p>            
         </div>
 
         @if (User.Identity?.IsAuthenticated != false)

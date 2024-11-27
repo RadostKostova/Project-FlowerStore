@@ -5,7 +5,7 @@
     ViewBag.Title = "Order History";
 }
 
-<h2 class="text-center my-4">@ViewBag.Title</h2>
+<h2 class="text-center fst-italic my-4">@ViewBag.Title</h2>
 
 <div class="container">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -20,7 +20,7 @@
                             <h5 class="card-title text-center">
                                 <strong>Order No.@order.Id</strong>
                             </h5>
-                            ------------------------------------------------------
+                            <hr />
                             <p class="card-text">
                                 <strong>User:</strong> @order.UserId<br />
                                 <strong>Order Date:</strong> @order.OrderDate.ToString("dd-MM-yyyy")<br />

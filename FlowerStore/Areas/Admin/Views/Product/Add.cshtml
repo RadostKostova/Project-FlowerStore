@@ -5,10 +5,12 @@
     ViewBag.Title = "Add New Product To Store";
 }
 
-<h2 class="text-center">@ViewBag.Title</h2>
+<h2 class="text-center fst-italic">@ViewBag.Title</h2>
 
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <hr />
+
         <form asp-controller="Product" asp-action="Add" asp-area="Admin" method="post">
             <div class="mb-3">
                 <label asp-for="@Model.Name" class="form-label-add-edit">Flower Name</label>

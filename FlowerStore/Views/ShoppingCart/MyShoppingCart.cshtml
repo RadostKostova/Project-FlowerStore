@@ -104,7 +104,7 @@
                         <a asp-controller="Product" asp-action="Catalog" class="btn btn-warning btn-lg">Back to Shopping</a>
                         @if (Model.ProductsCounter != 0)
                         {
-                            <a asp-controller="Order" asp-action="ShippingDetails" class="btn btn-warning btn-lg">Fill shipment details</a>
+                            <a asp-area="" asp-controller="Order" asp-action="ShippingDetails" class="btn btn-warning btn-lg">Proceed to Shipping Details</a>
                         }
 
                         @* <form asp-controller="Order" asp-action="Create" method="post">

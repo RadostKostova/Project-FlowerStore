@@ -64,5 +64,9 @@
         public const int UserLastNameMinLength = 1;
         public const int UserLastNameMaxLength = 50;
         public const int UserPhoneExactlyLength = 10;
+
+        //Review entity
+        public const int ReviewContentMinLength = 1;
+        public const int ReviewContentMaxLength = 500;
     }
 }

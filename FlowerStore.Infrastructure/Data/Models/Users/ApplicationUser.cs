@@ -24,5 +24,7 @@ namespace FlowerStore.Infrastructure.Data.Models.Roles
         [MaxLength(UserPhoneExactlyLength)]
         [Comment("Phone number")]
         public string? Phone { get; set; } = string.Empty;
+
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

@@ -22,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IReviewService, ReviewService>();
 
             return services;
         }

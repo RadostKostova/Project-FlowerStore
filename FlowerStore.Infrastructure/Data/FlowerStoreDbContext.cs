@@ -31,6 +31,7 @@ namespace FlowerStore.Infrastructure.Data
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Review> Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -67,6 +68,11 @@ namespace FlowerStore.Infrastructure.Data
                 .HasMany(o => o.OrderProducts)
                 .WithOne(op => op.Order)
                 .HasForeignKey(op => op.OrderId);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(u => u.Reviews)
+                .WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId);
 
             //One-to-one relashionships
             builder.Entity<Order>()

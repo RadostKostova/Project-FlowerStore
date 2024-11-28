@@ -1,0 +1,50 @@
+﻿@using FlowerStore.Core.ViewModels.Review
+@model IEnumerable<ReviewAllViewModel>
+
+<div class="container mt-4">
+    <h1 class="mb-4 text-center fst-italic">Customer Reviews</h1>
+
+    @if (Model != null && Model.Any())
+    {
+        <ul class="list-group">
+            @foreach (var review in Model)
+            {
+                <li class="list-group-item">
+                    <h5 class="mb-1">@review.UserName</h5>
+                    <p class="mb-1">@review.Content</p>
+                    <small class="text-muted">Posted on @review.CreatedAt</small>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <h2 class="text-muted fst-italic text-center mt-5 mb-5">No reviews yet. Be the first to share your thoughts!</h2>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <div class="text-center mt-5">
+                <a asp-area="" asp-controller="Review" asp-action="Add" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Add Review
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="text-center mt-5">
+                <p class="fst-italic">
+                    Want to share your thoughts? Please <strong>register</strong> or <strong>log in</strong> to post a review.
+                </p>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </a>
+                    <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary">
+                        <i class="bi bi-person-plus"></i> Register
+                    </a>
+                </div>
+            </div>
+        }
+    }
+</div>

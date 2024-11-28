@@ -20,10 +20,17 @@ namespace FlowerStore.Controllers
             return View();
         }
 
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
+        [AllowAnonymous]
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult ContactUs()
+        {
+            return View();
+        }
 
         //[AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

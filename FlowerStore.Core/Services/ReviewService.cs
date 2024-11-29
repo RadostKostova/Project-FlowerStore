@@ -1,5 +1,4 @@
 ﻿using FlowerStore.Core.Contracts;
-using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Core.ViewModels.Review;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
@@ -17,6 +16,16 @@ namespace FlowerStore.Core.Services
         public ReviewService(IRepository _repository)
         {
             repository = _repository;
+        }
+
+        //Check if review exist by id 
+        public async Task<Review> ReviewByIdExistAsync(int reviewId)
+        {
+            var reviewFound = await repository
+                .AllAsReadOnly<Review>()
+                .FirstOrDefaultAsync(r => r.Id == reviewId);
+
+            return reviewFound;
         }
 
         //Get all reviews
@@ -49,6 +58,37 @@ namespace FlowerStore.Core.Services
             };
 
             await repository.AddAsync(review);
+            await repository.SaveChangesAsync();
+            return review.Id;
+        }
+
+
+        //Get review delete viewModel
+        public async Task<ReviewDeleteViewModel> DeleteReviewAsync(int reviewId, string userId)
+        {
+            var review = await repository
+                .AllAsReadOnly<Review>()
+                .Where(r => r.Id == reviewId && r.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            var model = new ReviewDeleteViewModel()
+            {
+               Id = review.Id,
+               Content = review.Content
+            };
+
+            return model;
+        }
+
+        //Confirm deletion of review
+        public async Task<int> ConfirmDeleteAsync(int reviewId)
+        {
+            var review = await repository
+                .AllAsReadOnly<Review>()
+                .Where(r => r.Id == reviewId)
+                .FirstOrDefaultAsync();
+
+            await repository.RemoveAsync(review);
             await repository.SaveChangesAsync();
             return review.Id;
         }

@@ -132,9 +132,9 @@ namespace FlowerStore.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var productId = await productService.ProductByIdExistAsync(id);
+            var product = await productService.ProductByIdExistAsync(id);
 
-            if (productId == null)
+            if (product == null)
             {
                 return BadRequest();
             }

@@ -22,7 +22,7 @@ namespace FlowerStore.Controllers
         //Check if cart exists - return the model if it does, else create and return
         [HttpGet]
         public async Task<IActionResult> MyShoppingCart()
-        {
+        {           
             string userId = User.GetUserId();
 
             if (userId == null)

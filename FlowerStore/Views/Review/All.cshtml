@@ -9,19 +9,46 @@
         <ul class="list-group">
             @foreach (var review in Model)
             {
-                <li class="list-group-item">
-                    <h5 class="mb-1">@review.UserName</h5>
-                    <p class="mb-1">@review.Content</p>
-                    <small class="text-muted">Posted on @review.CreatedAt</small>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1">@review.UserName says:</p>
+                        <h5 class="mb-1">@review.Content</h5>
+                        <small class="text-muted">Posted on @review.CreatedAt</small>
+                    </div>
+
+                    @if (User.Identity.IsAuthenticated && review.UserName == User.Identity.Name)
+                    {
+                        <div class="d-flex gap-2">                          
+                            <a asp-area="" asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id"
+                               class="btn btn-success btn-sm" title="Edit review">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+
+                            <a asp-area="" asp-controller="Review" asp-action="Delete" asp-route-id="@review.Id"
+                               class="btn btn-danger btn-sm" title="Delete review">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    }
                 </li>
+                <br>
             }
         </ul>
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="text-center mt-5">
+                <a asp-area="" asp-controller="Review" asp-action="Add" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Add Review
+                </a>
+            </div>
+        }
     }
     else
     {
         <h2 class="text-muted fst-italic text-center mt-5 mb-5">No reviews yet. Be the first to share your thoughts!</h2>
 
-        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        @if (User.Identity.IsAuthenticated)
         {
             <div class="text-center mt-5">
                 <a asp-area="" asp-controller="Review" asp-action="Add" class="btn btn-success">

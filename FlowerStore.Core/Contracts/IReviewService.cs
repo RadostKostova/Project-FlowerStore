@@ -8,5 +8,6 @@ namespace FlowerStore.Core.Contracts
     public interface IReviewService
     {
         Task<IEnumerable<ReviewAllViewModel>> GetAllReviewsAsync();
+        Task<int> AddReviewAsync(ReviewAddViewModel model);
     }
 }

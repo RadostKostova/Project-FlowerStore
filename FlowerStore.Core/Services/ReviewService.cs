@@ -1,4 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Core.ViewModels.Review;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
@@ -17,12 +18,14 @@ namespace FlowerStore.Core.Services
         {
             repository = _repository;
         }
+
+        //Get all reviews
         public async Task<IEnumerable<ReviewAllViewModel>> GetAllReviewsAsync()
         {
             var reviews = await repository
                 .AllAsReadOnly<Review>()
                 .Include(r => r.User)
-                .OrderByDescending(r => r.CreatedAt) // Most recent first
+                .OrderByDescending(r => r.CreatedAt)
                 .Select(r => new ReviewAllViewModel
                 {
                     Id = r.Id,
@@ -33,6 +36,21 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
             
             return reviews;
+        }
+
+        //Add review to database
+        public async Task<int> AddReviewAsync(ReviewAddViewModel model)
+        {
+            var review = new Review
+            {
+                UserId = model.UserId,
+                Content = model.Content,
+                CreatedAt = model.CreatedAt
+            };
+
+            await repository.AddAsync(review);
+            await repository.SaveChangesAsync();
+            return review.Id;
         }
     }
 }

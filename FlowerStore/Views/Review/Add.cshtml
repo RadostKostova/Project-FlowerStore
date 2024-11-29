@@ -1,0 +1,40 @@
+﻿@using FlowerStore.Core.ViewModels.Review
+@model ReviewAddViewModel
+
+@{
+    ViewData["Title"] = "Add Review";
+}
+
+<h1 class="fst-italic text-center">Add Review</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+            <hr />
+
+            <form asp-area="" asp-controller="Review" asp-action="Add" method="post">
+                <input type="hidden" asp-for="@Model.UserId" />
+                <div class="mb-3">
+                    <label asp-for="@Model.UserName" class="form-label">Username:</label>
+                    <input asp-for="@Model.UserName" class="form-control" readonly />
+                    <span asp-validation-for="@Model.UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="@Model.Content" class="form-label">Write your review:</label>
+                    <textarea asp-for="@Model.Content" class="form-control" rows="5" placeholder="Write your review here (describe your experience)"></textarea>
+                    <span asp-validation-for="@Model.Content" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a asp-area="" asp-controller="Review" asp-action="All" class="btn btn-secondary">Back to all Reviews</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,4 +1,8 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.Services;
+using FlowerStore.Core.ViewModels.Product;
+using FlowerStore.Core.ViewModels.Review;
+using FlowerStore.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,17 +23,39 @@ namespace FlowerStore.Controllers
 
         //Show all reviews
         [AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> All()
         {
             var reviews = await reviewService.GetAllReviewsAsync();
-            return View();
+            return View(reviews);
+        }
+
+        //Get review form
+        [HttpGet]
+        public async Task<IActionResult> Add()
+        {            
+            var model = new ReviewAddViewModel()
+            {
+                UserId = User.GetUserId(),
+                UserName = User.Identity!.Name!.ToString()
+            };
+
+            return View(model);
         }
 
         //Add review
-        public async Task<IActionResult> Add()
+        [HttpPost]
+        public async Task<IActionResult> Add(ReviewAddViewModel model)
         {
-            //var reviews = await reviewService.GetAllReviewsAsync();
-            return View();
+            if (!ModelState.IsValid)
+            { 
+                return View(model);
+            }
+            
+            model.CreatedAt = DateTime.UtcNow;
+            await reviewService.AddReviewAsync(model);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

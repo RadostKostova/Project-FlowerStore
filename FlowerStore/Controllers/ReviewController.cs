@@ -1,6 +1,4 @@
 ﻿using FlowerStore.Core.Contracts;
-using FlowerStore.Core.Services;
-using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Core.ViewModels.Review;
 using FlowerStore.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +9,7 @@ namespace FlowerStore.Controllers
     /// <summary>
     /// This controller handles operation related to user reviews. Only authenticated users will be able to post a review.
     /// </summary>
-    
+
     public class ReviewController : BaseController
     {
         private readonly IReviewService reviewService;
@@ -55,6 +53,41 @@ namespace FlowerStore.Controllers
             model.CreatedAt = DateTime.UtcNow;
             await reviewService.AddReviewAsync(model);
 
+            return RedirectToAction(nameof(All));
+        }
+
+        //Get delete view
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var review = await reviewService.ReviewByIdExistAsync(id);
+
+            if (review == null || review.UserId != User.GetUserId())
+            {
+                return Unauthorized();
+            }
+
+            var reviewFound = await reviewService.DeleteReviewAsync(review.Id, review.UserId);
+            return View(reviewFound);
+        }
+
+        //Delete review from database
+        [HttpPost]
+        public async Task<IActionResult> DeleteConfirmed(ReviewDeleteViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }           
+
+            var review = await reviewService.ReviewByIdExistAsync(model.Id);
+
+            if (review == null)
+            {
+                return BadRequest();
+            }
+
+            await reviewService.ConfirmDeleteAsync(review.Id);
             return RedirectToAction(nameof(All));
         }
     }

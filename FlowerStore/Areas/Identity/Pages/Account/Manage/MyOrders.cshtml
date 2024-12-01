@@ -1,0 +1,43 @@
+﻿@page
+@model MyOrdersModel
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2 class="text-center fst-italic">My Orders</h2>
+
+@if (Model.Orders.Any())
+{
+    <div class="container mt-3">
+        <ul class="list-group">
+            @foreach (var order in Model.Orders)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>Order No.:</strong> @order.OrderId<br />
+                        <strong>Date:</strong> @order.OrderDate.ToString("dd-MM-yyyy")<br />
+                        <strong>Total:</strong> @order.TotalPrice BGN<br />
+
+                        @if (order.OrderStatus == "Delivered")
+                        {
+                            <strong>Status of the order: <span class="text-success">@order.OrderStatus</span></strong>
+                        }
+                        else
+                        {
+                            <strong>Status of the order: <span class="text-danger">@order.OrderStatus</span></strong>
+                        }
+                    </div>
+
+                    <div>
+                        <a asp-page="/Account/Manage/OrderDetails" asp-route-id="@order.OrderId" class="btn btn-warning fw-bold">View More Details</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <h5 class="text-muted text-center fst-italic mt-5">You have no orders yet.</h5>
+}

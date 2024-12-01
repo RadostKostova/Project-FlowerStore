@@ -56,6 +56,45 @@ namespace FlowerStore.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        //Get edit form
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = User.GetUserId();
+            var user = User.Identity!.Name!.ToString();
+
+            var review = await reviewService.GetReviewForEditAsync(id, userId, user);
+
+            if (review == null || review.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(review);
+        }
+
+        //Edit review
+        [HttpPost]
+        public async Task<IActionResult> Edit(ReviewEditViewModel model)
+        {
+            var userId = User.GetUserId();
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var review = await reviewService.ReviewByIdExistAsync(model.Id);
+
+            if (review == null || review.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            await reviewService.PostEditReviewAsync(model);
+            return RedirectToAction(nameof(All));
+        }
+
         //Get delete view
         [HttpGet]
         public async Task<IActionResult> Delete(int id)

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerStore", "FlowerStore\FlowerStore.csproj", "{4410C195-C6EC-4F3F-9230-B25E8DC4860A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerStore", "FlowerStore\FlowerStore.csproj", "{4410C195-C6EC-4F3F-9230-B25E8DC4860A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerStore.Core", "FlowerStore.Core\FlowerStore.Core.csproj", "{3D985AC7-BB2B-4565-9645-AB3E388AC64F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerStore.Core", "FlowerStore.Core\FlowerStore.Core.csproj", "{3D985AC7-BB2B-4565-9645-AB3E388AC64F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerStore.Infrastructure", "FlowerStore.Infrastructure\FlowerStore.Infrastructure.csproj", "{3E88893E-6284-494B-A661-733D0E6E86C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerStore.Infrastructure", "FlowerStore.Infrastructure\FlowerStore.Infrastructure.csproj", "{3E88893E-6284-494B-A661-733D0E6E86C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

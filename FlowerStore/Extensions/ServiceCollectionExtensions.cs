@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
     /// These extension methods are used to clean up Program.cs and also to register the services used. 
-    /// Extensions for appServices, Db context and Identity
+    /// Extensions for appServices, Db context, Identity and session.
     /// </summary>
 
     public static class ServiceCollectionExtensions

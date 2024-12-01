@@ -85,7 +85,7 @@ namespace FlowerStore.Core.Services
             return payment!;
         }
 
-        //Collect all order data with user input data and create OrderViewModel
+        //Collect all order data with the user's input and create OrderViewModel
         public async Task<OrderViewModel> CreateOrderViewModelAsync(OrderFormViewModel formModel, CartViewModel cart)
         {
             var orderModel = new OrderViewModel
@@ -163,7 +163,7 @@ namespace FlowerStore.Core.Services
             return order.Id;
         }
 
-        //Create new card details in database
+        //Create new card payment details in database
         public async Task<int> CreateCardDetailsAsync(CardDetailsAddViewModel model)
         {
             var newCard = new CardDetails
@@ -178,6 +178,79 @@ namespace FlowerStore.Core.Services
             await repository.AddAsync(newCard);
             await repository.SaveChangesAsync();
             return newCard.Id;
+        }
+
+        //Get all orders by userId and return them as collection of viewModels
+        public async Task<IEnumerable<OrderDetailsViewModel>> GetAllOrdersByUserIdAsync(string userId)
+        {
+            var orders = await repository
+                .AllAsReadOnly<Order>()
+                .Include(o => o.OrderStatus)
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .Select(o => new OrderDetailsViewModel
+                {
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    Email = o.Email,
+                    Phone = o.Phone,
+                    OrderDate = o.OrderDate,
+                    TotalPrice = o.TotalPrice,
+                    OrderDetails = o.OrderDetails ?? "None",
+                    ShippingAddress = o.ShippingAddress,
+                    OrderStatus = o.OrderStatus.OrderStatusName,
+                    PaymentMethod = o.PaymentMethod.Name,
+                    OrderProducts = o.OrderProducts.Select(op => new OrderProductViewModel
+                    {
+                        ProductId = op.ProductId,
+                        ProductName = op.Product.Name,
+                        Quantity = op.Quantity,
+                        Price = op.Price
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return orders;
+        }
+
+        //Get single detailed order by userId and return as ViewModel
+        public async Task<OrderDetailsViewModel?> GetOrderDetailsAsync(int orderId, string userId)
+        {
+            return await repository
+                .AllAsReadOnly<Order>()
+                .Include(o => o.OrderStatus)
+                .Include(o => o.PaymentMethod)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Where(o => o.Id == orderId && o.UserId == userId)
+                .Select(o => new OrderDetailsViewModel
+                {
+                    OrderId = o.Id,
+                    UserId = o.UserId,
+                    FirstName = o.FirstName,
+                    LastName = o.LastName,
+                    Email = o.Email,
+                    Phone = o.Phone,
+                    OrderDate = o.OrderDate,
+                    TotalPrice = o.TotalPrice,
+                    OrderDetails = o.OrderDetails ?? "None",
+                    ShippingAddress = o.ShippingAddress,
+                    OrderStatus = o.OrderStatus.OrderStatusName,
+                    PaymentMethod = o.PaymentMethod.Name,
+                    OrderProducts = o.OrderProducts.Select(op => new OrderProductViewModel
+                    {
+                        ProductId = op.ProductId,
+                        ProductName = op.Product.Name,
+                        Quantity = op.Quantity,
+                        Price = op.Price
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
         }
 
         //Calculating total price from entity for precision

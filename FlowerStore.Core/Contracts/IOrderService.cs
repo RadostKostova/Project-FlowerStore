@@ -22,10 +22,8 @@ namespace FlowerStore.Core.Contracts
         Task<OrderViewModel> CreateOrderViewModelAsync(OrderFormViewModel formModel, CartViewModel cart);
         Task<int> CreateCardDetailsAsync(CardDetailsAddViewModel model);
         Task<int> CreateOrderAsync(OrderViewModel model, int? cardId);
+        Task<IEnumerable<OrderDetailsViewModel>> GetAllOrdersByUserIdAsync(string userId);
+        Task<OrderDetailsViewModel?> GetOrderDetailsAsync(int orderId, string userId);
         decimal CalculateTotalPrice(ShoppingCart cart);
-
-        //Task<bool> AddProductToOrderAsync(int orderId, int productId, int quantity);
-        //Task<bool> RemoveProductFromOrderAsync(int orderId, int productId);
-        //Task<bool> SaveAsync();
     }
 }

@@ -1,0 +1,52 @@
+﻿@page "{id:int}"
+@model OrderDetailsModel
+
+@{
+    ViewData["Title"] = $"Order Details No.";
+}
+
+<h2 class="text-center fst-italic">@ViewBag.Title @Model.Order.OrderId</h2>
+
+<div class="container mt-4">
+    <strong>Order No.: </strong>@Model.Order.OrderId<br />
+    <strong>Order Date: </strong>@Model.Order.OrderDate.ToString("dd-MM-yyyy")<br />
+
+    @if (Model.Order.OrderStatus == "Delivered")
+    {
+        <strong>Status of the order: <span class="text-success">@Model.Order.OrderStatus</span></strong><br />
+    }
+    else
+    {
+        <strong>Status of the order: <span class="text-danger">@Model.Order.OrderStatus</span></strong><br />
+    }
+
+    <strong>Total Price: </strong>@Model.Order.TotalPrice BGN<br />
+    <strong>Shipping Address: </strong>@Model.Order.ShippingAddress<br />
+    <strong>Payment Method: </strong>@Model.Order.PaymentMethod<br />
+    <strong>Order Details: </strong> @Model.Order.OrderDetails<br />
+
+    <h4 class="mt-4 text-center">Ordered Products</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Order.OrderProducts)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.Price BGN</td>
+                    <td>@(product.Quantity * product.Price) BGN</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a asp-page="./MyOrders" class="btn btn-secondary">Back to My Orders</a>
+</div>

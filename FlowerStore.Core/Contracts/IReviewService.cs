@@ -11,6 +11,8 @@ namespace FlowerStore.Core.Contracts
         Task<Review> ReviewByIdExistAsync(int reviewId);
         Task<IEnumerable<ReviewAllViewModel>> GetAllReviewsAsync();
         Task<int> AddReviewAsync(ReviewAddViewModel model);
+        Task<ReviewEditViewModel> GetReviewForEditAsync(int reviewId, string userId, string username);
+        Task<ReviewEditViewModel> PostEditReviewAsync(ReviewEditViewModel model);
         Task<ReviewDeleteViewModel> DeleteReviewAsync(int reviewId, string userId);
         Task<int> ConfirmDeleteAsync(int reviewId);
 

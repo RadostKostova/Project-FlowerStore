@@ -43,7 +43,7 @@ namespace FlowerStore.Core.Services
                     UserName = r.User.UserName
                 })
                 .ToListAsync();
-            
+
             return reviews;
         }
 
@@ -62,6 +62,37 @@ namespace FlowerStore.Core.Services
             return review.Id;
         }
 
+        //Get edit form of review and return viewModel
+        public async Task<ReviewEditViewModel> GetReviewForEditAsync(int reviewId, string userId, string username)
+        {
+            var review = await repository
+                .AllAsReadOnly<Review>()
+                .Include(r => r.User)
+                .Where(r => r.Id == reviewId && r.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            return new ReviewEditViewModel
+            {
+                Id = review.Id,
+                Content = review.Content,
+                UserId = review.UserId,
+                UserName = username
+            };
+        }
+
+        //Edit the review in the database
+        public async Task<ReviewEditViewModel> PostEditReviewAsync(ReviewEditViewModel model)
+        {
+            var review = await repository
+                .All<Review>()
+                .Where(r => r.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            review.Content = model.Content;
+
+            await repository.SaveChangesAsync();
+            return model;
+        }
 
         //Get review delete viewModel
         public async Task<ReviewDeleteViewModel> DeleteReviewAsync(int reviewId, string userId)
@@ -73,8 +104,8 @@ namespace FlowerStore.Core.Services
 
             var model = new ReviewDeleteViewModel()
             {
-               Id = review.Id,
-               Content = review.Content
+                Id = review.Id,
+                Content = review.Content
             };
 
             return model;

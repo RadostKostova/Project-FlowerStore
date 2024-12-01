@@ -23,6 +23,6 @@ namespace FlowerStore.Core.ViewModels.Review
         public string UserId { get; set; } = string.Empty;
 
         [Required]
-        public string UserName { get; set; } = null!;
+        public string UserName { get; set; } = string.Empty;
     }
 }

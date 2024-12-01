@@ -81,6 +81,8 @@ namespace FlowerStore.Controllers
 
             if (!ModelState.IsValid)
             {
+                model.UserId = userId; //Reassigned for more security/correctness
+                model.UserName = User.Identity!.Name!; 
                 return View(model);
             }
 

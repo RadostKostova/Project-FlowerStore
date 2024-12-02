@@ -10,7 +10,7 @@ namespace FlowerStore.Infrastructure.Data.Seed.EntitiesConfiguration.UserConfigu
         {
             var data = new DataSeed();
 
-            builder.HasData(data.AdminUserClaim, data.GuestUserClaim);
+            builder.HasData(data.AdminUserClaim, data.GuestUserClaim, data.TestUserClaim, data.RandomUserClaim);
         }
     }
 }

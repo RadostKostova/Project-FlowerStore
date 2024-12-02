@@ -165,5 +165,18 @@ namespace FlowerStore.Areas.Admin.Controllers
             var products = await adminService.GetLowStockProductsAsync();
             return View(products);
         }
+
+        //Search product
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return RedirectToAction("Product", "All");
+            }
+
+            var products = await productService.SearchProductAsync(searchString);
+            return View(products);
+        }
     }
 }

@@ -1,0 +1,31 @@
+﻿@using static FlowerStore.Core.Constants.AdminConstants
+@using FlowerStore.Core.ViewModels.Product
+@model IEnumerable<ProductAllViewModel>
+
+<div class="row justify-content-center">
+    @if (Model != null && Model.Count() > 0)
+    {
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="card h-100 text-center">
+                    <img class="card-img-top" src="@product.ImageUrl" alt="Flower image">
+                    <div class="card-body">
+                        <h4 class="card-title"><strong>@product.Name</strong></h4>
+                        <p class="card-text"><strong>Category:</strong> @product.Category</p>
+                        <p class="card-text"><strong>Price:</strong> @product.Price BGN</p>
+                    </div>
+
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-1 w-100 p-3 fw-bold">See Details</a>
+
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mb-1 w-100 p-3 fw-bold">Edit</a>
+
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h2 class="text-center fst-italic fw-bold mt-5">No results found! :(</h2>
+    }
+</div>

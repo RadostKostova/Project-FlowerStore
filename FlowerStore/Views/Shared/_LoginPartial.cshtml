@@ -1,11 +1,19 @@
 ﻿@using FlowerStore.Infrastructure.Data.Models.Roles
 @using Microsoft.AspNetCore.Identity
+@using static FlowerStore.Core.Constants.AdminConstants
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        @if (User.IsInRole(AdminRole))
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark fw-bold" asp-area="Admin" asp-controller="Order" asp-action="All" title="Admin">Admin Panel</a>
+            </li>
+        }
+
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
         </li>

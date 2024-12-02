@@ -16,10 +16,14 @@ namespace FlowerStore.Infrastructure.Data.Seed
         //Users
         public ApplicationUser AdminUser { get; set; } = null!;
         public ApplicationUser GuestUser { get; set; } = null!;
+        public ApplicationUser TestUser { get; set; } = null!;
+        public ApplicationUser RandomUser { get; set; } = null!;
 
         //Claims
         public IdentityUserClaim<string> AdminUserClaim { get; set; } = null!;
         public IdentityUserClaim<string> GuestUserClaim { get; set; } = null!;
+        public IdentityUserClaim<string> TestUserClaim { get; set; } = null!;
+        public IdentityUserClaim<string> RandomUserClaim { get; set; } = null!;
 
         //Categories
         public Category Tropical { get; set; } = null!;
@@ -32,6 +36,11 @@ namespace FlowerStore.Infrastructure.Data.Seed
         public Category Native { get; set; } = null!;
         public Category Seasonal { get; set; } = null!;
         public Category Other { get; set; } = null!;
+
+        //Reviews
+        public Review FirstReview { get; set; } = null!;
+        public Review SecondReview { get; set; } = null!;
+        public Review ThirdReview { get; set; } = null!;
 
         //Payment methods
         public PaymentMethod Cash { get; set; } = null!;
@@ -53,7 +62,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
         public Product YellowBegonia { get; set; } = null!;
         public Product PinkGeranium { get; set; } = null!;
         public Product PurpleAgeratum { get; set; } = null!;
-        public Product RedGeranium { get; set;} = null!;
+        public Product RedGeranium { get; set; } = null!;
         public Product PinkPetunias { get; set; } = null!;
         public Product PurplePelargonium { get; set; } = null!;
         public Product WhiteGeranium { get; set; } = null!;
@@ -63,6 +72,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
         {
             SeedUsers();
             SeedCategories();
+            SeedReviews();
             SeedPaymentMethods();
             SeedOrderStatus();
             SeedProducts();
@@ -74,7 +84,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
 
             AdminUser = new ApplicationUser()
             {
-                Id = "adminId",
+                Id = "a21722de-a984-476a-a7d7-8e48dadde907",
                 UserName = "admin@mail.com",
                 NormalizedUserName = "ADMIN@MAIL.COM",
                 Email = "admin@mail.com",
@@ -89,20 +99,20 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 Id = 1,
                 ClaimType = UserFullNameClaim,
                 ClaimValue = "Admin Admin",
-                UserId = "adminId"
+                UserId = "a21722de-a984-476a-a7d7-8e48dadde907"
             };
 
             AdminUser.PasswordHash = hasher.HashPassword(AdminUser, "admin123");
 
             GuestUser = new ApplicationUser()
             {
-                Id = "testId",
-                UserName = "test@test.com",
-                NormalizedUserName = "TEST@TEST.COM",
-                Email = "test@test.com",
-                NormalizedEmail = "TEST@TEST.COM",
-                FirstName = "Test",
-                LastName = "Test",
+                Id = "e50f5dc0-298d-4807-88f0-73b88c82e128",
+                UserName = "guest@guest.com",
+                NormalizedUserName = "GUEST@GUEST.COM",
+                Email = "guest@guest.com",
+                NormalizedEmail = "GUEST@GUEST.COM",
+                FirstName = "Guest",
+                LastName = "Guest",
                 Phone = "1234567800"
             };
 
@@ -110,11 +120,55 @@ namespace FlowerStore.Infrastructure.Data.Seed
             {
                 Id = 2,
                 ClaimType = UserFullNameClaim,
-                ClaimValue = "Test Test",
-                UserId = "testId"
+                ClaimValue = "Guest Guest",
+                UserId = "e50f5dc0-298d-4807-88f0-73b88c82e128"
             };
 
-            GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "test");
+            GuestUser.PasswordHash = hasher.HashPassword(GuestUser, "guest123");
+
+            TestUser = new ApplicationUser()
+            {
+                Id = "9a53e015-990d-4cd0-ae04-2d402060c207",
+                UserName = "test@test.com",
+                NormalizedUserName = "TEST@TEST.COM",
+                Email = "test@test.com",
+                NormalizedEmail = "TEST@TEST.COM",
+                FirstName = "Test",
+                LastName = "Test",
+                Phone = "1234567700"
+            };
+
+            TestUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 3,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Test Test",
+                UserId = "9a53e015-990d-4cd0-ae04-2d402060c207"
+            };
+
+            TestUser.PasswordHash = hasher.HashPassword(TestUser, "test123");
+
+            RandomUser = new ApplicationUser()
+            {
+                Id = "d5f40bd1-8e34-4354-8996-0f884be97351",
+                UserName = "random@random.com",
+                NormalizedUserName = "RANDOM@RANDOM.COM",
+                Email = "random@random.com",
+                NormalizedEmail = "RANDOM@RANDOM.COM",
+                FirstName = "Random",
+                LastName = "User",
+                Phone = "0987654321"
+            };
+
+            RandomUserClaim = new IdentityUserClaim<string>()
+            {
+                Id = 4,
+                ClaimType = UserFullNameClaim,
+                ClaimValue = "Random User",
+                UserId = "d5f40bd1-8e34-4354-8996-0f884be97351"
+            };
+
+            RandomUser.PasswordHash = hasher.HashPassword(RandomUser, "random123");
         }
 
         private void SeedCategories()
@@ -177,6 +231,33 @@ namespace FlowerStore.Infrastructure.Data.Seed
             {
                 Id = 10,
                 Name = "Other"
+            };
+        }
+
+        private void SeedReviews()
+        {
+            FirstReview = new Review
+            {
+                Id = 1,
+                CreatedAt = DateTime.Now,
+                UserId = "e50f5dc0-298d-4807-88f0-73b88c82e128",
+                Content = "Fast delivery and excellent quality. Will buy again for sure!!!"
+            };
+
+            SecondReview = new Review
+            {
+                Id = 2,
+                CreatedAt = DateTime.UtcNow.AddHours(2),
+                UserId = "9a53e015-990d-4cd0-ae04-2d402060c207",
+                Content = "The customer service was exceptional! They were very responsive and helped me choose the perfect arrangement. I’ll definitely be ordering again soon."
+            };
+
+            ThirdReview = new Review
+            {
+                Id = 3,
+                CreatedAt = DateTime.UtcNow.AddHours(4),
+                UserId = "e50f5dc0-298d-4807-88f0-73b88c82e128",
+                Content = "Fast, efficient, and elegant! The flowers were in pristine condition, and the little card included was a nice touch. Amazing experience overall."
             };
         }
 

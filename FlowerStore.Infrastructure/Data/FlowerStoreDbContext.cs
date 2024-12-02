@@ -84,6 +84,7 @@ namespace FlowerStore.Infrastructure.Data
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new UserClaimsConfiguration());
             builder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new ReviewConfiguration());
             builder.ApplyConfiguration(new PaymentMethodConfiguration());
             builder.ApplyConfiguration(new OrderStatusConfiguration());
             builder.ApplyConfiguration(new ProductConfiguration());

@@ -1,7 +1,5 @@
 ﻿using FlowerStore.Core.Contracts;
-using FlowerStore.Core.Services;
 using FlowerStore.Core.ViewModels.Order;
-using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers

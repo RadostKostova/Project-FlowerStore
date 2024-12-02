@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlowerStore.Areas.Admin.Controllers
 {
+    /// <summary>
+    /// Manages operations related to Users
+    /// </summary>
+    
     public class UserController : AdminBaseController
     {
 

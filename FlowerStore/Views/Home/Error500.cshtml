@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Error 500: Internal Server Error";
+}
+
+<div class="container text-center">
+    <img src="/img/error500img.jpg" class="mt-3" alt="error-500-image" style="object-fit: contain; max-width: 100%; height: auto;">
+    <h2 class="fw-bolder">@ViewBag.Title</h2>
+    <p class="fst-italic fw-bold text-secondary">Oops! Something went wrong on our end. We’re working to fix it. Please try again later.</p>
+    <partial name="_BackToHomepagePartial" />
+</div>

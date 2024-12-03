@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Error 400: Bad Request";
+}
+
+<div class="container text-center">
+    <img src="/img/error400img.jpg" class="mt-3" alt="error-400-image" style="object-fit: contain; max-width: 100%; height: auto;">
+    <h2 class="fw-bolder">@ViewBag.Title</h2>
+    <p class="fst-italic fw-bold text-secondary">Oops! It looks like your request was invalid. Please try again or contact support if the issue persists.</p>
+    <partial name="_BackToHomepagePartial" />
+</div>

@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Error 401: Unauthorized";
+}
+
+<div class="container text-center">
+    <img src="/img/error401img.jpg" class="mt-3" alt="error-401-image" style="object-fit: contain; max-width: 100%; height: auto;">
+    <h2 class="fw-bolder">@ViewBag.Title</h2>
+    <p class="fst-italic fw-bold text-secondary">Oops! You don't have permission to access this page. Contact support if you believe this is a mistake.</p>
+    <partial name="_BackToHomepagePartial" />
+</div>

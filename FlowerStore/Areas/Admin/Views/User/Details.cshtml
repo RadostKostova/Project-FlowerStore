@@ -1,0 +1,57 @@
+﻿@using static FlowerStore.Core.Constants.AdminConstants;
+@using FlowerStore.Core.ViewModels.User;
+@model UserDetailsViewModel
+
+@{
+    ViewBag.Title = "User Details";
+    var currentUserId = ViewBag.CurrentUserId;
+}
+
+<div class="container">
+    <h2 class="text-center mb-3">Details of @Model.Username</h2>
+    <div class="card mx-auto" style="max-width: 500px;">
+
+        <div class="card-header">
+            <div class="text-center">
+                <i class="bi bi-person-fill" style="font-size: 6rem; color: dimgrey;"></i>
+            </div>
+        </div>
+
+        <div class="card-body text-center">
+
+            @if (Model.Id == currentUserId)
+            {
+                <p class="card-title mb-3 fw-bold"><strong>Username: </strong>@Model.Username (Me)</p>
+            }
+            else
+            {
+                <p class="card-title mb-3 fw-bold"><strong>Username: </strong>@Model.Username</p>
+            }
+            <p class="card-text"><strong>Email: </strong>@Model.Email</p>
+            <p class="card-text"><strong>First Name: </strong>@Model.FirstName</p>
+            <p class="card-text"><strong>Last Name: </strong>@Model.LastName</p>
+            <p class="card-text"><strong>Phone Number: </strong>@Model.PhoneNumber</p>
+
+            @if (Model.Roles.Contains(AdminRole))
+            {
+                <h5 class="card-text text-danger fst-italic">Roles: <strong>@string.Join(", ", Model.Roles)</strong></h5>
+            }
+            else
+            {
+                <p class="card-text"><strong>Roles:</strong> @string.Join(", ", Model.Roles)</p>
+            }
+        </div>
+
+        <div class="card-footer">
+            <div class="text-center mb-2 mt-2">
+                @if (!Model.Roles.Contains(AdminRole) && Model.Id != currentUserId)
+                {
+                    <a asp-area="Admin" asp-controller="User" asp-action="MakeAdmin" asp-route-userId="@Model.Id"
+                       class="btn btn-danger me-4"> Make Admin</a>
+                }
+                <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-secondary">Back to Users</a>
+            </div>            
+        </div>
+
+    </div>
+</div>

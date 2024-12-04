@@ -1,4 +1,4 @@
-﻿@using static FlowerStore.Core.Constants.AdminConstants
+﻿@using static FlowerStore.Extensions.ClaimsPrincipalExtensions;
 @using FlowerStore.Core.ViewModels.Product
 @model IEnumerable<ProductAllViewModel>
 
@@ -18,7 +18,7 @@
 
                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-1 w-100 p-3 fw-bold">See Details</a>
 
-                    @if (User.IsInRole(AdminRole))
+                    @if (User.IsAdmin())
                     {
                         <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mb-1 w-100 p-3 fw-bold">Edit</a>
                     }

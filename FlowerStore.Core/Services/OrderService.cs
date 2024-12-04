@@ -102,7 +102,7 @@ namespace FlowerStore.Core.Services
                 OrderStatuses = await GetAllOrderStatusesAsync(),
                 FirstName = formModel.FirstName,
                 LastName = formModel.LastName,
-                Phone = formModel.Phone,
+                PhoneNumber = formModel.PhoneNumber,
                 Email = formModel.Email,
                 OrderProducts = cart.ShoppingCartProducts.Select(scp => new OrderProductViewModel
                 {
@@ -134,7 +134,7 @@ namespace FlowerStore.Core.Services
                 ShoppingCartId = model.ShoppingCartId,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                Phone = model.Phone,
+                PhoneNumber = model.PhoneNumber,
                 Email = model.Email,
                 CardDetailsId = cardDetailsId,
             };
@@ -198,7 +198,7 @@ namespace FlowerStore.Core.Services
                     FirstName = o.FirstName,
                     LastName = o.LastName,
                     Email = o.Email,
-                    Phone = o.Phone,
+                    PhoneNumber = o.PhoneNumber,
                     OrderDate = o.OrderDate,
                     TotalPrice = o.TotalPrice,
                     OrderDetails = o.OrderDetails ?? "None",
@@ -235,7 +235,7 @@ namespace FlowerStore.Core.Services
                     FirstName = o.FirstName,
                     LastName = o.LastName,
                     Email = o.Email,
-                    Phone = o.Phone,
+                    PhoneNumber = o.PhoneNumber,
                     OrderDate = o.OrderDate,
                     TotalPrice = o.TotalPrice,
                     OrderDetails = o.OrderDetails ?? "None",

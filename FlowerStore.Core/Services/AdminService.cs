@@ -63,7 +63,7 @@ namespace FlowerStore.Core.Services
                     FirstName = p.FirstName,
                     LastName = p.LastName,
                     Email = p.Email,
-                    Phone = p.Phone
+                    PhoneNumber = p.PhoneNumber
                     
                 })
                 .ToListAsync();
@@ -96,7 +96,7 @@ namespace FlowerStore.Core.Services
                     FirstName = o.FirstName,
                     LastName = o.LastName,
                     Email = o.Email,
-                    Phone = o.Phone
+                    PhoneNumber = o.PhoneNumber
                 })
                 .ToListAsync();
         }
@@ -119,7 +119,7 @@ namespace FlowerStore.Core.Services
                 FirstName = order.FirstName,
                 LastName = order.LastName,
                 Email = order.Email,
-                Phone = order.Phone,
+                PhoneNumber = order.PhoneNumber,
                 OrderDate = order.OrderDate,
                 TotalPrice = order.TotalPrice,
                 OrderDetails = order.OrderDetails ?? string.Empty,

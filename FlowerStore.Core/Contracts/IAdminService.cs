@@ -22,6 +22,7 @@ namespace FlowerStore.Core.Contracts
 
         //--------------------------------------------------------USER
         Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync();
+        Task<UserDetailsViewModel> GetUserDetailsAsync(string userId);
 
         //--------------------------------------------------------PRODUCT
         Task<int> AddProductAsync(ProductAddViewModel model);

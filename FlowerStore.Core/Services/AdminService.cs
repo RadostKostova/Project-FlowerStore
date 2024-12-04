@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FlowerStore.Core.Services
 {
     /// <summary>
-    /// The admin service class includes methods for user management, administrative tasks, adding/editing products and etc.
+    /// The admin service class includes methods for user managment, administrative tasks, adding/editing products and etc.
     /// </summary>
 
     public class AdminService : IAdminService
@@ -192,6 +192,7 @@ namespace FlowerStore.Core.Services
         public async Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync()
         {
             var users = await userManager.Users
+                .OrderBy(u => u.UserName)
                 .Select(user => new UserAllViewModel
                 {
                     Id = user.Id,
@@ -204,6 +205,26 @@ namespace FlowerStore.Core.Services
                 .ToListAsync();
 
             return users;
+        }
+
+        public async Task<UserDetailsViewModel> GetUserDetailsAsync(string userId)
+        {           
+            var user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            var model = new UserDetailsViewModel
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = user.PhoneNumber,
+                Roles = roles.ToList()
+            };
+
+            return model;
         }
 
         //-----------------------------------------------------------------------------------------PRODUCT SERVICES:

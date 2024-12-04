@@ -13,12 +13,14 @@ namespace FlowerStore.Core.ViewModels.CardDetails
         [MaxLength(CardNumberExactlyLength)]
         [RegularExpression(CardNumberRegexFormat, 
             ErrorMessage = CardNumberErrorMessage)]
+        [Display(Name = "Card number")]
         public string CardNumber { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(CardExpirationExactlyLength)]
         [RegularExpression(CardExpirationRegexDateFormat,
             ErrorMessage = CardExpirationDateErrorMessage)]
+        [Display(Name = "Expiration date")]
         public string ExpirationDate { get; set; } = string.Empty; //Format MM/yy
 
         [Required]
@@ -29,6 +31,7 @@ namespace FlowerStore.Core.ViewModels.CardDetails
 
         [Required]
         [MaxLength(CardHolderMaxLength)]
+        [Display(Name = "Cardholder name")]
         public string CardHolderName { get; set; } = string.Empty;
     }
 }

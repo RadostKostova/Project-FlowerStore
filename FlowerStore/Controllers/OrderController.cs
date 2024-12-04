@@ -5,14 +5,13 @@ using FlowerStore.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-
 namespace FlowerStore.Controllers
 {
     /// <summary>
     /// The OrderController handles operations related to placing an order, such as choosing payment method, shipping info and etc.
     /// The main target of the controller is first to collect the needed user input data (as viewModels) in session (in-memory session store) and then to create actual order at the database. COMMENTS PROVIDED!
     /// </summary>
-    
+
     public class OrderController : BaseController
     {
         private readonly IOrderService orderService;
@@ -106,7 +105,7 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var formModelJson = HttpContext.Session.GetString("OrderFormViewModel");  
+            var formModelJson = HttpContext.Session.GetString("OrderFormViewModel");
 
             if (string.IsNullOrEmpty(formModelJson))  //something occured, try again
             {
@@ -155,10 +154,10 @@ namespace FlowerStore.Controllers
                 return View(nameof(Preview));
             }
 
-            int? cardId = null;  
+            int? cardId = null;
             if (orderModel.CardDetails != null) //if user choose card payment -> create it
             {
-                 cardId = await orderService.CreateCardDetailsAsync(orderModel.CardDetails);
+                cardId = await orderService.CreateCardDetailsAsync(orderModel.CardDetails);
             }
 
             var newOrderId = await orderService.CreateOrderAsync(orderModel, cardId); //create order in db

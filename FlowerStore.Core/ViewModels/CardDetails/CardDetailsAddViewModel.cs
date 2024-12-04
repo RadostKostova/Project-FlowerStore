@@ -6,6 +6,10 @@ namespace FlowerStore.Core.ViewModels.CardDetails
 {
     public class CardDetailsAddViewModel
     {
+        /// <summary>
+        /// Represents card payment details
+        /// </summary>
+        
         [Required]
         public string UserId { get; set; } = string.Empty;
 

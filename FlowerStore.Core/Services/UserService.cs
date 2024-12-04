@@ -1,5 +1,6 @@
 ﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Infrastructure.Common;
+using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,18 +47,28 @@ namespace FlowerStore.Core.Services
                 .AnyAsync(u => u.Email.ToLower() == email.ToLower());
         }
 
+        //Get user's first, last name and phone from the last order that the user placed and save to AspNetUsers
+        public async Task UpdateUserInfoAsync(string userId)
+        {
+            var user = await repository
+                .All<ApplicationUser>()
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
+            if (user == null) return;
 
-        //public async Task UpdateUserInfoAsync(string userId, UserEditViewModel model)
-        //{
-        //    var user = await GetUserByIdAsync(userId);
-        //    if (user == null) return;
+            var order = await repository
+                .AllAsReadOnly<Order>()
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .FirstOrDefaultAsync();
 
-        //    user.FirstName = model.FirstName;
-        //    user.LastName = model.LastName;
-        //    user.Phone = model.Phone;
+            if (order == null) return;
 
-        //    await userManager.UpdateAsync(user);
-        //}
+            user.FirstName = order.FirstName;
+            user.LastName = order.LastName;
+            user.PhoneNumber = order.PhoneNumber;
+
+            await repository.SaveChangesAsync();
+        }
     }
 }

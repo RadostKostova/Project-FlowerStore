@@ -10,6 +10,8 @@ namespace FlowerStore.Core.Contracts
     {
         Task<IEnumerable<ApplicationUser>> GetAllUsersAsync();
         Task<ApplicationUser?> GetUserByIdAsync(string userId);
+
+        Task UpdateUserInfoAsync(string userId);
         Task<bool> ExistByEmailAsync(string email);
     }
 }

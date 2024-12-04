@@ -91,7 +91,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 NormalizedEmail = "ADMIN@MAIL.COM",
                 FirstName = "Admin",
                 LastName = "Admin",
-                Phone = "1234567890"
+                PhoneNumber = "1234567890"
             };
 
             AdminUserClaim = new IdentityUserClaim<string>()
@@ -113,7 +113,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 NormalizedEmail = "GUEST@GUEST.COM",
                 FirstName = "Guest",
                 LastName = "Guest",
-                Phone = "1234567800"
+                PhoneNumber = "1234567800"
             };
 
             GuestUserClaim = new IdentityUserClaim<string>()
@@ -135,7 +135,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 NormalizedEmail = "TEST@TEST.COM",
                 FirstName = "Test",
                 LastName = "Test",
-                Phone = "1234567700"
+                PhoneNumber = "1234567700"
             };
 
             TestUserClaim = new IdentityUserClaim<string>()
@@ -157,7 +157,7 @@ namespace FlowerStore.Infrastructure.Data.Seed
                 NormalizedEmail = "RANDOM@RANDOM.COM",
                 FirstName = "Random",
                 LastName = "User",
-                Phone = "0987654321"
+                PhoneNumber = "0987654321"
             };
 
             RandomUserClaim = new IdentityUserClaim<string>()

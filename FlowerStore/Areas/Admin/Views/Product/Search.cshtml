@@ -1,5 +1,4 @@
-﻿@using static FlowerStore.Core.Constants.AdminConstants
-@using FlowerStore.Core.ViewModels.Product
+﻿@using FlowerStore.Core.ViewModels.Product
 @model IEnumerable<ProductAllViewModel>
 
 <div class="row justify-content-center">
@@ -19,7 +18,6 @@
                     <a asp-area="Admin" asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="btn btn-warning mb-1 w-100 p-3 fw-bold">See Details</a>
 
                     <a asp-area="Admin" asp-controller="Product" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary mb-1 w-100 p-3 fw-bold">Edit</a>
-
                 </div>
             </div>
         }

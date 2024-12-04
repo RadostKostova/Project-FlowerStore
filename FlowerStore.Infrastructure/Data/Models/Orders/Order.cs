@@ -10,7 +10,7 @@ using static FlowerStore.Infrastructure.Constants.DataConstants;
 namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 {
     /// <summary>
-    /// An order represents a user's purchase of one or more products and all the data needed for a single purcase.
+    /// An order represents a user's purchase of one or more products and all the data needed for a single purchase.
     /// </summary>
     public class Order
     {
@@ -71,8 +71,9 @@ namespace FlowerStore.Infrastructure.Data.Models.Orders.Order
 
         [Required]
         [Phone]
-        [Comment("Phone")]
-        public string Phone { get; set; } = string.Empty;
+        [MaxLength(UserPhoneExactlyLength)]
+        [Comment("Phone number")]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         [Comment("Card identifier")]
         public int? CardDetailsId { get; set; }

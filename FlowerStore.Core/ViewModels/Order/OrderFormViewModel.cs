@@ -7,12 +7,17 @@ namespace FlowerStore.Core.ViewModels.Order
 {
     public class OrderFormViewModel
     {
+        /// <summary>
+        /// This view model represents a form that collects user's chosen payment method, shipping details, personal data and etc. 
+        /// The user's input from this viewModel will be transferred to OrderViewModel, which will hold the detailed information about the user's order. It will be saved in session.
+        /// </summary>
         public int Id { get; set; }
 
         [Required]
         [StringLength(AddressMaxLength, 
             MinimumLength = AddressMinLength, 
             ErrorMessage = StringLengthErrorMessage)]
+        [Display(Name = "Shipping address")]
         public string ShippingAddress { get; set; } = string.Empty;
 
         [Display(Name = "Order details")]
@@ -41,8 +46,10 @@ namespace FlowerStore.Core.ViewModels.Order
         public string Email { get; set; } = string.Empty;
 
         [Required]
+        [StringLength(UserPhoneExactlyLength)]
         [Phone(ErrorMessage = InvalidFieldErrorMessage)]
-        public string Phone { get; set; } = string.Empty;
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; } = string.Empty;
 
         public IEnumerable<PaymentMethodViewModel> PaymentMethods { get; set; } = new List<PaymentMethodViewModel>();
     }

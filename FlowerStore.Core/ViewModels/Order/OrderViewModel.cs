@@ -11,6 +11,10 @@ namespace FlowerStore.Core.ViewModels.Order
 {
     public class OrderViewModel
     {
+        /// <summary>
+        /// This view model represents detailed information abount an order - with eventual CardDetails (card payment)
+        /// </summary>
+        
         [Required]
         public int Id { get; set; }
 
@@ -69,7 +73,7 @@ namespace FlowerStore.Core.ViewModels.Order
 
         [Required]
         [Phone(ErrorMessage = InvalidFieldErrorMessage)]
-        public string Phone { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = string.Empty;
 
         public CardDetailsAddViewModel? CardDetails { get; set; }
         public IEnumerable<OrderStatusViewModel> OrderStatuses { get; set; } = new List<OrderStatusViewModel>();

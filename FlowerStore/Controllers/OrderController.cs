@@ -10,19 +10,22 @@ namespace FlowerStore.Controllers
 {
     /// <summary>
     /// The OrderController handles operations related to placing an order, such as choosing payment method, shipping info and etc.
-    /// The main target of the controller is first to collect the needed user input data (as viewModels) in session (in-memory session store) and then to create actual order at the database.
+    /// The main target of the controller is first to collect the needed user input data (as viewModels) in session (in-memory session store) and then to create actual order at the database. COMMENTS PROVIDED!
     /// </summary>
     
     public class OrderController : BaseController
     {
         private readonly IOrderService orderService;
         private readonly ICartService cartService;
+        private readonly IUserService userService;
 
         public OrderController(IOrderService _orderService,
-            ICartService _cartService)
+            ICartService _cartService,
+            IUserService _userService)
         {
             orderService = _orderService;
             cartService = _cartService;
+            userService = _userService;
         }
 
         //Display form for shipping information
@@ -51,15 +54,17 @@ namespace FlowerStore.Controllers
                 return View(formModel);
             }
 
+            //Save the shipping input data to session for future display (at Preview())
             HttpContext.Session.SetString("OrderFormViewModel", JsonConvert.SerializeObject(formModel));
 
             var paymentChosen = await orderService.GetChosenPaymentMethodAsync(formModel.PaymentMethodId);
 
-            if (paymentChosen.Name == "Card")
+            if (paymentChosen.Name == "Card") //if "Card" payment -> go to card form
             {
                 return RedirectToAction(nameof(CardDetails));
             }
-            return RedirectToAction(nameof(Preview));
+
+            return RedirectToAction(nameof(Preview)); //if "Cash" payment -> go to Preview() and skip card form
         }
 
         //Display form for card-chosen payment
@@ -87,6 +92,7 @@ namespace FlowerStore.Controllers
                 return View(cardModel);
             }
 
+            //Save the card input data to session for future display (at Preview())
             HttpContext.Session.SetString("CardDetailsAddViewModel", JsonConvert.SerializeObject(cardModel));
             return RedirectToAction(nameof(Preview));
         }
@@ -100,41 +106,41 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var formModelJson = HttpContext.Session.GetString("OrderFormViewModel");
+            var formModelJson = HttpContext.Session.GetString("OrderFormViewModel");  
 
-            if (string.IsNullOrEmpty(formModelJson))
+            if (string.IsNullOrEmpty(formModelJson))  //something occured, try again
             {
                 return RedirectToAction(nameof(ShippingDetails));
             }
 
-            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(formModelJson);
+            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(formModelJson); //retrieve user's shipping details input
 
             var cart = await cartService.GetShoppingCartByUserIdAsync(User.GetUserId());
-            var orderModel = await orderService.CreateOrderViewModelAsync(formModel, cart); 
+            var orderModel = await orderService.CreateOrderViewModelAsync(formModel, cart);  //create order viewModel
 
             if (orderModel == null)
             {
                 return BadRequest();
             }
 
-            if (HttpContext.Session.Keys.Contains("CardDetailsAddViewModel"))
+            if (HttpContext.Session.Keys.Contains("CardDetailsAddViewModel")) //check if user chosen card payment
             {
                 var cardModelJson = HttpContext.Session.GetString("CardDetailsAddViewModel");
 
-                if (string.IsNullOrEmpty(cardModelJson))
+                if (string.IsNullOrEmpty(cardModelJson)) //something occured, try again
                 {
                     return RedirectToAction(nameof(CardDetails));
                 }
 
                 var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(cardModelJson);
 
-                orderModel.CardDetails = cardModel;                 
+                orderModel.CardDetails = cardModel;   //attach the card details to the view model
             }
 
-            HttpContext.Session.Remove("OrderFormViewModel");
+            HttpContext.Session.Remove("OrderFormViewModel");  //clear session from previous view models
             HttpContext.Session.Remove("CardDetailsAddViewModel");
 
-            HttpContext.Session.SetString("OrderViewModel", JsonConvert.SerializeObject(orderModel));
+            HttpContext.Session.SetString("OrderViewModel", JsonConvert.SerializeObject(orderModel)); //save the new detailed order
             return View(orderModel);
         }
 
@@ -144,25 +150,27 @@ namespace FlowerStore.Controllers
         {
             var orderModel = JsonConvert.DeserializeObject<OrderViewModel>(HttpContext.Session.GetString("OrderViewModel"));
 
-            if (orderModel == null || !ModelState.IsValid)
+            if (orderModel == null || !ModelState.IsValid)  //something occured, try again
             {
                 return View(nameof(Preview));
             }
 
-            int? cardId = null;
-            if (orderModel.CardDetails != null)
+            int? cardId = null;  
+            if (orderModel.CardDetails != null) //if user choose card payment -> create it
             {
                  cardId = await orderService.CreateCardDetailsAsync(orderModel.CardDetails);
             }
 
-            var newOrderId = await orderService.CreateOrderAsync(orderModel, cardId);
+            var newOrderId = await orderService.CreateOrderAsync(orderModel, cardId); //create order in db
 
-            if (newOrderId == 0)
+            if (newOrderId == 0) //something occured, try again
             {
                 return View(nameof(Preview));
             }
 
-            HttpContext.Session.Remove("OrderViewModel");
+            await userService.UpdateUserInfoAsync(User.GetUserId()); //update first, last name and phone in AspNetUsers
+
+            HttpContext.Session.Remove("OrderViewModel");  //clear both session and cart
             await cartService.ClearCartAsync(User.GetUserId());
             return RedirectToAction("Confirmed", new { orderId = newOrderId });
         }

@@ -5,10 +5,16 @@
     ViewBag.Title = "Card Payment";
 }
 
-<div class="container mt-5">
+<div class="container">
+    <h5 class="text-danger fw-bold text-center">⚠️ CRITICAL WARNING: TEST DATA ONLY!</h5>
+    <p class="text-danger fw-bold text-center mb-2">
+        Please DO NOT submit real personal, financial, or sensitive information anywhere in this application!<br />
+        Any data you enter is for testing purposes only and will not be stored securely or used for real transactions!
+    </p>
+    <hr />
     <div class="row">
         <div class="col-lg-6">
-            <h3 class="fst-italic text-black text-center mb-4">@ViewBag.Title</h3>
+            <h2 class="fst-italic text-black text-center mb-4">@ViewBag.Title</h2>            
             <hr />
 
             <form asp-area="" asp-controller="Order" asp-action="CardDetails" method="post">

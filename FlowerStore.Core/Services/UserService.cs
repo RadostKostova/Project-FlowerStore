@@ -10,7 +10,7 @@ namespace FlowerStore.Core.Services
     /// <summary>
     /// User service for user managment
     /// </summary>
-    
+
     public class UserService : IUserService
     {
         private readonly IRepository repository;
@@ -22,31 +22,7 @@ namespace FlowerStore.Core.Services
             repository = _repository;
             userManager = _userManager;
         }
-
-        //Get all users
-        public async Task<IEnumerable<ApplicationUser>> GetAllUsersAsync()
-        {
-            return await repository
-                .AllAsReadOnly<ApplicationUser>() //should be ViewModel
-                .ToListAsync();
-        }
-
-        //Get user by id
-        public async Task<ApplicationUser?> GetUserByIdAsync(string userId)
-        {
-            return await repository
-                .AllAsReadOnly<ApplicationUser>()
-                .FirstOrDefaultAsync(u => u.Id == userId);
-        }
-
-        //Check if user exist by email, return boolean
-        public async Task<bool> ExistByEmailAsync(string email)
-        {
-            return await repository
-                .AllAsReadOnly<ApplicationUser>()
-                .AnyAsync(u => u.Email.ToLower() == email.ToLower());
-        }
-
+          
         //Get user's first, last name and phone from the last order that the user placed and save to AspNetUsers
         public async Task UpdateUserInfoAsync(string userId)
         {

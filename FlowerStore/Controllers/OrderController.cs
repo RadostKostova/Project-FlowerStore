@@ -100,12 +100,14 @@ namespace FlowerStore.Controllers
                 return BadRequest();
             }
 
-            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(HttpContext.Session.GetString("OrderFormViewModel"));
+            var formModelJson = HttpContext.Session.GetString("OrderFormViewModel");
 
-            if (formModel == null)
+            if (string.IsNullOrEmpty(formModelJson))
             {
                 return RedirectToAction(nameof(ShippingDetails));
             }
+
+            var formModel = JsonConvert.DeserializeObject<OrderFormViewModel>(formModelJson);
 
             var cart = await cartService.GetShoppingCartByUserIdAsync(User.GetUserId());
             var orderModel = await orderService.CreateOrderViewModelAsync(formModel, cart); 
@@ -116,16 +118,19 @@ namespace FlowerStore.Controllers
             }
 
             if (HttpContext.Session.Keys.Contains("CardDetailsAddViewModel"))
-            {   
-                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(HttpContext.Session.GetString("CardDetailsAddViewModel"));
+            {
+                var cardModelJson = HttpContext.Session.GetString("CardDetailsAddViewModel");
 
-                if (cardModel == null)
+                if (string.IsNullOrEmpty(cardModelJson))
                 {
                     return RedirectToAction(nameof(CardDetails));
                 }
 
+                var cardModel = JsonConvert.DeserializeObject<CardDetailsAddViewModel>(cardModelJson);
+
                 orderModel.CardDetails = cardModel;                 
             }
+
             HttpContext.Session.Remove("OrderFormViewModel");
             HttpContext.Session.Remove("CardDetailsAddViewModel");
 
@@ -170,7 +175,7 @@ namespace FlowerStore.Controllers
 
             if (order == null)
             {
-                return NotFound("Order not found.");
+                return NotFound();
             }
 
             if (order.UserId != User.GetUserId())

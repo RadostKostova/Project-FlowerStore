@@ -1,5 +1,5 @@
-﻿@using static FlowerStore.Core.Constants.AdminConstants;
-@using FlowerStore.Core.ViewModels.Admin;
+﻿@using FlowerStore.Core.ViewModels.Admin;
+@using static FlowerStore.Core.Constants.AdminConstants;
 @model UserDetailsViewModel
 
 @{
@@ -38,7 +38,7 @@
             }
             else
             {
-                <p class="card-text"><strong>Roles:</strong> @string.Join(", ", Model.Roles)</p>
+                <p class="card-text"><strong>Roles: </strong>User</p>
             }
         </div>
 
@@ -47,7 +47,11 @@
                 @if (!Model.Roles.Contains(AdminRole) && Model.Id != currentUserId)
                 {
                     <a asp-area="Admin" asp-controller="User" asp-action="MakeAdministrator" asp-route-userId="@Model.Id"
-                       class="btn btn-danger me-4"> Make Admin</a>
+                    class="btn btn-danger me-4">Make Admin</a>
+                }
+                else if (Model.Roles.Contains(AdminRole) && Model.Id != currentUserId)
+                {
+                    <a asp-area="Admin" asp-controller="User" asp-action="RemoveAdministrator" asp-route-userId="@Model.Id" class="btn btn-danger me-4">Remove Admin</a>
                 }
                 <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-secondary">Back to Users</a>
             </div>            

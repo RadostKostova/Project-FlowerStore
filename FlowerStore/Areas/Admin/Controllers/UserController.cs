@@ -9,7 +9,8 @@ using static FlowerStore.Core.Constants.AdminConstants;
 namespace FlowerStore.Areas.Admin.Controllers
 {
     /// <summary>
-    /// Manages operations related to Users
+    /// Manages operations related to Users. Attributes for Admin only authorization are included in AdminBaseController 
+    /// so checking for the current user (if it is Admin) is redundant.
     /// </summary>
 
     public class UserController : AdminBaseController
@@ -84,16 +85,21 @@ namespace FlowerStore.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MakeAdministrator(AdminAddViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (model == null)
             {
                 return BadRequest();
             }
 
             var user = await adminService.GetUserByIdAsync(model.UserId);
 
-            if (user == null || user.Email != model.Email || user.UserName != model.Username) 
+            if (user == null)
             {
-                return BadRequest();
+                return NotFound();
+            }
+
+            if (user.Id != model.UserId || user.Email != model.Email || user.UserName != model.Username) 
+            {
+                return BadRequest();   //additional compare validations
             }
 
             if (await userManager.IsInRoleAsync(user, AdminRole))
@@ -105,6 +111,65 @@ namespace FlowerStore.Areas.Admin.Controllers
             return RedirectToAction("All");
         }
 
-        //Remove Admin TODO
+        //Display confirmation view for removing user as an Admin 
+        [HttpGet]
+        public async Task<IActionResult> RemoveAdministrator(string userId)
+        {           
+            if (string.IsNullOrEmpty(userId))
+            {
+                return NotFound();
+            }
+
+            var user = await adminService.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!await userManager.IsInRoleAsync(user, AdminRole)) 
+            {                
+                return RedirectToAction(nameof(All));   //not admin
+            }
+
+            var model = new AdminRemoveViewModel
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                Email = user.Email
+            };
+
+            return View(model);
+        }
+
+        //Removing an admin
+        [HttpPost]
+        public async Task<IActionResult> RemoveAdministrator(AdminRemoveViewModel model)
+        {           
+            if (model == null)
+            {  
+                return BadRequest();
+            }
+
+            var user = await adminService.GetUserByIdAsync(model.UserId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (user.Id != model.UserId || user.Email != model.Email || user.UserName != model.Username)
+            {
+                return BadRequest();    //additional compare validations
+            }
+
+            if (!await userManager.IsInRoleAsync(user, AdminRole))
+            {
+                return RedirectToAction(nameof(All));   //not an admin
+            }
+
+            var result = await userManager.RemoveFromRoleAsync(user, AdminRole);
+            return RedirectToAction(nameof(All));
+        }
     }
 }

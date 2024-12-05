@@ -1,5 +1,5 @@
 ﻿@using static FlowerStore.Core.Constants.AdminConstants;
-@using FlowerStore.Core.ViewModels.User;
+@using FlowerStore.Core.ViewModels.Admin;
 @model UserDetailsViewModel
 
 @{
@@ -46,7 +46,7 @@
             <div class="text-center mb-2 mt-2">
                 @if (!Model.Roles.Contains(AdminRole) && Model.Id != currentUserId)
                 {
-                    <a asp-area="Admin" asp-controller="User" asp-action="MakeAdmin" asp-route-userId="@Model.Id"
+                    <a asp-area="Admin" asp-controller="User" asp-action="MakeAdministrator" asp-route-userId="@Model.Id"
                        class="btn btn-danger me-4"> Make Admin</a>
                 }
                 <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-secondary">Back to Users</a>

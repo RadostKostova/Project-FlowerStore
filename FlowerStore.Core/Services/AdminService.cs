@@ -10,6 +10,7 @@ using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static FlowerStore.Core.Constants.AdminConstants;
 
 namespace FlowerStore.Core.Services
 {
@@ -197,7 +198,7 @@ namespace FlowerStore.Core.Services
                     Email = user.Email,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    PhoneNumber = user.PhoneNumber
+                    PhoneNumber = user.PhoneNumber,
                 })
                 .ToListAsync();
 

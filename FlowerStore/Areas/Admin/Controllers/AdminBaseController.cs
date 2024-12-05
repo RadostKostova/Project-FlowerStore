@@ -5,7 +5,7 @@ using static FlowerStore.Core.Constants.AdminConstants;
 namespace FlowerStore.Areas.Admin.Controllers
 {
     /// <summary>
-    /// Base Controller for Admin Area
+    /// Base Controller for Admin Area. Attributes for admin control only.
     /// </summary>
     
     [Area(AdminAreaName)]

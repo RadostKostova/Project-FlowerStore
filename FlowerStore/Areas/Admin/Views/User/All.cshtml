@@ -27,7 +27,16 @@
                     <td>@user.Email</td>
                     <td>@user.FirstName @user.LastName</td>
                     <td>@user.PhoneNumber</td>
-                    <td>@(user.IsAdmin ? "Yes" : "No")</td>
+                    <td>
+                        @if (user.IsAdmin)
+                        {
+                            <strong class="text-success">Yes</strong>
+                        }
+                        else
+                        {
+                            <strong class="text-danger">No</strong>
+                        }
+                    </td>
                     <td>
                         <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-userId="@user.Id" class="btn btn-primary btn-sm ms-2">
                             <i class="bi bi-info-circle"></i>

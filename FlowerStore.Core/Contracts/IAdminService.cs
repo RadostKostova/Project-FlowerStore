@@ -1,13 +1,13 @@
-﻿using FlowerStore.Core.ViewModels.Order;
+﻿using FlowerStore.Core.ViewModels.Admin;
+using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.Product;
-using FlowerStore.Core.ViewModels.User;
-using FlowerStore.Infrastructure.Data.Models;
+using FlowerStore.Infrastructure.Data.Models.Roles;
 
 namespace FlowerStore.Core.Contracts
 {
     /// <summary>
-    /// Interface for admin services.
+    /// Interface for admin services. Manageing Orders, Users and and Products
     /// </summary>
 
     public interface IAdminService
@@ -23,6 +23,7 @@ namespace FlowerStore.Core.Contracts
         //--------------------------------------------------------USER
         Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync();
         Task<UserDetailsViewModel> GetUserDetailsAsync(string userId);
+        Task<ApplicationUser> GetUserByIdAsync(string userId);
 
         //--------------------------------------------------------PRODUCT
         Task<int> AddProductAsync(ProductAddViewModel model);

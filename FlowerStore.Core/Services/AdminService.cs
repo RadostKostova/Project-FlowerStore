@@ -1,9 +1,9 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.ViewModels.Admin;
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;
 using FlowerStore.Core.ViewModels.OrderStatus;
 using FlowerStore.Core.ViewModels.Product;
-using FlowerStore.Core.ViewModels.User;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Orders.Order;
@@ -21,17 +21,14 @@ namespace FlowerStore.Core.Services
     {
         private readonly IRepository repository;
         private readonly IProductService productService;
-        private readonly IUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
 
         public AdminService(IRepository _repository,
             IProductService _productService,
-            IUserService _userService,
             UserManager<ApplicationUser> _userManager)
         {
             repository = _repository;
             productService = _productService;
-            userService = _userService;
             userManager = _userManager;
         }
 
@@ -207,10 +204,10 @@ namespace FlowerStore.Core.Services
             return users;
         }
 
+        //Get details of user
         public async Task<UserDetailsViewModel> GetUserDetailsAsync(string userId)
         {           
             var user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
             var roles = await userManager.GetRolesAsync(user);
 
             var model = new UserDetailsViewModel
@@ -225,6 +222,16 @@ namespace FlowerStore.Core.Services
             };
 
             return model;
+        }
+
+        //Get user by Id (tracking)
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
+        {
+            var user = await repository
+                .All<ApplicationUser>()
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            return user;
         }
 
         //-----------------------------------------------------------------------------------------PRODUCT SERVICES:

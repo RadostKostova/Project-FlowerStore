@@ -1,6 +1,10 @@
 ﻿using FlowerStore.Core.Contracts;
+using FlowerStore.Core.ViewModels.Admin;
 using FlowerStore.Extensions;
+using FlowerStore.Infrastructure.Data.Models.Roles;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static FlowerStore.Core.Constants.AdminConstants;
 
 namespace FlowerStore.Areas.Admin.Controllers
 {
@@ -10,12 +14,14 @@ namespace FlowerStore.Areas.Admin.Controllers
 
     public class UserController : AdminBaseController
     {
-
         private readonly IAdminService adminService;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public UserController(IAdminService _adminService)
+        public UserController(IAdminService _adminService,
+            UserManager<ApplicationUser> _userManager)
         {
             adminService = _adminService;
+            userManager = _userManager;
         }
 
         //Get all users
@@ -43,6 +49,62 @@ namespace FlowerStore.Areas.Admin.Controllers
             return View(userDetails);
         }
 
-        
+        //Display confirmation view for making user an admin
+        [HttpGet]
+        public async Task<IActionResult> MakeAdministrator(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest();
+            }
+
+            var user = await adminService.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (await userManager.IsInRoleAsync(user, AdminRole))
+            {                
+                return RedirectToAction("All"); //already admin
+            }
+
+            var model = new AdminAddViewModel
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                Email = user.Email
+            };
+
+            return View(model);
+        }
+
+        //Add new admin
+        [HttpPost]
+        public async Task<IActionResult> MakeAdministrator(AdminAddViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = await adminService.GetUserByIdAsync(model.UserId);
+
+            if (user == null || user.Email != model.Email || user.UserName != model.Username) 
+            {
+                return BadRequest();
+            }
+
+            if (await userManager.IsInRoleAsync(user, AdminRole))
+            {
+                return RedirectToAction("All");  //already admin
+            }
+
+            var result = await userManager.AddToRoleAsync(user, AdminRole);            
+            return RedirectToAction("All");
+        }
+
+        //Remove Admin TODO
     }
 }

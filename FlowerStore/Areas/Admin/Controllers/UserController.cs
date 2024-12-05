@@ -52,7 +52,7 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Display confirmation view for making user an admin
         [HttpGet]
-        public async Task<IActionResult> MakeAdministrator(string userId)
+        public async Task<IActionResult> AddAdministrator(string userId)
         {
             if (string.IsNullOrEmpty(userId))
             {
@@ -67,7 +67,7 @@ namespace FlowerStore.Areas.Admin.Controllers
             }
 
             if (await userManager.IsInRoleAsync(user, AdminRole))
-            {                
+            {
                 return RedirectToAction("All"); //already admin
             }
 
@@ -83,7 +83,7 @@ namespace FlowerStore.Areas.Admin.Controllers
 
         //Add new admin
         [HttpPost]
-        public async Task<IActionResult> MakeAdministrator(AdminAddViewModel model)
+        public async Task<IActionResult> AddAdministrator(AdminAddViewModel model)
         {
             if (model == null)
             {
@@ -97,7 +97,7 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (user.Id != model.UserId || user.Email != model.Email || user.UserName != model.Username) 
+            if (user.Id != model.UserId || user.Email != model.Email || user.UserName != model.Username)
             {
                 return BadRequest();   //additional compare validations
             }
@@ -107,14 +107,14 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return RedirectToAction("All");  //already admin
             }
 
-            var result = await userManager.AddToRoleAsync(user, AdminRole);            
+            var result = await userManager.AddToRoleAsync(user, AdminRole);
             return RedirectToAction("All");
         }
 
         //Display confirmation view for removing user as an Admin 
         [HttpGet]
         public async Task<IActionResult> RemoveAdministrator(string userId)
-        {           
+        {
             if (string.IsNullOrEmpty(userId))
             {
                 return NotFound();
@@ -127,8 +127,8 @@ namespace FlowerStore.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            if (!await userManager.IsInRoleAsync(user, AdminRole)) 
-            {                
+            if (!await userManager.IsInRoleAsync(user, AdminRole))
+            {
                 return RedirectToAction(nameof(All));   //not admin
             }
 
@@ -145,9 +145,9 @@ namespace FlowerStore.Areas.Admin.Controllers
         //Removing an admin
         [HttpPost]
         public async Task<IActionResult> RemoveAdministrator(AdminRemoveViewModel model)
-        {           
+        {
             if (model == null)
-            {  
+            {
                 return BadRequest();
             }
 

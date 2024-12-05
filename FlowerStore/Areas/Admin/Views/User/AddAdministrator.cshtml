@@ -2,7 +2,7 @@
 @model AdminAddViewModel
 
 @{
-    ViewBag.Title = "Confirm Make Admin";
+    ViewBag.Title = "Confirm Add Admin";
 }
 
 <div class="container">
@@ -17,12 +17,12 @@
                 </div>
 
                 <div class="card-footer text-center">
-                    <form asp-area="Admin" asp-controller="User" asp-action="MakeAdministrator" method="post">
+                    <form asp-area="Admin" asp-controller="User" asp-action="AddAdministrator" method="post">
                         <input type="hidden" asp-for="@Model.UserId" />  
                         <input type="hidden" asp-for="@Model.Username" />
                         <input type="hidden" asp-for="@Model.Email" />
-                        <button type="submit" class="btn btn-danger">Confirm</button>
-                        <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-success">Confirm</button>
+                        <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-danger">Cancel</a>
                     </form>
                 </div>
 

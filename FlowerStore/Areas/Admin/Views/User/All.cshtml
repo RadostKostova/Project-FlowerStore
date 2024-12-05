@@ -1,4 +1,5 @@
-﻿@using FlowerStore.Core.ViewModels.User
+﻿@using FlowerStore.Core.ViewModels.Admin
+@* @using static FlowerStore.Core.Constants.AdminConstants; *@
 @model IEnumerable<UserAllViewModel>
 
 @{
@@ -15,6 +16,7 @@
                 <th>Email</th>
                 <th>First and Last Name</th>
                 <th>Phone Number</th>
+                @* <th>Admin</th> *@
                 <th>More</th>
             </tr>
         </thead>
@@ -26,6 +28,7 @@
                     <td>@user.Email</td>
                     <td>@user.FirstName @user.LastName</td>
                     <td>@user.PhoneNumber</td>
+                    @* <td>@(user.Roles.Contains(AdminRole) ? "Yes" : "No")</td> *@
                     <td>
                         <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-userId="@user.Id" class="btn btn-primary btn-sm">
                             <i class="bi bi-info-circle"></i>

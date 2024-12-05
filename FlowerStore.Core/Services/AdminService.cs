@@ -1,4 +1,5 @@
-﻿using FlowerStore.Core.Contracts;
+﻿using FlowerStore.Core.Constants;
+using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Admin;
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;
@@ -62,7 +63,7 @@ namespace FlowerStore.Core.Services
                     LastName = p.LastName,
                     Email = p.Email,
                     PhoneNumber = p.PhoneNumber
-                    
+
                 })
                 .ToListAsync();
 
@@ -186,12 +187,21 @@ namespace FlowerStore.Core.Services
         }
 
         //-----------------------------------------------------------------------------------------USER SERVICES:
-        //Get all users
+        //Get all users WITH roles (for visual improvement in the All.cshtml)
         public async Task<IEnumerable<UserAllViewModel>> GetAllUsersAsync()
         {
-            var users = await userManager.Users
+            var allUsers = await userManager
+                .Users
                 .OrderBy(u => u.UserName)
-                .Select(user => new UserAllViewModel
+                .ToListAsync();
+
+            var userList = new List<UserAllViewModel>();
+
+            foreach (var user in allUsers)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+
+                userList.Add(new UserAllViewModel
                 {
                     Id = user.Id,
                     Username = user.UserName,
@@ -199,15 +209,15 @@ namespace FlowerStore.Core.Services
                     FirstName = user.FirstName,
                     LastName = user.LastName,
                     PhoneNumber = user.PhoneNumber,
-                })
-                .ToListAsync();
-
-            return users;
+                    IsAdmin = roles.Contains(AdminRole)
+                });
+            }
+            return userList;
         }
 
         //Get details of user
         public async Task<UserDetailsViewModel> GetUserDetailsAsync(string userId)
-        {           
+        {
             var user = await userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
             var roles = await userManager.GetRolesAsync(user);
 

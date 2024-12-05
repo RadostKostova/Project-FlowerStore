@@ -1,5 +1,4 @@
 ﻿@using FlowerStore.Core.ViewModels.Admin
-@* @using static FlowerStore.Core.Constants.AdminConstants; *@
 @model IEnumerable<UserAllViewModel>
 
 @{
@@ -9,14 +8,14 @@
 
 <div class="container">
     <h2 class="fst-italic text-center mb-4">@ViewBag.Title</h2>
-    <table class="table table-striped">
+    <table class="table table-striped table-responsive border-secondary">
         <thead>
             <tr>
                 <th>Username</th>
                 <th>Email</th>
                 <th>First and Last Name</th>
                 <th>Phone Number</th>
-                @* <th>Admin</th> *@
+                <th>Admin</th>
                 <th>More</th>
             </tr>
         </thead>
@@ -28,9 +27,9 @@
                     <td>@user.Email</td>
                     <td>@user.FirstName @user.LastName</td>
                     <td>@user.PhoneNumber</td>
-                    @* <td>@(user.Roles.Contains(AdminRole) ? "Yes" : "No")</td> *@
+                    <td>@(user.IsAdmin ? "Yes" : "No")</td>
                     <td>
-                        <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-userId="@user.Id" class="btn btn-primary btn-sm">
+                        <a asp-area="Admin" asp-controller="User" asp-action="Details" asp-route-userId="@user.Id" class="btn btn-primary btn-sm ms-2">
                             <i class="bi bi-info-circle"></i>
                         </a>
                     </td>

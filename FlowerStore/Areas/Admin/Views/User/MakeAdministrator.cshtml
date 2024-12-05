@@ -1,0 +1,33 @@
+﻿@using FlowerStore.Core.ViewModels.Admin;
+@model AdminAddViewModel
+
+@{
+    ViewBag.Title = "Confirm Make Admin";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+
+                <div class="card-body text-center">
+                    <h5 class="text-danger mt-3 text-center fw-bold mb-4">"Are you sure you want to make this User an Admin?"</h5>
+                    <p><strong>Username: @Model.Username</strong></p>
+                    <p><strong>Email: @Model.Email</strong></p>
+                </div>
+
+                <div class="card-footer text-center">
+                    <form asp-area="Admin" asp-controller="User" asp-action="MakeAdministrator" method="post">
+                        <input type="hidden" asp-for="@Model.UserId" />  
+                        <input type="hidden" asp-for="@Model.Username" />
+                        <input type="hidden" asp-for="@Model.Email" />
+                        <button type="submit" class="btn btn-danger">Confirm</button>
+                        <a asp-area="Admin" asp-controller="User" asp-action="All" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,4 +1,4 @@
-﻿namespace FlowerStore.Core.ViewModels.User
+﻿namespace FlowerStore.Core.ViewModels.Admin
 {
     public class UserDetailsViewModel
     {

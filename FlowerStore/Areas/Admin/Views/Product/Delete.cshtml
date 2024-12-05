@@ -12,12 +12,12 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-body">
-                <h3 class="card-title text-center"<strong>@Model.Name with Id @Model.Id</strong></h3>
+                <h3 class="card-title text-center"><strong>@Model.Name with Id @Model.Id</strong></h3>
                 <p class="text-danger mt-3 text-center fw-bold">"Are you sure you want to delete this product?"</p>
             </div>
-            <div class="card-footer">
+            <div class="card-footer text-center">
                 <form asp-area="Admin" asp-controller="Product" asp-action="DeleteConfirmed" method="post">
-                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="@Model.Id" />
                     <button type="submit" class="btn btn-danger">Confirm Delete</button>
                     <a asp-area="Admin" asp-controller="Product" asp-action="All" class="btn btn-secondary">Cancel</a>
                 </form>

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerStore.Core", "FlowerS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerStore.Infrastructure", "FlowerStore.Infrastructure\FlowerStore.Infrastructure.csproj", "{3E88893E-6284-494B-A661-733D0E6E86C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerStore.Tests", "FlowerStore.Tests\FlowerStore.Tests.csproj", "{6E9856B5-6CCB-4E96-9277-A13BBF72F38D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3E88893E-6284-494B-A661-733D0E6E86C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E88893E-6284-494B-A661-733D0E6E86C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E88893E-6284-494B-A661-733D0E6E86C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E9856B5-6CCB-4E96-9277-A13BBF72F38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E9856B5-6CCB-4E96-9277-A13BBF72F38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E9856B5-6CCB-4E96-9277-A13BBF72F38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E9856B5-6CCB-4E96-9277-A13BBF72F38D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

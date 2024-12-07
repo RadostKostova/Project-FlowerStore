@@ -18,6 +18,5 @@ namespace FlowerStore.Core.Contracts
         Task<CartProductViewModel> GetProductInCartByIdAsync(int cartId, int productId);
         Task ClearCartAsync(string userId);
         Task<bool> IsShoppingCartEmpty(string userId);
-        Task<bool> SaveAsync();
     }
 }

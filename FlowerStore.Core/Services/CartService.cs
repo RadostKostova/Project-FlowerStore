@@ -190,12 +190,6 @@ namespace FlowerStore.Core.Services
             var cart = await GetShoppingCartByUserIdAsync(userId);
 
             return !cart.ShoppingCartProducts.Any();
-        }
-
-        public async Task<bool> SaveAsync()
-        {
-            await repository.SaveChangesAsync();
-            return true;
-        }
+        }      
     }
 }

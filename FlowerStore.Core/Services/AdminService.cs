@@ -331,9 +331,14 @@ namespace FlowerStore.Core.Services
         public async Task<int> ConfirmDeleteAsync(int productId)
         {
             var product = await repository
-                .AllAsReadOnly<Product>()
+                .All<Product>()
                 .Where(p => p.Id == productId)
                 .FirstOrDefaultAsync();
+
+            if (product == null)
+            {
+                throw new InvalidOperationException("Not found");
+            }
 
             await repository.RemoveAsync(product);
             await repository.SaveChangesAsync();

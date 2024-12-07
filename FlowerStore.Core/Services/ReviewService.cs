@@ -18,7 +18,7 @@ namespace FlowerStore.Core.Services
             repository = _repository;
         }
 
-        //Check if review exist by id 
+        //Check if review exist by id and returns it
         public async Task<Review> ReviewByIdExistAsync(int reviewId)
         {
             var reviewFound = await repository
@@ -115,9 +115,14 @@ namespace FlowerStore.Core.Services
         public async Task<int> ConfirmDeleteAsync(int reviewId)
         {
             var review = await repository
-                .AllAsReadOnly<Review>()
+                .All<Review>()
                 .Where(r => r.Id == reviewId)
                 .FirstOrDefaultAsync();
+
+            if (review == null)
+            {
+                throw new InvalidOperationException("Not found");
+            }
 
             await repository.RemoveAsync(review);
             await repository.SaveChangesAsync();

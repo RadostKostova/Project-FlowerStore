@@ -31,7 +31,7 @@ namespace FlowerStore.Controllers
         //Get review form
         [HttpGet]
         public async Task<IActionResult> Add()
-        {            
+        {
             var model = new ReviewAddViewModel()
             {
                 UserId = User.GetUserId(),
@@ -46,12 +46,12 @@ namespace FlowerStore.Controllers
         public async Task<IActionResult> Add(ReviewAddViewModel model)
         {
             if (!ModelState.IsValid)
-            { 
+            {
                 return View(model);
             }
-            
+
             model.CreatedAt = DateTime.UtcNow;
-            await reviewService.AddReviewAsync(model);
+            var modelId = await reviewService.AddReviewAsync(model);
 
             return RedirectToAction(nameof(All));
         }
@@ -82,7 +82,7 @@ namespace FlowerStore.Controllers
             if (!ModelState.IsValid)
             {
                 model.UserId = userId; //Reassigned for more security/correctness
-                model.UserName = User.Identity!.Name!; 
+                model.UserName = User.Identity!.Name!;
                 return View(model);
             }
 
@@ -103,7 +103,12 @@ namespace FlowerStore.Controllers
         {
             var review = await reviewService.ReviewByIdExistAsync(id);
 
-            if (review == null || review.UserId != User.GetUserId())
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            if (review.UserId != User.GetUserId())
             {
                 return Unauthorized();
             }
@@ -119,7 +124,7 @@ namespace FlowerStore.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }           
+            }
 
             var review = await reviewService.ReviewByIdExistAsync(model.Id);
 

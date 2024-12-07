@@ -1,5 +1,4 @@
-﻿using FlowerStore.Core.Constants;
-using FlowerStore.Core.Contracts;
+﻿using FlowerStore.Core.Contracts;
 using FlowerStore.Core.ViewModels.Admin;
 using FlowerStore.Core.ViewModels.Order;
 using FlowerStore.Core.ViewModels.OrderProduct;

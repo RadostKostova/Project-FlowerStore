@@ -4,7 +4,6 @@ using FlowerStore.Core.ViewModels.CartProduct;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models.Cart;
 using FlowerStore.Infrastructure.Data.Models.Carts;
-using FlowerStore.Infrastructure.Data.Models.Orders.Order;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerStore.Core.Services
@@ -175,7 +174,7 @@ namespace FlowerStore.Core.Services
         {
             var cart = await ShoppingCartExistByUserIdAsync(userId);
 
-            if (cart != null)
+            if (cart != null && cart.ProductsCounter != 0)
             {
                 cart.ShoppingCartProducts.Clear();
                 cart.TotalPrice = 0;

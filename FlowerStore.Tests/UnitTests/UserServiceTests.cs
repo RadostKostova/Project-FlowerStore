@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace FlowerStore.Tests.UnitTests
 {
     [TestFixture]
-    internal class Tests
+    internal class UserServiceTests
     {
         //Dependencies
         private FlowerStoreDbContext dbContext;

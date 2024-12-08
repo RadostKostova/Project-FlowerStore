@@ -4,7 +4,6 @@ using FlowerStore.Core.ViewModels.Product;
 using FlowerStore.Infrastructure.Common;
 using FlowerStore.Infrastructure.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace FlowerStore.Core.Services
 {

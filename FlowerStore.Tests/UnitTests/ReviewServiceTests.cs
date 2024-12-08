@@ -6,7 +6,6 @@ using FlowerStore.Infrastructure.Data;
 using FlowerStore.Infrastructure.Data.Models;
 using FlowerStore.Infrastructure.Data.Models.Roles;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
 
 namespace FlowerStore.Tests.UnitTests
 {

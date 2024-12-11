@@ -9,7 +9,7 @@ namespace FlowerStore.Controllers
 {
     /// <summary>
     /// The OrderController handles operations related to placing an order, such as choosing payment method, shipping info and etc.
-    /// The main target of the controller is first to collect the needed user input data (as viewModels) in session (in-memory session store) and then to create actual order at the database. COMMENTS PROVIDED!
+    /// The main target of the controller is FIRST to collect the needed user input data (as viewModels) in session (in-memory session store) and THEN to create actual order at the database. Therefore, the complexity of the controller is higher. COMMENTS PROVIDED!
     /// </summary>
 
     public class OrderController : BaseController
@@ -40,6 +40,7 @@ namespace FlowerStore.Controllers
             {
                 PaymentMethods = await orderService.GetAllPaymentMethodsAsync()
             };
+
             return View(model);
         }
 
@@ -79,6 +80,7 @@ namespace FlowerStore.Controllers
             {
                 UserId = User.GetUserId()
             };
+
             return View(model);
         }
 
@@ -155,9 +157,15 @@ namespace FlowerStore.Controllers
             }
 
             int? cardId = null;
+
             if (orderModel.CardDetails != null) //if user choose card payment -> create it
             {
                 cardId = await orderService.CreateCardDetailsAsync(orderModel.CardDetails);
+            }
+
+            if (cardId == 0)  //something occured, try again
+            {
+                return View(nameof(Preview));
             }
 
             var newOrderId = await orderService.CreateOrderAsync(orderModel, cardId); //create order in db
@@ -167,7 +175,7 @@ namespace FlowerStore.Controllers
                 return View(nameof(Preview));
             }
 
-            await userService.UpdateUserInfoAsync(User.GetUserId()); //update first, last name and phone in AspNetUsers
+            await userService.UpdateUserInfoAsync(User.GetUserId()); //update first, last name and phone in AspNetUsers table
 
             HttpContext.Session.Remove("OrderViewModel");  //clear both session and cart
             await cartService.ClearCartAsync(User.GetUserId());

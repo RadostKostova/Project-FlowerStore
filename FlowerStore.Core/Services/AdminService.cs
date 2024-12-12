@@ -153,7 +153,7 @@ namespace FlowerStore.Core.Services
         }
 
         //Get order with it's status as viewModel
-        public async Task<OrderEditStatusViewModel> GetOrderForStatusEditing(int orderId)
+        public async Task<OrderEditStatusViewModel> GetOrderForStatusEditingAsync(int orderId)
         {
             var order = await repository
                 .AllAsReadOnly<Order>()
@@ -175,7 +175,11 @@ namespace FlowerStore.Core.Services
                 .All<Order>()
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
-            if (order == null)
+            var status = await repository
+                .AllAsReadOnly<OrderStatus>()
+                .AnyAsync(s => s.Id == newStatusId);
+
+            if (order == null || !status)
             {
                 return false;
             }

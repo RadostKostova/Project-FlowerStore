@@ -558,7 +558,7 @@ namespace FlowerStore.Tests.UnitTests
         }
 
         [Test]
-        public async Task IsShoppingCartEmpty_WhenCartDoesntExist_ThrowsNullException()
+        public void IsShoppingCartEmpty_WhenCartDoesntExist_ThrowsNullException()
         {
             Assert.ThrowsAsync<NullReferenceException>(async () =>
                await cartService.IsShoppingCartEmpty("nonExistingUserId"));

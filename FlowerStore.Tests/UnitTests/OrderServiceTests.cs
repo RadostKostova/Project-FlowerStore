@@ -73,6 +73,7 @@ namespace FlowerStore.Tests.UnitTests
         public async Task Setup()
         {
             #region Users
+
             firstUser = new ApplicationUser
             {
                 Id = "firstUserId",
@@ -108,9 +109,11 @@ namespace FlowerStore.Tests.UnitTests
                 LastName = "User",
                 PhoneNumber = "1234567000"
             };
+
             #endregion
 
             #region Categories
+
             firstCategory = new Category
             {
                 Id = 1,
@@ -122,9 +125,11 @@ namespace FlowerStore.Tests.UnitTests
                 Id = 2,
                 Name = "Second Category"
             };
+
             #endregion
 
             #region Products
+
             redRose = new Product
             {
                 Id = 1,
@@ -163,9 +168,11 @@ namespace FlowerStore.Tests.UnitTests
                 FullDescription = "Test description about ficys lyrata",
                 FlowersCount = 4
             };
+
             #endregion
 
             #region ShoppingCarts
+
             firstCart = new ShoppingCart
             {
                 Id = 1,
@@ -233,9 +240,11 @@ namespace FlowerStore.Tests.UnitTests
                     }
                 }
             };
+
             #endregion
 
             #region PaymentMethods
+
             cashPayment = new PaymentMethod
             {
                 Id = 1,
@@ -247,9 +256,11 @@ namespace FlowerStore.Tests.UnitTests
                 Id = 2,
                 Name = "Card"
             };
+
             #endregion
 
             #region OrderStatuses
+
             pendingStatus = new OrderStatus
             {
                 Id = 1,
@@ -267,9 +278,11 @@ namespace FlowerStore.Tests.UnitTests
                 Id = 3,
                 OrderStatusName = "Delivered"
             };
+
             #endregion
 
             #region Orders
+
             firstOrder = new Order
             {
                 Id = 1,
@@ -379,6 +392,7 @@ namespace FlowerStore.Tests.UnitTests
                     }
                 }
             };
+
             #endregion
 
             users = new List<ApplicationUser>() { firstUser, secondUser, thirdUser };

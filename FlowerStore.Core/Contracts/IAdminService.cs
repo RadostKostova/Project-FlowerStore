@@ -17,7 +17,7 @@ namespace FlowerStore.Core.Contracts
         Task<IEnumerable<OrderAllViewModel>> GetAllOrdersAsync();
         Task<OrderDetailsViewModel> GetOrderByIdAsync(int orderId);
         Task<IEnumerable<OrderStatusViewModel>> GetAllOrderStatusesAsync();
-        Task<OrderEditStatusViewModel> GetOrderForStatusEditing(int orderId);
+        Task<OrderEditStatusViewModel> GetOrderForStatusEditingAsync(int orderId);
         Task<bool> EditStatusAsync(int orderId, int newStatusId);
 
         //--------------------------------------------------------USER

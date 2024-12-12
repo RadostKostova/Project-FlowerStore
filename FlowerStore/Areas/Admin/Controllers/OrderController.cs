@@ -52,7 +52,7 @@ namespace FlowerStore.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> EditStatus(int id)
         {
-            var model = await adminService.GetOrderForStatusEditing(id);
+            var model = await adminService.GetOrderForStatusEditingAsync(id);
 
             if (model == null)
             {
@@ -71,8 +71,6 @@ namespace FlowerStore.Areas.Admin.Controllers
                 model.OrderStatuses = await orderService.GetAllOrderStatusesAsync();
                 return View(model);
             }
-
-            //var order = await adminService.GetOrderForStatusEditing(model.OrderId);
 
             var isStatusEdited = await adminService.EditStatusAsync(model.OrderId, model.SelectedStatusId);
 

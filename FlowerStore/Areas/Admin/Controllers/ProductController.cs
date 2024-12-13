@@ -78,12 +78,6 @@ namespace FlowerStore.Areas.Admin.Controllers
                 ModelState.AddModelError(nameof(model.CategoryId), "The category does not exist.");
             }
 
-            //DateTime dateAndTime;
-            //if (!DateTime.TryParseExact(model.DateAdded, DateFormatNeeded, CultureInfo.InvariantCulture, DateTimeStyles.None, out dateAndTime))
-            //{
-            //    ModelState.AddModelError(nameof(model.DateAdded), errorMessage: DateFormatErrorMessage);
-            //}
-
             if (!ModelState.IsValid)
             {
                 model.Categories = await productService.GetAllCategoriesAsync();

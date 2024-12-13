@@ -444,6 +444,26 @@ namespace FlowerStore.Tests.UnitTests
             });
         }
 
+        [Test]
+        public async Task GetPaginatedOrdersAsync_WhenNoOrdersExist_ReturnsEmptyResult()
+        {
+            dbContext.RemoveRange(await dbContext.Orders.ToListAsync()); //clear orders
+            await dbContext.SaveChangesAsync();
+
+            int page = 1;
+            int pageSize = 5;
+
+            var result = await adminService.GetPaginatedOrdersAsync(page, pageSize);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result.Orders, Is.Empty);
+                Assert.That(result.CurrentPage, Is.EqualTo(1));
+                Assert.That(result.TotalPages, Is.EqualTo(0));
+            });
+        }
+
         //GetAllOrdersAsync tests
         [Test]
         public async Task GetAllOrdersAsync_WhenOrdersExist_ReturnsAllOrders()
@@ -517,6 +537,28 @@ namespace FlowerStore.Tests.UnitTests
             Assert.ThrowsAsync<NullReferenceException>(async () =>
                 await adminService.GetOrderByIdAsync(-567));
         }
+
+        [Test]
+        public async Task GetOrderByIdAsync_WhenWithNoProducts_ReturnsEmptyOrderProducts()
+        {
+            var orderWithNoProducts = new Order
+            {
+                Id = 4,
+                UserId = firstUser.Id,
+                OrderDate = DateTime.UtcNow,
+                TotalPrice = 0.00m,
+                OrderStatus = orderStatuses.First(),
+                PaymentMethod = cashPayment,
+                OrderProducts = new List<OrderProduct>() //empty
+            };
+            await repository.AddAsync(orderWithNoProducts);
+            await repository.SaveChangesAsync();
+
+            var result = await adminService.GetOrderByIdAsync(orderWithNoProducts.Id);
+
+            Assert.That(result.OrderId, Is.EqualTo(orderWithNoProducts.Id));
+            Assert.That(result.OrderProducts, Is.Not.Null.And.Empty); 
+        }     
 
         //GetAllOrderStatusesAsync tests
         [Test]
@@ -973,7 +1015,7 @@ namespace FlowerStore.Tests.UnitTests
 
             var result = await adminService.GetLowStockProductsAsync(threshold); //should return all
 
-            Assert.That(result, Is.Not.Null.And.Not.Empty); 
+            Assert.That(result, Is.Not.Null.And.Not.Empty);
             Assert.That(result.Count(), Is.EqualTo(products.Count()));
         }
 
